@@ -1,0 +1,105 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://patient.service.medcart.rightcode.ru/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="PatientServiceImplService" targetNamespace="http://patient.service.medcart.rightcode.ru/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://patient.service.medcart.rightcode.ru/" elementFormDefault="unqualified" targetNamespace="http://patient.service.medcart.rightcode.ru/" version="1.0">
+            <xs:element name="getAllPatientsRequest" type="tns:getAllPatientsRequest"/>
+            <xs:element name="getAllPatientsResponse" type="tns:getAllPatientsResponse"/>
+            <xs:element name="getPatientByCodeRequest" type="tns:getPatientByCodeRequest"/>
+            <xs:element name="getPatientByCodeResponse" type="tns:getPatientByCodeResponse"/>
+            <xs:element name="passport" type="tns:PassportResponse"/>
+            <xs:element name="patient" type="tns:PatientResponse"/>
+            <xs:complexType name="getPatientByCodeRequest">
+                <xs:sequence>
+                    <xs:element name="code" type="xs:long"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPatientByCodeResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:PatientResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PatientResponse">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element form="qualified" minOccurs="0" name="patientCode" type="xs:long"/>
+                    <xs:element form="qualified" minOccurs="0" name="firstName" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="middleName" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="lastName" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="birthDate" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="deathDate" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="address" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="phoneNumber" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="workPlaceData" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="bookmark" type="xs:string"/>
+                    <xs:element minOccurs="0" ref="tns:passport"/>
+                    <xs:element form="qualified" minOccurs="0" name="snils" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="polis" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PassportResponse">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element form="qualified" minOccurs="0" name="series" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="number" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="issued" type="xs:string"/>
+                    <xs:element form="qualified" minOccurs="0" name="issuedDate" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getAllPatientsRequest">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getAllPatientsResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:PatientResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getPatientByCode">
+        <wsdl:part element="tns:getPatientByCodeRequest" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllPatients">
+        <wsdl:part element="tns:getAllPatientsRequest" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllPatientsResponse">
+        <wsdl:part element="tns:getAllPatientsResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPatientByCodeResponse">
+        <wsdl:part element="tns:getPatientByCodeResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="PatientService">
+        <wsdl:operation name="getPatientByCode">
+            <wsdl:input message="tns:getPatientByCode" name="getPatientByCode"> </wsdl:input>
+            <wsdl:output message="tns:getPatientByCodeResponse" name="getPatientByCodeResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getAllPatients">
+            <wsdl:input message="tns:getAllPatients" name="getAllPatients"> </wsdl:input>
+            <wsdl:output message="tns:getAllPatientsResponse" name="getAllPatientsResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="PatientServiceImplServiceSoapBinding" type="tns:PatientService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getPatientByCode">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPatientByCode">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPatientByCodeResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getAllPatients">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getAllPatients">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getAllPatientsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="PatientServiceImplService">
+        <wsdl:port binding="tns:PatientServiceImplServiceSoapBinding" name="PatientServiceImplPort">
+            <soap:address location="http://localhost:8081/medcart/patient"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
