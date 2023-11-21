@@ -1,0 +1,35 @@
+package ru.rightcode.core.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+public class Doctor {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "doctor_code", nullable = false)
+    private Long doctorCode;
+
+    @Column(name = "first_name", nullable = false, length = 255)
+    private String firstName;
+
+    @Column(name = "middle_name", nullable = true, length = 255)
+    private String middleName;
+
+    @Column(name = "last_name", nullable = false, length = 255)
+    private String lastName;
+
+    @Column(name = "email", nullable = false, length = 255)
+    private String email;
+
+    @Column(name = "phone_number", nullable = false, length = 18)
+    private String phoneNumber;
+
+}

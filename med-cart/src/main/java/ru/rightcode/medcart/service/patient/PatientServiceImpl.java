@@ -26,6 +26,14 @@ public class PatientServiceImpl implements PatientService {
         return patientRepository.findByPatientCode(code);
     }
 
+    @Override
+    public Patient getPatientTest(GetPatientTestRequest testRequest) {
+        if (testRequest.getPatientCode() != null){
+            return patientRepository.findByPatientCode(testRequest.getPatientCode());
+        }
+        return patientRepository.findById(2L).orElseThrow();
+    }
+
 //    @Override
 //    public Patient getPatientByCode(Long id) {
 //        return patientRepository.findByPatientCode(id);

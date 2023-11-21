@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
+            <scope>42.5.4</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -126,7 +126,10 @@
                             <sourceRoot>${project.build.directory}/generated-sources/cxf</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/patient.wsdl</wsdl>
+                                    <wsdl>http://localhost:8081/medcart/patient?wsdl</wsdl>
+                                </wsdlOption>
+                                <wsdlOption>
+                                    <wsdl>http://localhost:8081/medcart/epicrisis?wsdl</wsdl>
                                 </wsdlOption>
                             </wsdlOptions>
                         </configuration>
