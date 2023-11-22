@@ -3,10 +3,12 @@ package ru.rightcode.core.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class Doctor {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +33,12 @@ public class Doctor {
 
     @Column(name = "phone_number", nullable = false, length = 18)
     private String phoneNumber;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "_user_id",
+            referencedColumnName = "id"
+    )
+    private User user;
 
 }

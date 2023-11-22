@@ -4,7 +4,6 @@ package ru.rightcode.medcart.service.patient;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
-import jakarta.jws.soap.SOAPBinding;
 import jakarta.xml.ws.RequestWrapper;
 import jakarta.xml.ws.ResponseWrapper;
 import ru.rightcode.medcart.model.Patient;

@@ -18,6 +18,4 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-
-
 }

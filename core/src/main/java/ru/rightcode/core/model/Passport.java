@@ -15,16 +15,16 @@ public class Passport {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
-    @Basic
+
     @Column(name = "series", nullable = false, length = 4)
     private String series;
-    @Basic
+
     @Column(name = "number", nullable = false, length = 6)
     private String number;
-    @Basic
+
     @Column(name = "issued", nullable = false, length = -1)
     private String issued;
-    @Basic
+
     @Column(name = "issued_date", nullable = false)
     private LocalDate issuedDate;
 

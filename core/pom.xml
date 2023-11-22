@@ -17,35 +17,59 @@
         <java.version>11</java.version>
     </properties>
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
+<!--        Возникает ошибка при кодировании JWT java.lang.ClassNotFoundException: javax.xml.bind.DatatypeConverter. Данная зависимость ...-->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>42.5.4</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -58,16 +82,6 @@
             <version>4.0.3</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-web-services</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.springframework.boot</groupId>-->
-<!--                    <artifactId>spring-boot-starter-tomcat</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
 
     </dependencies>
 
@@ -91,27 +105,27 @@
                 </configuration>
             </plugin>
             <!-- tag::wsdl[] -->
-<!--            <plugin>-->
-<!--                <groupId>com.sun.xml.ws</groupId>-->
-<!--                <artifactId>jaxws-maven-plugin</artifactId>-->
-<!--                <version>3.0.0</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>wsimport</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <packageName>ru.rightcode.core</packageName>-->
-<!--                    <wsdlUrls>-->
-<!--                        <wsdlUrl>http://localhost:8081/medcart/patient?wsdl</wsdlUrl>-->
-<!--                    </wsdlUrls>-->
-<!--                    <sourceDestDir>${sourcesDir}</sourceDestDir>-->
-<!--                    <destDir>${classesDir}</destDir>-->
-<!--                    <extension>true</extension>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>com.sun.xml.ws</groupId>-->
+            <!--                <artifactId>jaxws-maven-plugin</artifactId>-->
+            <!--                <version>3.0.0</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>wsimport</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--                <configuration>-->
+            <!--                    <packageName>ru.rightcode.core</packageName>-->
+            <!--                    <wsdlUrls>-->
+            <!--                        <wsdlUrl>http://localhost:8081/medcart/patient?wsdl</wsdlUrl>-->
+            <!--                    </wsdlUrls>-->
+            <!--                    <sourceDestDir>${sourcesDir}</sourceDestDir>-->
+            <!--                    <destDir>${classesDir}</destDir>-->
+            <!--                    <extension>true</extension>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <!-- end::wsdl[] -->
 
             <plugin>
