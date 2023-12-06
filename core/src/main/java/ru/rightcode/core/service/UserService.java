@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import ru.rightcode.core.model.User;
 import ru.rightcode.core.repository.UserRepository;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,22 +18,22 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow();
     }
-
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
-                String.format("Пользователь '%s' не найден", username)
-        ));
+        User user = userRepository.findByUsername(username).orElseThrow();
+
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList())
+                user.getRoles()
+                        .stream()
+                        .map(role -> new SimpleGrantedAuthority(role.getName()))
+                        .collect(Collectors.toList())
         );
     }
-
 }
