@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.rightcode.medcart.service.patient.PatientWebService;
 
-
 @Configuration
 public class WebServiceConfig {
 
