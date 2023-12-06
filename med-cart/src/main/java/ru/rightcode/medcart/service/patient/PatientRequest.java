@@ -5,15 +5,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getPatientTestRequest")
-@XmlRootElement(name = "GetPatientTestRequest")
+@XmlType(name = "patientRequest")
 @Getter
 @Setter
-public class GetPatientTestRequest {
+public class PatientRequest {
 
     @XmlElement
     private Long patientCode;
 
     @XmlElement
     String firstName;
+
+
 }

@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@Table(schema = "medcarta")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 @XmlType(
         name = "PassportResponse",
         propOrder = {

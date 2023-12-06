@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "hospitalization_history", schema = "medcarta", catalog = "rc_medcarta")
+@Table(name = "hospitalization_history", schema = "medcarta")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @XmlType(

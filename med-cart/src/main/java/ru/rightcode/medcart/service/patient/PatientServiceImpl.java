@@ -1,6 +1,7 @@
 package ru.rightcode.medcart.service.patient;
 
 
+import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,13 @@ import ru.rightcode.medcart.repository.PatientRepository;
 
 import java.util.List;
 
+@WebService
 @Service
 @RequiredArgsConstructor
 public class PatientServiceImpl implements PatientService {
 
     @Autowired
-    private PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
     @Override
     public List<Patient> getAllPatients() {
@@ -26,21 +28,4 @@ public class PatientServiceImpl implements PatientService {
         return patientRepository.findByPatientCode(code);
     }
 
-    @Override
-    public Patient getPatientTest(GetPatientTestRequest testRequest) {
-        if (testRequest.getPatientCode() != null){
-            return patientRepository.findByPatientCode(testRequest.getPatientCode());
-        }
-        return patientRepository.findById(2L).orElseThrow();
-    }
-
-//    @Override
-//    public Patient getPatientByCode(Long id) {
-//        return patientRepository.findByPatientCode(id);
-//    }
-//
-//    @Override
-//    public void addPatient(Patient patient) {
-//        patientRepository.save(patient);
-//    }
 }
