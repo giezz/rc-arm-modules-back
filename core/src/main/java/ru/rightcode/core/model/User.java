@@ -4,14 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "_user")
+@Table(name = "_user", schema = "doc")
 @Getter
 @Setter
 @ToString
@@ -29,6 +26,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
+            schema = "doc",
             name = "user_role",
             joinColumns = @JoinColumn(name = "_user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "_role_id", referencedColumnName = "id")

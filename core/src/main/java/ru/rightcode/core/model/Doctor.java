@@ -8,6 +8,7 @@ import lombok.ToString;
 import java.util.Set;
 
 @Entity
+@Table(schema = "doc")
 @Getter
 @Setter
 @ToString

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 
 @Entity
+@Table(schema = "doc")
 @Getter
 @Setter
 public class Patient {

@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
+@Table(schema = "doc")
 @Getter
 @Setter
 public class Passport {
