@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -31,4 +34,5 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "_role_id", referencedColumnName = "id")
     )
     private Set<Role> roles;
+
 }

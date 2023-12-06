@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -33,6 +35,14 @@ public class Doctor {
 
     @Column(name = "phone_number", nullable = false, length = 18)
     private String phoneNumber;
+
+    @ManyToMany
+    @JoinTable(
+            name = "doctor_patient",
+            joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    )
+    private Set<Patient> patients;
 
     @ManyToOne
     @JoinColumn(
