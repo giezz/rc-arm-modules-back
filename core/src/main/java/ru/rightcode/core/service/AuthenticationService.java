@@ -7,8 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.rightcode.core.dto.JwtRequest;
@@ -25,28 +23,21 @@ public class AuthenticationService {
 
     private final JwtUtils jwtUtils;
 
-    public ResponseEntity<?> authenticate(JwtRequest authRequest) {
+    public JwtResponse authenticate(JwtRequest authRequest) {
         UserDetails userDetails;
-        try {
-            userDetails = (UserDetails) authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            authRequest.getUsername(),
-                            authRequest.getPassword()
-                    )
-            ).getPrincipal();
+        userDetails = (UserDetails) authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        authRequest.getUsername(),
+                        authRequest.getPassword()
+                )
+        ).getPrincipal();
 
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad password or username");
-        }
-
-        return ResponseEntity.ok(
-                JwtResponse.builder()
-                        .token(jwtUtils.generateToken(userDetails))
-                        .roles(userDetails.getAuthorities().stream()
-                                .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList())
-                        )
-                        .build()
-        );
+        return JwtResponse.builder()
+                .token(jwtUtils.generateToken(userDetails))
+                .roles(userDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList())
+                )
+                .build();
     }
 }
