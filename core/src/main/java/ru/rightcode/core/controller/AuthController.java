@@ -18,6 +18,6 @@ public class AuthController {
 
     @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest jwtRequest) {
-        return authenticationService.authenticate(jwtRequest);
+        return ResponseEntity.ok(authenticationService.authenticate(jwtRequest));
     }
 }
