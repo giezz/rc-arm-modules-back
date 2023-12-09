@@ -21,19 +21,19 @@ public class Patient {
     @Column(name = "patient_code", nullable = false)
     private Long patientCode;
 
-    @Column(name = "first_name", nullable = false, length = 255)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "middle_name", nullable = true, length = 255)
+    @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "last_name", nullable = false, length = 255)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "death_date", nullable = true)
+    @Column(name = "death_date")
     private LocalDate deathDate;
 
     @Column(name = "address", nullable = false, length = -1)
@@ -45,7 +45,7 @@ public class Patient {
     @Column(name = "work_place_data", nullable = false, length = -1)
     private String workPlaceData;
 
-    @Column(name = "bookmark", nullable = true, length = -1)
+    @Column(name = "bookmark",length = -1)
     private String bookmark;
 
     @Column(name = "snils", nullable = false, length = 11)
