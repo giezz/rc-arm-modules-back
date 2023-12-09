@@ -1,0 +1,22 @@
+package ru.rightcode.core.controller.advice;
+
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import ru.rightcode.core.dto.ApiErrorResponse;
+
+@ControllerAdvice
+public class NotFoundAdvice {
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    ResponseEntity<Object> tagNotFoundHandler(EntityNotFoundException e) {
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+        ApiErrorResponse apiResponse = new ApiErrorResponse(
+                httpStatus,
+                String.format("Параметр: %s", e.getMessage())
+        );
+        return new ResponseEntity<>(apiResponse, httpStatus);
+    }
+}
