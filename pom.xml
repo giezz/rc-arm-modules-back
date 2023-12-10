@@ -18,6 +18,7 @@
     <modules>
         <module>core</module>
         <module>med-cart</module>
+        <module>questionnaire</module>
     </modules>
 
 </project>
