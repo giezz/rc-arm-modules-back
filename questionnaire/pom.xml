@@ -11,8 +11,8 @@
     <groupId>ru.rightcode</groupId>
     <artifactId>questionnaire</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>anketi</name>
-    <description>anketi</description>
+    <name>questionnaire</name>
+    <description>questionnaire</description>
     <properties>
         <java.version>11</java.version>
     </properties>
