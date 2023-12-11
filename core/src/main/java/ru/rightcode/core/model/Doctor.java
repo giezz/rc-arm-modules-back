@@ -39,6 +39,7 @@ public class Doctor {
 
     @ManyToMany
     @JoinTable(
+            schema = "doc",
             name = "doctor_patient",
             joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id")

@@ -1,16 +1,14 @@
 package ru.rightcode.core.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.rightcode.core.dto.JwtRequest;
 import ru.rightcode.core.dto.JwtResponse;
+import ru.rightcode.core.model.Doctor;
 import ru.rightcode.core.utils.JwtUtils;
 
 import java.util.stream.Collectors;
@@ -20,6 +18,8 @@ import java.util.stream.Collectors;
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
+
+    private final DoctorService doctorService;
 
     private final JwtUtils jwtUtils;
 
@@ -32,8 +32,10 @@ public class AuthenticationService {
                 )
         ).getPrincipal();
 
+        Doctor doctor = doctorService.getByLogin(userDetails.getUsername());
+
         return JwtResponse.builder()
-                .token(jwtUtils.generateToken(userDetails))
+                .token(jwtUtils.generateToken(userDetails, doctor))
                 .roles(userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList())
