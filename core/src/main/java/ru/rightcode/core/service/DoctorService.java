@@ -6,8 +6,12 @@ import org.springframework.stereotype.Service;
 import ru.rightcode.core.dto.SimpleDoctorResponse;
 import ru.rightcode.core.model.Doctor;
 import ru.rightcode.core.model.DoctorPatient;
+import ru.rightcode.core.model.Patient;
 import ru.rightcode.core.repository.DoctorPatientRepository;
 import ru.rightcode.core.repository.DoctorRepository;
+
+import javax.print.Doc;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

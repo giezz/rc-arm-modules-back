@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.core.dto.AddToMyPatientsRequest;
+import ru.rightcode.core.model.Doctor;
 import ru.rightcode.core.service.DoctorService;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("api/v1/doctors")
@@ -25,7 +28,10 @@ public class DoctorController {
     }
 
     @GetMapping("/my")
-    public ResponseEntity<?> getMyPatients() {
-
+    public ResponseEntity<?> getMyPatients(Principal principal) {
+        Doctor doctor = doctorService.getByLogin(principal.getName());
+        return ResponseEntity.ok(
+                doctor.getPatients()
+        );
     }
 }
