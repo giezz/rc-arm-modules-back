@@ -16,7 +16,7 @@
     </properties>
 
     <modules>
-        <module>core</module>
+        <module>arm</module>
         <module>med-cart</module>
         <module>questionnaire</module>
     </modules>
