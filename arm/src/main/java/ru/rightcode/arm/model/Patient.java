@@ -1,10 +1,13 @@
 package ru.rightcode.arm.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Entity
@@ -57,6 +60,13 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name = "patient_status_id")
     private PatientStatus patientStatus;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "doctor_id",
+            referencedColumnName = "id"
+    )
+    private Doctor doctor;
 
     @OneToOne
     @JoinColumn(name = "passport_id", referencedColumnName = "id", nullable = false)

@@ -1,6 +1,7 @@
-package ru.rightcode.arm.dto;
+package ru.rightcode.arm.dto.response;
 
 import lombok.*;
+import ru.rightcode.arm.model.Doctor;
 import ru.rightcode.arm.model.Passport;
 import ru.rightcode.arm.model.PatientStatus;
 
@@ -26,4 +27,5 @@ public class SimplePatientResponse {
     private String polis;
     private PatientStatus patientStatus;
     private Passport passport;
+    private SimpleDoctorResponse doctor;
 }

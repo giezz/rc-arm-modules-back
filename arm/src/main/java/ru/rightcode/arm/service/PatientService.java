@@ -1,11 +1,15 @@
 package ru.rightcode.arm.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.rightcode.arm.dto.SimplePatientResponse;
+import ru.rightcode.arm.dto.response.SimplePatientResponse;
+import ru.rightcode.arm.model.Doctor;
 import ru.rightcode.arm.model.Patient;
+import ru.rightcode.arm.repository.DoctorRepository;
 import ru.rightcode.arm.repository.PatientRepository;
+import ru.rightcode.arm.utils.ResponseMappers;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,14 +20,26 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
 
+    private final DoctorRepository doctorRepository;
+
     public List<SimplePatientResponse> getAll() {
         return patientRepository.findAll().stream()
-                .map(this::mapToSimplePatientResponse)
+                .map(ResponseMappers::mapToSimplePatientResponse)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void addDoctor(Long patientId, Doctor doctor) {
+        Doctor doctorFromDb = doctorRepository.getReferenceById(doctor.getId());
+        patientRepository.addDoctor(doctorFromDb, patientId);
+    }
+
+    public Patient getById(Long id) {
+        return patientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
     public SimplePatientResponse getByCode(Long code) {
-        return mapToSimplePatientResponse(
+        return ResponseMappers.mapToSimplePatientResponse(
                 patientRepository.findByPatientCode(code)
                         .orElseThrow(
                                 () -> new EntityNotFoundException(code.toString())
@@ -31,23 +47,4 @@ public class PatientService {
         );
     }
 
-    private SimplePatientResponse mapToSimplePatientResponse(Patient patient) {
-        return SimplePatientResponse.builder()
-                .id(patient.getId())
-                .patientCode(patient.getPatientCode())
-                .firstName(patient.getFirstName())
-                .middleName(patient.getMiddleName())
-                .lastName(patient.getLastName())
-                .birthDate(patient.getBirthDate())
-                .deathDate(patient.getDeathDate())
-                .address(patient.getAddress())
-                .phoneNumber(patient.getPhoneNumber())
-                .workPlaceData(patient.getWorkPlaceData())
-                .bookmark(patient.getBookmark())
-                .snils(patient.getSnils())
-                .polis(patient.getPolis())
-                .patientStatus(patient.getPatientStatus())
-                .passport(patient.getPassport())
-                .build();
-    }
 }

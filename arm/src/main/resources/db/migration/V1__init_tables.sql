@@ -59,6 +59,7 @@ CREATE TABLE doc.patient (
                              polis char(16) NOT NULL,
                              patient_status_id bigint NOT NULL,
                              passport_id bigint NOT NULL,
+                             doctor_id bigint,
                              CONSTRAINT patient_pk PRIMARY KEY (id),
                              CONSTRAINT patient_code_uq UNIQUE (patient_code)
 );
@@ -91,29 +92,6 @@ CREATE TABLE doc.exercise (
 );
 -- ddl-end --
 ALTER TABLE doc.exercise OWNER TO postgres;
--- ddl-end --
-
--- object: doc.doctor_patient | type: TABLE --
--- DROP TABLE IF EXISTS doc.doctor_patient CASCADE;
-CREATE TABLE doc.doctor_patient (
-                                    doctor_id bigint NOT NULL,
-                                    patient_id bigint NOT NULL,
-                                    CONSTRAINT doctor_patient_pk PRIMARY KEY (doctor_id,patient_id)
-);
--- ddl-end --
-
--- object: doctor_fk | type: CONSTRAINT --
--- ALTER TABLE doc.doctor_patient DROP CONSTRAINT IF EXISTS doctor_fk CASCADE;
-ALTER TABLE doc.doctor_patient ADD CONSTRAINT doctor_fk FOREIGN KEY (doctor_id)
-    REFERENCES doc.doctor (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: patient_fk | type: CONSTRAINT --
--- ALTER TABLE doc.doctor_patient DROP CONSTRAINT IF EXISTS patient_fk CASCADE;
-ALTER TABLE doc.doctor_patient ADD CONSTRAINT patient_fk FOREIGN KEY (patient_id)
-    REFERENCES doc.patient (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: doc.patient_status | type: TABLE --
@@ -682,6 +660,13 @@ ALTER TABLE doc.user_role ADD CONSTRAINT _user_fk FOREIGN KEY (_user_id)
 -- ALTER TABLE doc.user_role DROP CONSTRAINT IF EXISTS _role_fk CASCADE;
 ALTER TABLE doc.user_role ADD CONSTRAINT _role_fk FOREIGN KEY (_role_id)
     REFERENCES doc._role (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: doctor_fk | type: CONSTRAINT --
+-- ALTER TABLE doc.patient DROP CONSTRAINT IF EXISTS doctor_fk CASCADE;
+ALTER TABLE doc.patient ADD CONSTRAINT doctor_fk FOREIGN KEY (doctor_id)
+    REFERENCES doc.doctor (id) MATCH FULL
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
