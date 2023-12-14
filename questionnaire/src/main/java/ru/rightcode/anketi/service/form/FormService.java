@@ -13,7 +13,7 @@ import java.util.List;
 public interface FormService {
 
     @WebMethod
-    @RequestWrapper(localName = "getFormsRequest", className = "ru.rightcode.doc.service.form.GetFormsRequest")
-    @ResponseWrapper(localName = "getFormsResponse", className = "ru.rightcode.doc.service.form.GetFormsResponse")
+    @RequestWrapper(localName = "getFormsRequest", className = "ru.rightcode.anketi.service.form.GetFormsRequest")
+    @ResponseWrapper(localName = "getFormsResponse", className = "ru.rightcode.anketi.service.form.GetFormsResponse")
     List<Form> getForms();
 }
