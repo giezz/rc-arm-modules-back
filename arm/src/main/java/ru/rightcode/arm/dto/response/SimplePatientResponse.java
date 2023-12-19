@@ -1,7 +1,9 @@
 package ru.rightcode.arm.dto.response;
 
-import lombok.*;
-import ru.rightcode.arm.model.Doctor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.rightcode.arm.model.Passport;
 import ru.rightcode.arm.model.PatientStatus;
 
