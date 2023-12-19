@@ -1,9 +1,13 @@
 package ru.rightcode.arm.utils;
 
+import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.dto.response.SimpleDoctorResponse;
 import ru.rightcode.arm.dto.response.SimplePatientResponse;
 import ru.rightcode.arm.model.Doctor;
 import ru.rightcode.arm.model.Patient;
+import ru.rightcode.arm.model.RehabProgram;
+
+import java.util.ArrayList;
 
 public final class ResponseMappers {
 
@@ -37,7 +41,25 @@ public final class ResponseMappers {
                 .passport(patient.getPassport());
 
         if (patient.getDoctor() != null) {
-            return builder.doctor(mapToSimpleDoctorResponse(patient.getDoctor())).build();
+            builder.doctor(mapToSimpleDoctorResponse(patient.getDoctor())).build();
+        }
+
+        return builder.build();
+    }
+
+    public static RehabProgramResponse mapToRehabProgramResponse(RehabProgram rehabProgram) {
+        RehabProgramResponse.RehabProgramResponseBuilder builder = RehabProgramResponse.builder()
+                .id(rehabProgram.getId())
+                .patient(mapToSimplePatientResponse(rehabProgram.getPatient()))
+                .doctor(mapToSimpleDoctorResponse(rehabProgram.getDoctor()))
+                .isCurrent(rehabProgram.getIsCurrent())
+                .startDate(rehabProgram.getStartDate());
+
+        if (rehabProgram.getEndDate() != null) {
+            builder.endDate(rehabProgram.getEndDate());
+        }
+        if (rehabProgram.getModules() != null && !rehabProgram.getModules().isEmpty()) {
+            builder.modules(new ArrayList<>(rehabProgram.getModules()));
         }
 
         return builder.build();

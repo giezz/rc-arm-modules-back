@@ -1,4 +1,4 @@
-package ru.rightcode.arm.dto;
+package ru.rightcode.arm.dto.response;
 
 import lombok.Builder;
 import lombok.Data;

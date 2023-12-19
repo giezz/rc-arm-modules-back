@@ -141,6 +141,8 @@ ALTER TABLE doc.rehab_program ADD CONSTRAINT patient_fk FOREIGN KEY (patient_id)
 CREATE TABLE doc.module (
                             id bigserial NOT NULL,
                             name text NOT NULL,
+                            rehab_program_id bigint NOT NULL,
+                            finished_at date,
                             CONSTRAINT module_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -442,31 +444,6 @@ CREATE TABLE doc.module_form (
 );
 -- ddl-end --
 
--- object: doc.program_module | type: TABLE --
--- DROP TABLE IF EXISTS doc.program_module CASCADE;
-CREATE TABLE doc.program_module (
-                                    id serial NOT NULL,
-                                    finished_at date,
-                                    module_id bigint NOT NULL,
-                                    rehab_program_id bigint NOT NULL,
-                                    CONSTRAINT program_module_pk PRIMARY KEY (id)
-);
--- ddl-end --
-
--- object: module_fk | type: CONSTRAINT --
--- ALTER TABLE doc.program_module DROP CONSTRAINT IF EXISTS module_fk CASCADE;
-ALTER TABLE doc.program_module ADD CONSTRAINT module_fk FOREIGN KEY (module_id)
-    REFERENCES doc.module (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: rehab_program_fk | type: CONSTRAINT --
--- ALTER TABLE doc.program_module DROP CONSTRAINT IF EXISTS rehab_program_fk CASCADE;
-ALTER TABLE doc.program_module ADD CONSTRAINT rehab_program_fk FOREIGN KEY (rehab_program_id)
-    REFERENCES doc.rehab_program (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
 -- object: module_fk | type: CONSTRAINT --
 -- ALTER TABLE doc.module_exercise DROP CONSTRAINT IF EXISTS module_fk CASCADE;
 ALTER TABLE doc.module_exercise ADD CONSTRAINT module_fk FOREIGN KEY (module_id)
@@ -670,4 +647,9 @@ ALTER TABLE doc.patient ADD CONSTRAINT doctor_fk FOREIGN KEY (doctor_id)
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
-
+-- object: rehab_program_fk | type: CONSTRAINT --
+-- ALTER TABLE doc.module DROP CONSTRAINT IF EXISTS rehab_program_fk CASCADE;
+ALTER TABLE doc.module ADD CONSTRAINT rehab_program_fk FOREIGN KEY (rehab_program_id)
+    REFERENCES doc.rehab_program (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --

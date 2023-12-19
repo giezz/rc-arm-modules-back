@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.rightcode.arm.model.Doctor;
 import ru.rightcode.arm.model.Patient;
-import ru.rightcode.arm.service.DoctorService;
-import ru.rightcode.arm.service.PatientService;
 import ru.rightcode.arm.service.RehabProgramService;
 
 import java.security.Principal;
@@ -20,30 +17,18 @@ public class RehabProgramController {
 
     private final RehabProgramService rehabProgramService;
 
-    private final DoctorService doctorService;
-
-    private final PatientService patientService;
-
-    @GetMapping
-    public ResponseEntity<?> getAll(Principal principal,
-                                 @RequestBody Patient patient) {
-        Doctor doctor = doctorService.getByLogin(principal.getName());
-        Patient patientFromDb = patientService.getById(patient.getId());
-
+    @GetMapping("/{patientId}/current")
+    public ResponseEntity<?> getCurrent(Principal principal,
+                                        @PathVariable("patientId") Long patientId) {
         return ResponseEntity.ok().body(
-                rehabProgramService
+                rehabProgramService.getCurrent(principal.getName(), patientId)
         );
     }
 
-    @PostMapping
+    @PostMapping("create")
     public ResponseEntity<?> create(Principal principal,
                                     @RequestBody Patient patient) {
-        Doctor doctor = doctorService.getByLogin(principal.getName());
-        Patient patientFromDb = patientService.getById(patient.getId());
-        rehabProgramService.create(doctor, patientFromDb);
-
+        rehabProgramService.create(principal.getName(), patient.getId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
-
 }

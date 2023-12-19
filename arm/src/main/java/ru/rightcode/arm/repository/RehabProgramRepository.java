@@ -21,7 +21,7 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
     );
 
     @Query("select rp from RehabProgram rp where rp.doctor = :doctor and rp.patient = :patient and rp.isCurrent = true")
-    Optional<RehabProgram> getProgramByDoctorAndPatient(
+    Optional<RehabProgram> getCurrentProgramByDoctorAndPatient(
             @Param("doctor") Doctor doctor,
             @Param("patient") Patient patient
     );

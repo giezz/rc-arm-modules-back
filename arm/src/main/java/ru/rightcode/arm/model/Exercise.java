@@ -24,5 +24,11 @@ public class Exercise {
     @Basic
     @Column(name = "description")
     private String description;
+    @ManyToOne
+    @JoinColumn(
+            name = "exercise_type_id",
+            referencedColumnName = "id"
+    )
+    private ExerciseType exerciseType;
 
 }

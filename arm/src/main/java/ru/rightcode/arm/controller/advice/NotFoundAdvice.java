@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.rightcode.arm.dto.ApiErrorResponse;
+import ru.rightcode.arm.dto.response.ApiErrorResponse;
 
 @ControllerAdvice
 public class NotFoundAdvice {
@@ -15,7 +15,7 @@ public class NotFoundAdvice {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         ApiErrorResponse apiResponse = new ApiErrorResponse(
                 httpStatus,
-                String.format("Параметр: %s", e.getMessage())
+                e.getMessage()
         );
         return new ResponseEntity<>(apiResponse, httpStatus);
     }
