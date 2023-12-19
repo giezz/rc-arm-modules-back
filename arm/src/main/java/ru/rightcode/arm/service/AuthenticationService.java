@@ -6,8 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import ru.rightcode.arm.dto.JwtRequest;
-import ru.rightcode.arm.dto.JwtResponse;
+import ru.rightcode.arm.dto.request.JwtRequest;
+import ru.rightcode.arm.dto.response.JwtResponse;
 import ru.rightcode.arm.model.Doctor;
 import ru.rightcode.arm.utils.JwtUtils;
 
