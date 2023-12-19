@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "rehab_program", schema = "doc")
@@ -38,7 +39,10 @@ public class RehabProgram {
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
     private LocalDate endDate;
+
+    @OneToMany(mappedBy = "rehabProgram")
+    private Set<Module> modules;
 
 }
