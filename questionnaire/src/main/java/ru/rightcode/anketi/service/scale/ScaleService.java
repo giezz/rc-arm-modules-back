@@ -17,4 +17,13 @@ public interface ScaleService {
     @ResponseWrapper(localName = "getScalesResponse", className = "ru.rightcode.anketi.service.scale.GetScalesResponse")
     List<Scale> getScales();
 
+    @WebMethod
+    @RequestWrapper(localName = "getScaleByIdRequest", className = "ru.rightcode.anketi.service.scale.GetScaleByIdRequest")
+    @ResponseWrapper(localName = "getScaleByIdResponse", className = "ru.rightcode.anketi.service.scale.GetScaleByIdResponse")
+    List<Scale> getScaleById(Long id);
+
+    @WebMethod
+    @RequestWrapper(localName = "getScaleByNameRequest", className = "ru.rightcode.anketi.service.scale.GetScaleByNameRequest")
+    @ResponseWrapper(localName = "getScaleByNameResponse", className = "ru.rightcode.anketi.service.scale.GetScaleByNameResponse")
+    List<Scale> getScaleByName(String name);
 }
