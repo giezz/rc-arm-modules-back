@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,10 +21,13 @@ public class Answer {
     private Long id;
 
     // TODO: patient does not exist
-    /*
-    @Column(name = "patient_id", nullable = false)
-    private String patient_id;
-    */
+    @ManyToOne
+    @JoinColumn(
+            name = "patient_id",
+            referencedColumnName = "id"
+    )
+    @XmlTransient
+    private Patient patient;
 
     @ManyToOne
     @JoinColumn(name = "variant_id")
