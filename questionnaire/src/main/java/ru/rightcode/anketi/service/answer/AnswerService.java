@@ -13,7 +13,9 @@ import java.util.List;
 public interface AnswerService {
 
     @WebMethod
-    @RequestWrapper(localName = "getAnswersRequest", className = "ru.rightcode.anketi.service.answer.GetAnswersRequest")
-    @ResponseWrapper(localName = "getAnswersResponse", className = "ru.rightcode.anketi.service.answer.GetAnswersResponse")
-    List<Answer> getAnswers(@WebParam(name = "patientCode") Long patientCode);
+    @RequestWrapper(localName = "getAnswersRequest",
+            className = "ru.rightcode.anketi.service.answer.GetAnswersRequest")
+    @ResponseWrapper(localName = "getAnswersResponse",
+            className = "ru.rightcode.anketi.service.answer.GetAnswersResponse")
+    List<Answer> getAnswers(@WebParam(name = "patient_id") Long patient_id);
 }
