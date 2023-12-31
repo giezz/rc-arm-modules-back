@@ -31,6 +31,7 @@ public class User {
             joinColumns = @JoinColumn(name = "_user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "_role_id", referencedColumnName = "id")
     )
+    @ToString.Exclude
     private Set<Role> roles;
 
 }
