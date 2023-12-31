@@ -8,7 +8,7 @@ import ru.rightcode.arm.dto.request.ModuleRequest;
 import ru.rightcode.arm.service.ModuleService;
 
 @RestController
-@RequestMapping("api/v1/module")
+@RequestMapping("api/v1/modules")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class ModuleController {

@@ -12,7 +12,7 @@ import ru.rightcode.arm.service.DoctorService;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("api/v1/doctor")
+@RequestMapping("api/v1/doctors")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class DoctorController {
