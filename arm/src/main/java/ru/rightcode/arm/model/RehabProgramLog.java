@@ -7,13 +7,13 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "module_form", schema = "doc")
-public class ModuleForm {
+@Table(name = "rehab_program_log")
+public class RehabProgramLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,22 +22,27 @@ public class ModuleForm {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "module_id", nullable = false)
-    private Module module;
+    @JoinColumn(name = "rehab_program_id", nullable = false)
+    private RehabProgram rehabProgram;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "form_id", nullable = false)
-    private Form form;
+    @JoinColumn(name = "who_changed", nullable = false)
+    private Doctor whoChanged;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "block_id", nullable = false)
-    private Block block;
+    @Column(name = "change_date", nullable = false)
+    private LocalDate changeDate;
 
-    @Column(name = "finished_at")
-    private Instant finishedAt;
+    @NotNull
+    @Column(name = "change", nullable = false, length = Integer.MAX_VALUE)
+    private String change;
+
+    @NotNull
+    @Column(name = "operation", nullable = false, length = Integer.MAX_VALUE)
+    private String operation;
+
+
 
 }

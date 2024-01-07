@@ -10,7 +10,7 @@ import ru.rightcode.arm.service.RehabProgramService;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("api/v1/rehab")
+@RequestMapping("api/v1/rehabs")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class RehabProgramController {

@@ -23,7 +23,7 @@ public class PatientSpecification {
     }
 
     public static Specification<Patient> middleNameLike(String name) {
-        if (name == null) {
+        if (name == null || name.isEmpty()) {
             return null;
         }
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(
@@ -33,7 +33,7 @@ public class PatientSpecification {
     }
 
     public static Specification<Patient> lastNameLike(String name) {
-        if (name == null) {
+        if (name == null || name.isEmpty()) {
             return null;
         }
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(

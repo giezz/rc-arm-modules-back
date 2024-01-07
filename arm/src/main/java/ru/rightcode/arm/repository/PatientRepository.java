@@ -1,10 +1,7 @@
 package ru.rightcode.arm.repository;
 
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -23,6 +20,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpec
     @Query("select p from Patient p join fetch p.patientStatus join fetch p.passport left join fetch p.doctor")
     List<Patient> findAll();
 
+    @EntityGraph(attributePaths = {"patientStatus", "doctor", "passport"})
     @NonNull
     @Override
     List<Patient> findAll(@Nullable Specification<Patient> specification);

@@ -1,6 +1,7 @@
 package ru.rightcode.arm.config;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(mvc.pattern("/auth")).permitAll()
+                        .requestMatchers(
+                                mvc.pattern("/auth"),
+                                mvc.pattern("/v3/api-docs/**"),
+                                mvc.pattern("/swagger-ui/**")
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

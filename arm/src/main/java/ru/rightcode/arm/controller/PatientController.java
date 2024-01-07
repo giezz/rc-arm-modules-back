@@ -11,7 +11,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("api/v1/patient")
+@RequestMapping("api/v1/patients")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class PatientController {
