@@ -7,6 +7,9 @@ import lombok.Setter;
 import ru.rightcode.anketi.adapter.LocalDateAdapter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -57,6 +60,9 @@ public class Patient {
 
     @Column(name = "polis", nullable = false, length = 16)
     private String polis;
+
+    @OneToMany(mappedBy = "patient")
+    private Set<Answer> answers = new HashSet<>();
 
     /*
     @ManyToOne

@@ -29,4 +29,19 @@ public class Form {
     @ManyToOne
     @JoinColumn(name = "scale_id")
     private Scale scale ;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Form form = (Form) o;
+
+        return getId().equals(form.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

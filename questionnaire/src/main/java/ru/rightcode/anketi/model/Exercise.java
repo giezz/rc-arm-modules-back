@@ -31,4 +31,19 @@ public class Exercise {
     @ManyToOne
     @JoinColumn(name = "exercise_type_id")
     private ExerciseType exerciseType ;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Exercise exercise = (Exercise) o;
+
+        return getId().equals(exercise.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

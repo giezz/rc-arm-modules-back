@@ -31,6 +31,20 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "variant_id")
-    private Variant variant_id;
+    private Variant variant;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Answer answer = (Answer) o;
+
+        return getId().equals(answer.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

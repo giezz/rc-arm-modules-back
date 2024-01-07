@@ -7,6 +7,10 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -23,4 +27,6 @@ public class Question {
     @Column(name = "content", nullable = false)
     private String content;
 
+    @OneToMany(mappedBy = "question_id")
+    private Set<Variant> variants = new HashSet<>();
 }

@@ -7,6 +7,10 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -25,4 +29,6 @@ public class Scale {
     @Column(name = "description", nullable = false)
     private String description ;
 
+    @OneToMany(mappedBy = "scale")
+    private Set<Form> forms = new HashSet<>();
 }
