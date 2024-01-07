@@ -5,15 +5,21 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(schema = "doc")
+//@ToString(exclude = {"scale", "questions"})
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@NoArgsConstructor
+@AllArgsConstructor
 public class Form {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -26,9 +32,18 @@ public class Form {
     @Column(name = "description", nullable = false)
     private String description ;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scale_id")
     private Scale scale ;
+
+    @Builder.Default
+    @ManyToMany
+    @JoinTable(
+            name = "form_question",
+            joinColumns = @JoinColumn(name = "id_form"),
+            inverseJoinColumns = @JoinColumn(name = "id_question")
+    )
+    private Set<Question> questions = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
