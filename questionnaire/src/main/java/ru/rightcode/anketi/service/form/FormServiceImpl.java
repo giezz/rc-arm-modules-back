@@ -4,7 +4,7 @@ import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.rightcode.anketi.DTO.FormDTO;
+import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.Scale;
@@ -12,7 +12,6 @@ import ru.rightcode.anketi.repository.FormRepository;
 import ru.rightcode.anketi.repository.ScaleRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +27,7 @@ public class FormServiceImpl implements FormService{
 
 
     @Override
-    public List<FormDTO> getAllForms() {
+    public List<FormDto> getAllForms() {
         List<Form> forms = formRepository.findAll();
         return forms.stream()
                 .map(this::convertToDTO)
@@ -36,7 +35,7 @@ public class FormServiceImpl implements FormService{
     }
 
     @Override
-    public List<FormDTO> getFormByName(String name) {
+    public List<FormDto> getFormByName(String name) {
         List<Form> forms = formRepository.findAllByName(name);
         return forms.stream()
                 .map(this::convertToDTO)
@@ -44,14 +43,14 @@ public class FormServiceImpl implements FormService{
     }
 
     @Override
-    public FormDTO getFormById(Long id) {
+    public FormDto getFormById(Long id) {
         Form form = formRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Form not found with id: " + id));
         return convertToDTO(form);
     }
 
     @Override
-    public FormDTO createForm(FormDTO formDTO) {
+    public FormDto createForm(FormDto formDTO) {
         Scale scale = validateScaleId(formDTO.getScaleId());
         Form form = convertToEntity(formDTO, scale);
         Form savedForm = formRepository.save(form);
@@ -59,7 +58,7 @@ public class FormServiceImpl implements FormService{
     }
 
     @Override
-    public FormDTO updateForm(FormDTO formDTO) {
+    public FormDto updateForm(FormDto formDTO) {
         Scale scale = validateScaleId(formDTO.getScaleId());
 
         Form existingForm = formRepository.findById(formDTO.getId())
@@ -79,8 +78,8 @@ public class FormServiceImpl implements FormService{
         formRepository.deleteById(id);
     }
 
-    private FormDTO convertToDTO(Form form) {
-        FormDTO formDTO = new FormDTO();
+    private FormDto convertToDTO(Form form) {
+        FormDto formDTO = new FormDto();
         formDTO.setId(form.getId());
         formDTO.setName(form.getName());
         formDTO.setDescription(form.getDescription());
@@ -97,7 +96,7 @@ public class FormServiceImpl implements FormService{
                 .orElseThrow(() -> new NotFoundException("Scale not found with id: " + scaleId));
     }
 
-    private Form convertToEntity(FormDTO formDTO, Scale scale) {
+    private Form convertToEntity(FormDto formDTO, Scale scale) {
         Form form = new Form();
         form.setId(formDTO.getId());
         form.setName(formDTO.getName());
