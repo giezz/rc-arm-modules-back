@@ -1,11 +1,11 @@
-package ru.rightcode.anketi.DTO;
+package ru.rightcode.anketi.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ScaleDTO {
+public class ScaleDto {
     private Long id;
     private String name;
     private String description;
