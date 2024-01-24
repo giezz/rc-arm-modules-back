@@ -1,13 +1,11 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -34,16 +32,19 @@ public class Form {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scale_id")
+    @XmlTransient
     private Scale scale ;
 
-    @Builder.Default
-    @ManyToMany
-    @JoinTable(
-            name = "form_question",
-            joinColumns = @JoinColumn(name = "id_form"),
-            inverseJoinColumns = @JoinColumn(name = "id_question")
-    )
-    private Set<Question> questions = new HashSet<>();
+    @OneToMany(mappedBy = "form")
+    @ToString.Exclude
+    @XmlElement(name = "formResult")
+    private Set<FormResult> formResults = new LinkedHashSet<>();
+
+
+    @OneToMany(mappedBy = "idForm")
+    @ToString.Exclude
+    @XmlElement(name = "formQuestion")
+    private Set<FormQuestion> formQuestions = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {

@@ -3,13 +3,11 @@ package ru.rightcode.anketi.model;
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -17,6 +15,9 @@ import java.util.Set;
 @Table(schema = "doc")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Scale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -29,6 +30,29 @@ public class Scale {
     @Column(name = "description", nullable = false)
     private String description ;
 
+//    @OneToMany(mappedBy = "scale")
+//    @ToString.Exclude
+//    @XmlElement(name = "form")
+//    private List<Form> forms = new ArrayList<>();
+
     @OneToMany(mappedBy = "scale")
-    private Set<Form> forms = new HashSet<>();
+    @ToString.Exclude
+    @XmlElement(name = "interpretation")
+    private List<Interpretation> interpretations = new ArrayList<>();
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Scale scale = (Scale) o;
+
+        return getId().equals(scale.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

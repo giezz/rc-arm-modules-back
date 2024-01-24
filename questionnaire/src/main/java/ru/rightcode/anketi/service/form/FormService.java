@@ -5,6 +5,7 @@ import jakarta.jws.WebService;
 import jakarta.xml.ws.RequestWrapper;
 import jakarta.xml.ws.ResponseWrapper;
 import ru.rightcode.anketi.dto.FormDto;
+import ru.rightcode.anketi.model.FormQuestion;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public interface FormService {
             className = "ru.rightcode.anketi.service.form.CreateFormRequest")
     @ResponseWrapper(localName = "createFormResponse",
             className = "ru.rightcode.anketi.service.form.CreateFormResponse")
-    FormDto createForm(FormDto form);
+    List<FormQuestion> createForm(FormDto form);
 
     @WebMethod
     @RequestWrapper(localName = "updateFormRequest",

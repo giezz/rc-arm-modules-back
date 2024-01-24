@@ -22,13 +22,13 @@ public class ScaleServiceImpl implements ScaleService{
         return scaleRepository.findAll();
     }
 
-    @Override
-    public List<Scale> getScaleById(Long id) {
-        return scaleRepository.findAllById(id);
-    }
-
-    @Override
-    public List<Scale> getScaleByName(String name) {
-        return scaleRepository.findAllByName(name);
-    }
+//    @Override
+//    public List<Scale> getScaleById(Long id) {
+//        return scaleRepository.findAllById(id);
+//    }
+//
+//    @Override
+//    public List<Scale> getScaleByName(String name) {
+//        return scaleRepository.findAllByName(name);
+//    }
 }

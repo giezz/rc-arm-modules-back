@@ -3,19 +3,16 @@ package ru.rightcode.anketi.model;
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.*;
 
 
 @Getter
 @Setter
 @Entity
-//@RequiredArgsConstructor
-//@ToString(exclude = {"forms", "variants"})
 @Table(schema = "doc")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -34,13 +31,14 @@ public class Question {
 
     @OneToMany(mappedBy = "question_id")
     @ToString.Exclude
-    @Builder.Default
-    private Set<Variant> variants = new HashSet<>();
+    @XmlElement(name = "variant")
+    private List<Variant> variants = new ArrayList<>();
 
-    @Builder.Default
-    @ManyToMany(mappedBy = "questions")
+    @OneToMany(mappedBy = "idQuestion")
     @ToString.Exclude
-    private Set<Form> forms = new HashSet<>();
+    @XmlElement(name = "formQuestion")
+    private List<FormQuestion> formQuestions = new ArrayList<>();
+
 
     @Override
     public boolean equals(Object o) {

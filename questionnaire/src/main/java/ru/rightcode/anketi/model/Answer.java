@@ -1,12 +1,15 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,6 +17,9 @@ import lombok.Setter;
 @Table(schema = "doc")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -31,7 +37,12 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "variant_id")
+    @XmlTransient
     private Variant variant;
+
+    @NotNull
+    @Column(name = "answered_at", nullable = false)
+    private Instant answeredAt;
 
     @Override
     public boolean equals(Object o) {

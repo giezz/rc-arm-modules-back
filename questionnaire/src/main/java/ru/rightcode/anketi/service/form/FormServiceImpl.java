@@ -7,10 +7,15 @@ import org.springframework.stereotype.Service;
 import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.model.Form;
+import ru.rightcode.anketi.model.FormQuestion;
+import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Scale;
 import ru.rightcode.anketi.repository.FormRepository;
+import ru.rightcode.anketi.repository.QuestionRepository;
 import ru.rightcode.anketi.repository.ScaleRepository;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +29,9 @@ public class FormServiceImpl implements FormService{
 
     @Autowired
     private final ScaleRepository scaleRepository;
+
+    @Autowired
+    private final QuestionRepository questionRepository;
 
 
     @Override
@@ -50,11 +58,31 @@ public class FormServiceImpl implements FormService{
     }
 
     @Override
-    public FormDto createForm(FormDto formDTO) {
+    public List<FormQuestion> createForm(FormDto formDTO) {
         Scale scale = validateScaleId(formDTO.getScaleId());
         Form form = convertToEntity(formDTO, scale);
-        Form savedForm = formRepository.save(form);
-        return convertToDTO(savedForm);
+        List<FormQuestion> formQuestionList = new ArrayList<>();
+
+        List<Question> questions = formDTO.getQuestions();
+        if (questions == null){
+            throw new NotFoundException("Form required List<Question>");
+        }
+        for (Question question : questions) {
+            if (!questionRepository.existsById(question.getId())){
+                questionRepository.save(question);
+            }
+            FormQuestion formQuestion1 = FormQuestion.builder()
+                    .idForm(form)
+                    .idQuestion(question)
+                    .createdAt(Instant.now())
+                    .build();
+
+            formQuestionList.add(formQuestion1);
+        }
+
+        formRepository.save(form);
+
+        return formQuestionList;
     }
 
     @Override
@@ -79,11 +107,13 @@ public class FormServiceImpl implements FormService{
     }
 
     private FormDto convertToDTO(Form form) {
-        FormDto formDTO = new FormDto();
-        formDTO.setId(form.getId());
-        formDTO.setName(form.getName());
-        formDTO.setDescription(form.getDescription());
-        formDTO.setScaleId(form.getScale() != null ? form.getScale().getId() : null);
+        FormDto formDTO = FormDto.builder()
+                .id(form.getId())
+                .name(form.getName())
+                .description(form.getDescription())
+                .scaleId(form.getScale() != null ? form.getScale().getId() : null)
+                .questions(null)
+                .build();
         return formDTO;
     }
 

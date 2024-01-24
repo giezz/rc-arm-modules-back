@@ -1,8 +1,11 @@
 package ru.rightcode.anketi.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
 @Setter
 public class ScaleDto {
