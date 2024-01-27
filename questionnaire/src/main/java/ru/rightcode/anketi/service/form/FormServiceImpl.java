@@ -10,6 +10,7 @@ import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.FormQuestion;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Scale;
+import ru.rightcode.anketi.repository.FormQuestionRepository;
 import ru.rightcode.anketi.repository.FormRepository;
 import ru.rightcode.anketi.repository.QuestionRepository;
 import ru.rightcode.anketi.repository.ScaleRepository;
@@ -32,6 +33,9 @@ public class FormServiceImpl implements FormService{
 
     @Autowired
     private final QuestionRepository questionRepository;
+
+    @Autowired
+    private final FormQuestionRepository formQuestionRepository;
 
 
     @Override
@@ -58,6 +62,19 @@ public class FormServiceImpl implements FormService{
     }
 
     @Override
+    public List<Question> getQuestionsByForm(FormDto formDTO) {
+        Scale scale = validateScaleId(formDTO.getScaleId());
+        Form form = convertToEntity(formDTO, scale);
+        List<FormQuestion> formQuestion = formQuestionRepository.findFormQuestionsByIdForm(form);
+        List<Question> questionList = new ArrayList<>();
+        for (FormQuestion fq : formQuestion){
+            questionList.add(fq.getIdQuestion());
+        }
+        return questionList;
+    }
+
+
+    @Override
     public List<FormQuestion> createForm(FormDto formDTO) {
         Scale scale = validateScaleId(formDTO.getScaleId());
         Form form = convertToEntity(formDTO, scale);
@@ -79,7 +96,7 @@ public class FormServiceImpl implements FormService{
 
             formQuestionList.add(formQuestion1);
         }
-
+        formQuestionRepository.saveAll(formQuestionList);
         formRepository.save(form);
 
         return formQuestionList;

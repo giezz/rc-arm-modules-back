@@ -6,6 +6,7 @@ import jakarta.xml.ws.RequestWrapper;
 import jakarta.xml.ws.ResponseWrapper;
 import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.model.FormQuestion;
+import ru.rightcode.anketi.model.Question;
 
 import java.util.List;
 
@@ -32,6 +33,13 @@ public interface FormService {
     @ResponseWrapper(localName = "getFormByIdResponse",
             className = "ru.rightcode.anketi.service.form.GetFormByIdResponse")
     FormDto getFormById(Long id);
+
+    @WebMethod
+    @RequestWrapper(localName = "getQuestionsByFormRequest",
+            className = "ru.rightcode.anketi.service.form.GetQuestionsByFormRequest")
+    @ResponseWrapper(localName = "getQuestionsByFormResponse",
+            className = "ru.rightcode.anketi.service.form.GetQuestionsByFormResponse")
+    List<Question> getQuestionsByForm(FormDto form);
 
     @WebMethod
     @RequestWrapper(localName = "createFormRequest",
