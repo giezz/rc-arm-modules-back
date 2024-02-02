@@ -19,11 +19,11 @@ public class DoctorController {
 
     private final DoctorService doctorService;
 
-    @GetMapping("/my-patients")
-    public ResponseEntity<?> getMyPatients(Principal principal) {
-        Doctor doctor = doctorService.getByLogin(principal.getName());
-        return ResponseEntity.ok(
-                doctorService.getPatients(doctor)
-        );
-    }
+//    @GetMapping("/my-patients")
+//    public ResponseEntity<?> getMyPatients(Principal principal) {
+//        Doctor doctor = doctorService.getByLogin(principal.getName());
+//        return ResponseEntity.ok(
+//                doctorService.getPatients(doctor)
+//        );
+//    }
 }

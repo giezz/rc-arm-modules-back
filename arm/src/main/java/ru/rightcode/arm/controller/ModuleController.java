@@ -1,10 +1,9 @@
 package ru.rightcode.arm.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.rightcode.arm.dto.request.ModuleRequest;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.rightcode.arm.service.ModuleService;
 
 @RestController
@@ -15,10 +14,10 @@ public class ModuleController {
 
     private final ModuleService moduleService;
 
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody ModuleRequest request) {
-        moduleService.create(request.getModuleName(), request.getRehabProgramId());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<?> create(@RequestBody ModuleRequest request) {
+//        moduleService.create(request.getModuleName(), request.getRehabProgramId());
+//        return ResponseEntity.status(HttpStatus.CREATED).build();
+//    }
 
 }
