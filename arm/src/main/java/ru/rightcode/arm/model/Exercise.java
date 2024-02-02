@@ -15,15 +15,16 @@ public class Exercise {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
-    @Basic
+
     @Column(name = "name", nullable = false)
     private String name;
-    @Basic
+
     @Column(name = "video_url", nullable = false, length = 2083)
     private String videoUrl;
-    @Basic
+
     @Column(name = "description")
     private String description;
+
     @ManyToOne
     @JoinColumn(
             name = "exercise_type_id",

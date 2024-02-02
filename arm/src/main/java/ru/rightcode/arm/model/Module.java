@@ -1,13 +1,15 @@
 package ru.rightcode.arm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,12 +27,44 @@ public class Module {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "rehab_program_id", nullable = false)
+    @JsonBackReference
     private RehabProgram rehabProgram;
 
     @Column(name = "finished_at")
     private Instant finishedAt;
+
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ModuleExercise> exercises = new ArrayList<>();
+
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ModuleForm> forms = new ArrayList<>();
+
+    public void addExercise(ModuleExercise exercise) {
+        exercises.add(exercise);
+        exercise.setModule(this);
+    }
+
+    public void addAllExercises(List<ModuleExercise> exercises) {
+        for (ModuleExercise exercise : exercises) {
+            this.exercises.add(exercise);
+            exercise.setModule(this);
+        }
+    }
+
+    public void addForm(ModuleForm form) {
+        forms.add(form);
+        form.setModule(this);
+    }
+
+    public void addAllForms(List<ModuleForm> forms) {
+        for (ModuleForm form : forms) {
+            this.forms.add(form);
+            form.setModule(this);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

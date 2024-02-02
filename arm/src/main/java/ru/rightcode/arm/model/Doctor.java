@@ -1,18 +1,19 @@
 package ru.rightcode.arm.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(schema = "doc")
 @Getter
 @Setter
-@ToString
 public class Doctor {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +40,8 @@ public class Doctor {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
-    @JsonBackReference
-    @ToString.Exclude
-    private Set<Patient> patients;
+    @JsonManagedReference
+    private List<Patient> patients = new ArrayList<>();
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,6 +50,6 @@ public class Doctor {
             referencedColumnName = "id"
     )
     @ToString.Exclude
+    @JsonIgnore
     private User user;
-
 }
