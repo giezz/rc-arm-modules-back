@@ -26,14 +26,16 @@ public class PatientController {
                                     @RequestParam(required = false) LocalDate birthDate,
                                     @RequestParam(required = false) Boolean isDead) {
         return ResponseEntity.ok(
-                patientService.getAll(PatientRequest.builder()
-                        .firstName(firstName)
-                        .middleName(middleName)
-                        .lastName(lastName)
-                        .status(status)
-                        .birthDate(birthDate)
-                        .isDead(isDead)
-                        .build())
+                patientService.getAll(
+                        new PatientRequest(
+                                firstName,
+                                middleName,
+                                lastName,
+                                status,
+                                birthDate,
+                                isDead
+                        )
+                )
         );
     }
 

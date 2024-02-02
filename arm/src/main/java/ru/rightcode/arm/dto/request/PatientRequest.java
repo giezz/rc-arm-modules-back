@@ -1,17 +1,15 @@
 package ru.rightcode.arm.dto.request;
 
-import lombok.Builder;
-import lombok.Data;
-
+import java.io.Serializable;
 import java.time.LocalDate;
 
-@Data
-@Builder
-public class PatientRequest {
-    String firstName;
-    String middleName;
-    String lastName;
-    String status;
-    LocalDate birthDate;
-    Boolean isDead;
+
+public record PatientRequest(
+        String firstName,
+        String middleName,
+        String lastName,
+        String status,
+        LocalDate birthDate,
+        Boolean isDead
+) implements Serializable {
 }
