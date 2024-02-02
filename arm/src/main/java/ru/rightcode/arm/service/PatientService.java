@@ -1,17 +1,17 @@
 package ru.rightcode.arm.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.rightcode.arm.dto.DoctorIdInfo;
 import ru.rightcode.arm.dto.request.PatientRequest;
-import ru.rightcode.arm.dto.response.SimplePatientResponse;
 import ru.rightcode.arm.model.Doctor;
 import ru.rightcode.arm.model.Patient;
+import ru.rightcode.arm.repository.DoctorRepository;
 import ru.rightcode.arm.repository.PatientRepository;
 import ru.rightcode.arm.repository.specification.PatientSpecification;
-import ru.rightcode.arm.utils.ResponseMappers;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,25 +21,25 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PatientService {
 
     private final PatientRepository patientRepository;
 
-    private final DoctorService doctorService;
+    private final DoctorRepository doctorRepository;
 
-    public List<SimplePatientResponse> getAll(PatientRequest patientRequest) {
+    public List<Patient> getAll(PatientRequest patientRequest) {
         Optional<Specification<Patient>> spec = specificationBuilder(patientRequest);
         return spec.map(patientRepository::findAll)
-                .orElseGet(patientRepository::findAll)
-                .stream()
-                .map(ResponseMappers::mapToSimplePatientResponse)
-                .collect(Collectors.toList());
+                .orElseGet(patientRepository::findAll);
     }
 
     @Transactional
     public void addDoctor(Long patientId, String doctorLogin) {
-        Doctor doctor = doctorService.getByLogin(doctorLogin);
-        patientRepository.addDoctor(doctor, patientId);
+        DoctorIdInfo doctor = doctorRepository
+                .findByUserUsername(doctorLogin, DoctorIdInfo.class)
+                .orElseThrow(EntityNotFoundException::new);
+        patientRepository.addDoctor(doctor.getId(), patientId);
     }
 
     @Transactional
@@ -51,27 +51,25 @@ public class PatientService {
         return patientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public SimplePatientResponse getByCode(Long code) {
-        return ResponseMappers.mapToSimplePatientResponse(
-                patientRepository.findByPatientCode(code)
-                        .orElseThrow(
-                                () -> new EntityNotFoundException(code.toString())
-                        )
-        );
+    public Patient getByCode(Long code) {
+        return patientRepository.findByPatientCode(code)
+                .orElseThrow(
+                        () -> new EntityNotFoundException(code.toString())
+                );
     }
 
     private Optional<Specification<Patient>> specificationBuilder(PatientRequest patientRequest) {
         List<Specification<Patient>> specificationList = Stream.of(
-                        PatientSpecification.firstNameLike(patientRequest.getFirstName()),
-                        PatientSpecification.middleNameLike(patientRequest.getMiddleName()),
-                        PatientSpecification.lastNameLike(patientRequest.getLastName()),
-                        PatientSpecification.hasPatientStatus(patientRequest.getStatus()),
-                        PatientSpecification.hasBirthDate(patientRequest.getBirthDate())
+                        PatientSpecification.firstNameLike(patientRequest.firstName()),
+                        PatientSpecification.middleNameLike(patientRequest.middleName()),
+                        PatientSpecification.lastNameLike(patientRequest.lastName()),
+                        PatientSpecification.hasPatientStatus(patientRequest.status()),
+                        PatientSpecification.hasBirthDate(patientRequest.birthDate())
                 )
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        if (patientRequest.getIsDead() != null && patientRequest.getIsDead()) {
+        if (patientRequest.isDead() != null && patientRequest.isDead()) {
             specificationList.add(PatientSpecification.isDead());
         }
 
