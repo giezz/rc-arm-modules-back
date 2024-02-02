@@ -3,15 +3,15 @@ package ru.rightcode.arm.controller.advice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.rightcode.arm.dto.response.ApiErrorResponse;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class BadCredentialsAdvice {
 
     @ExceptionHandler(BadCredentialsException.class)
-    ResponseEntity<Object> badCredentialsHandler(BadCredentialsException e) {
+    ResponseEntity<?> badCredentialsHandler(BadCredentialsException e) {
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         ApiErrorResponse apiResponse = new ApiErrorResponse(
                 httpStatus,
