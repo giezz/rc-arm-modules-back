@@ -45,6 +45,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
+        // FIXME только для разработки
+        if (authHeader.equals("Bearer admin")) {
+            setAuthentication("admin", "eyJhbGciOiJIUzI1NiJ9.eyJkb2N0b3JJZCI6MSwicm9sZXMiOlsiQURNSU4iLCJET0NUT1IiXSwiZG9jdG9yRnVsbE5hbWUiOiLQkdCw0YLRg9GF0YLQuNC9INCc0LjRhdCw0LjQuyDQkNC70LXQutGB0LXQtdCy0LjRhyIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzA3MDY1Njc1LCJleHAiOjE3MDcxNTIwNzV9.9PphXNT0LJiU6ddcSRT9-wIKUFOvAhaMUDkbGu6gAjU");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         jwt = authHeader.substring(7);
 
         try {
@@ -56,14 +63,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    jwtUtils.extractRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
-            );
-            SecurityContextHolder.getContext().setAuthentication(token);
+            setAuthentication(username, jwt);
         }
         filterChain.doFilter(request, response);
+    }
+
+    private void setAuthentication(String username, String jwt) {
+        UserDetails userDetails = this.userService.loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                jwtUtils.extractRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+        );
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 }
