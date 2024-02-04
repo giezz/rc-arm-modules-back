@@ -2,9 +2,7 @@ package ru.rightcode.arm.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.rightcode.arm.dto.ModuleDto;
 import ru.rightcode.arm.dto.ModuleExerciseDto;
-import ru.rightcode.arm.model.Module;
 import ru.rightcode.arm.model.ModuleExercise;
 
 import java.util.Collection;
@@ -20,6 +18,7 @@ public class ModuleExerciseDtoMapper implements Mapper<ModuleExercise, ModuleExe
         return new ModuleExerciseDto(
                 object.getId(),
                 object.getExercise().getId(),
+                object.getExercise().getName(),
                 object.getBlock().getId(),
                 object.getFinishedAt()
         );

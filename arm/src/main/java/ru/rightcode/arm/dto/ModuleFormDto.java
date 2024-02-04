@@ -9,6 +9,7 @@ import java.time.Instant;
 public record ModuleFormDto(
         Long id,
         Long formId,
+        String formName,
         Long blockId,
         Instant finishedAt
 ) implements Serializable {

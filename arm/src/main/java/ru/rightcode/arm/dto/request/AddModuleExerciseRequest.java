@@ -5,10 +5,8 @@ import java.io.Serializable;
 /**
  * DTO for {@link ru.rightcode.arm.model.ModuleExercise}
  */
-public record ModuleExerciseRequest(
+public record AddModuleExerciseRequest(
         Long exerciseId,
-        Long exerciseExerciseTypeId,
-
         Long blockId
 ) implements Serializable {
 }
