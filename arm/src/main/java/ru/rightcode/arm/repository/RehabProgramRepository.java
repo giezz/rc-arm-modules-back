@@ -29,11 +29,14 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
             @Param("patientId") Long patientId
     );
 
-    @Modifying
-    @Query("update RehabProgram rp set rp.startForm.id = :formId where rp.id = :programId and rp.doctor.id = :doctorId")
-    int addStartForm(@Param("formId") Long formId, @Param("programId") Long programId, @Param("doctorId") Long doctorId);
+    @Query("select exists(select 1 from RehabProgram rp where rp.doctor.id = :doctorId and rp.id = :programId)")
+    boolean checkIfDoctorCanEdit(@Param("doctorId") Long doctorId, @Param("programId") Long programId);
 
     @Modifying
-    @Query("update RehabProgram rp set rp.endForm.id = :formId where rp.id = :programId and rp.doctor.id = :doctorId")
-    int addEndForm(@Param("formId") Long formId, @Param("programId") Long programId, @Param("doctorId") Long doctorId);
+    @Query("update RehabProgram rp set rp.startForm.id = :formId where rp.id = :programId")
+    void addStartForm(@Param("formId") Long formId, @Param("programId") Long programId);
+
+    @Modifying
+    @Query("update RehabProgram rp set rp.endForm.id = :formId where rp.id = :programId")
+    void addEndForm(@Param("formId") Long formId, @Param("programId") Long programId);
 }
