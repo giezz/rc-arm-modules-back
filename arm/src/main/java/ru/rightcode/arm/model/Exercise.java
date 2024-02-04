@@ -25,11 +25,18 @@ public class Exercise {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "exercise_type_id",
             referencedColumnName = "id"
     )
+    @ToString.Exclude
     private ExerciseType exerciseType;
 
+    public Exercise(Long id) {
+        this.id = id;
+    }
+
+    public Exercise() {
+    }
 }

@@ -34,17 +34,22 @@ public class Module {
     @Column(name = "finished_at")
     private Instant finishedAt;
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<ModuleExercise> exercises = new ArrayList<>();
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<ModuleForm> forms = new ArrayList<>();
 
     public void addExercise(ModuleExercise exercise) {
         exercises.add(exercise);
         exercise.setModule(this);
+    }
+
+    public void deleteExercise(ModuleExercise exercise) {
+        exercises.remove(exercise);
+        exercise.setModule(null);
     }
 
     public void addAllExercises(List<ModuleExercise> exercises) {
@@ -57,6 +62,11 @@ public class Module {
     public void addForm(ModuleForm form) {
         forms.add(form);
         form.setModule(this);
+    }
+
+    public void deleteForm(ModuleForm form) {
+        forms.remove(form);
+        form.setModule(null);
     }
 
     public void addAllForms(List<ModuleForm> forms) {

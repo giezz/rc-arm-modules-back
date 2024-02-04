@@ -18,4 +18,11 @@ public class Block {
 
     @Column
     private String name;
+
+    public Block() {
+    }
+
+    public Block(Long id) {
+        this.id = id;
+    }
 }
