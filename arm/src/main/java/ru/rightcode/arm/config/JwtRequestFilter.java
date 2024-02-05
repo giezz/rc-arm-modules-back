@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,11 +31,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final UserService userService;
 
+    @Value("${jwt.for_develop}")
+    private String developJwt;
+
+    @Value("${jwt.develop_mode}")
+    private boolean developMode;
+
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
+    protected void doFilterInternal(HttpServletRequest request,
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         String username = null;
@@ -46,8 +52,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         // FIXME только для разработки
-        if (authHeader.equals("Bearer admin")) {
-            setAuthentication("admin", "eyJhbGciOiJIUzI1NiJ9.eyJkb2N0b3JJZCI6MSwicm9sZXMiOlsiQURNSU4iLCJET0NUT1IiXSwiZG9jdG9yRnVsbE5hbWUiOiLQkdCw0YLRg9GF0YLQuNC9INCc0LjRhdCw0LjQuyDQkNC70LXQutGB0LXQtdCy0LjRhyIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzA3MDY1Njc1LCJleHAiOjE3MDcxNTIwNzV9.9PphXNT0LJiU6ddcSRT9-wIKUFOvAhaMUDkbGu6gAjU");
+        if (developMode && authHeader.equals("Bearer admin")) {
+            setAuthentication("admin", developJwt);
             filterChain.doFilter(request, response);
             return;
         }
