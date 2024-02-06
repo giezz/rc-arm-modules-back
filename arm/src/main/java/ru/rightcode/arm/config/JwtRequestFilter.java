@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,6 @@ import ru.rightcode.arm.service.UserService;
 import ru.rightcode.arm.utils.JwtUtils;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -31,10 +29,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final UserService userService;
 
-    @Value("${jwt.for_develop}")
-    private String developJwt;
-
-    @Value("${jwt.develop_mode}")
+    @Value("${jwt.security-develop-mode}")
     private boolean developMode;
 
     @Override
@@ -51,9 +46,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        // FIXME только для разработки
         if (developMode && authHeader.equals("Bearer admin")) {
-            setAuthentication("admin", developJwt);
+            setAuthentication("admin");
             filterChain.doFilter(request, response);
             return;
         }
@@ -69,17 +63,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            setAuthentication(username, jwt);
+            setAuthentication(username);
         }
         filterChain.doFilter(request, response);
     }
 
-    private void setAuthentication(String username, String jwt) {
+    private void setAuthentication(String username) {
         UserDetails userDetails = this.userService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,
-                jwtUtils.extractRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+                userDetails.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(token);
     }

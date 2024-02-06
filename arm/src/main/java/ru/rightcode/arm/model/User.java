@@ -6,7 +6,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "_user", schema = "doc")
@@ -33,6 +35,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "_role_id", referencedColumnName = "id")
     )
     @ToString.Exclude
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
 }

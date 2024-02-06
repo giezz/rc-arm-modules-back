@@ -27,7 +27,7 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.lifetime_days}")
+    @Value("${jwt.lifetime-days}")
     private long lifeTimeOfDays;
 
 
