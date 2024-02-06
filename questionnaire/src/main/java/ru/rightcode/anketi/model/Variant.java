@@ -5,7 +5,6 @@ import jakarta.xml.bind.annotation.*;
 import lombok.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter

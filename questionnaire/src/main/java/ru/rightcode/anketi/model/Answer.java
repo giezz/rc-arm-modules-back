@@ -9,7 +9,6 @@ import jakarta.xml.bind.annotation.XmlTransient;
 import lombok.*;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Getter
 @Setter

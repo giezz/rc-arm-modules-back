@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @WebService
 @RequiredArgsConstructor
-public class FormServiceImpl implements FormService{
+public class FormServiceImpl implements FormService {
 
     @Autowired
     private final FormRepository formRepository;
@@ -67,7 +67,7 @@ public class FormServiceImpl implements FormService{
         Form form = convertToEntity(formDTO, scale);
         List<FormQuestion> formQuestion = formQuestionRepository.findFormQuestionsByIdForm(form);
         List<Question> questionList = new ArrayList<>();
-        for (FormQuestion fq : formQuestion){
+        for (FormQuestion fq : formQuestion) {
             questionList.add(fq.getIdQuestion());
         }
         return questionList;
@@ -81,11 +81,11 @@ public class FormServiceImpl implements FormService{
         List<FormQuestion> formQuestionList = new ArrayList<>();
 
         List<Question> questions = formDTO.getQuestions();
-        if (questions == null){
+        if (questions == null) {
             throw new NotFoundException("Form required List<Question>");
         }
         for (Question question : questions) {
-            if (!questionRepository.existsById(question.getId())){
+            if (!questionRepository.existsById(question.getId())) {
                 questionRepository.save(question);
             }
             FormQuestion formQuestion1 = FormQuestion.builder()

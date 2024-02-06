@@ -7,7 +7,8 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,7 +29,7 @@ public class Scale {
     private String name;
 
     @Column(name = "description", nullable = false)
-    private String description ;
+    private String description;
 
 //    @OneToMany(mappedBy = "scale")
 //    @ToString.Exclude

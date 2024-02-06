@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @WebService
 @RequiredArgsConstructor
-public class VariantServiceImpl implements VariantService{
+public class VariantServiceImpl implements VariantService {
 
     @Autowired
     private final VariantRepository variantRepository;

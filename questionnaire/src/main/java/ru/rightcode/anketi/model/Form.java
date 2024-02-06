@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -28,12 +27,12 @@ public class Form {
     private String name;
 
     @Column(name = "description", nullable = false)
-    private String description ;
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scale_id")
     @XmlTransient
-    private Scale scale ;
+    private Scale scale;
 
     @OneToMany(mappedBy = "form")
     @ToString.Exclude

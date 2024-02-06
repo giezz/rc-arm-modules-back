@@ -2,16 +2,12 @@ package ru.rightcode.anketi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.provider.HibernateUtils;
 import ru.rightcode.anketi.dto.FormDto;
-import ru.rightcode.anketi.model.Answer;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Variant;
 
-import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @SpringBootTest
 class AnketiApplicationTests {
@@ -27,7 +23,7 @@ class AnketiApplicationTests {
     }
 
     @Test
-    void getQuestion(){
+    void getQuestion() {
         List<Variant> variantList = new ArrayList<>();
         variantList.add(Variant.builder()
                 .id(1L)
@@ -49,9 +45,9 @@ class AnketiApplicationTests {
     void createForm() {
         List<Variant> variantList = new ArrayList<>();
         variantList.add(Variant.builder()
-                        .id(1L)
-                        .score(10.0)
-                        .content("TEST DTO BACKEDN")
+                .id(1L)
+                .score(10.0)
+                .content("TEST DTO BACKEDN")
                 .build()
         );
 

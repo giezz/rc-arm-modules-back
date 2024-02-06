@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @WebService
 @RequiredArgsConstructor
-public class ScaleServiceImpl implements ScaleService{
+public class ScaleServiceImpl implements ScaleService {
 
     @Autowired
     private final ScaleRepository scaleRepository;

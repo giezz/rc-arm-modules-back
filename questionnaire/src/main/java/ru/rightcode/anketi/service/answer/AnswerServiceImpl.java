@@ -12,7 +12,7 @@ import java.util.List;
 @WebService
 @Service
 @RequiredArgsConstructor
-public class AnswerServiceImpl implements AnswerService{
+public class AnswerServiceImpl implements AnswerService {
 
     @Autowired
     private final AnswerRepository answerRepository;

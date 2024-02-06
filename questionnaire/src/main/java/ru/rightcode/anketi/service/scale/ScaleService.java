@@ -1,7 +1,6 @@
 package ru.rightcode.anketi.service.scale;
 
 import jakarta.jws.WebMethod;
-import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 import jakarta.xml.ws.RequestWrapper;
 import jakarta.xml.ws.ResponseWrapper;

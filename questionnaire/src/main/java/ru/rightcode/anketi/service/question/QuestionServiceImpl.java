@@ -12,13 +12,13 @@ import java.util.List;
 @Service
 @WebService
 @RequiredArgsConstructor
-public class QuestionServiceImpl implements QuestionService{
+public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private final QuestionRepository questionRepository;
 
     @Override
-    public List<Question> getQuestions(){
+    public List<Question> getQuestions() {
         return questionRepository.findAll();
     }
 }

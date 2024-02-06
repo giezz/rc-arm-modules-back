@@ -27,12 +27,12 @@ public class Exercise {
     private String video_url;
 
     @Column(name = "description", nullable = false)
-    private String description ;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "exercise_type_id")
     @XmlTransient
-    private ExerciseType exerciseType ;
+    private ExerciseType exerciseType;
 
     @Override
     public boolean equals(Object o) {

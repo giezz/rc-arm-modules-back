@@ -12,7 +12,6 @@ import ru.rightcode.anketi.adapter.LocalDateAdapter;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -58,7 +57,7 @@ public class Patient {
     @Column(name = "work_place_data", nullable = false, length = -1)
     private String workPlaceData;
 
-    @Column(name = "bookmark",length = -1)
+    @Column(name = "bookmark", length = -1)
     private String bookmark;
 
     @Column(name = "snils", nullable = false, length = 11)

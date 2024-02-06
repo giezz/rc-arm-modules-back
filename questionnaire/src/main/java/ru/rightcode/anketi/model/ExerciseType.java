@@ -9,13 +9,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Table(schema = "doc", name="exercise_type")
+@Table(schema = "doc", name = "exercise_type")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class ExerciseType {

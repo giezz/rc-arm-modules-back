@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface FormRepository extends JpaRepository<Form, Long> {
     List<Form> findAllByName(String name);
+
     List<Form> findFormById(Long id);
 
 }

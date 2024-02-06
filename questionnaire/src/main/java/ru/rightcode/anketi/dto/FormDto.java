@@ -1,6 +1,5 @@
 package ru.rightcode.anketi.dto;
 
-import jakarta.annotation.Nullable;
 import lombok.*;
 import ru.rightcode.anketi.model.Question;
 

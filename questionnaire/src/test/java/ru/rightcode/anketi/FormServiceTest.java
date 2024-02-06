@@ -48,7 +48,7 @@ public class FormServiceTest {
 
         // Вызов метода сервиса для тестирования
         List<FormDto> result = formService.getAllForms();
-        for (FormDto formDto : result){
+        for (FormDto formDto : result) {
             System.out.println("Name form's: " + formDto.getName());
         }
 
@@ -80,7 +80,7 @@ public class FormServiceTest {
 
         // Вызов метода сервиса для тестирования
         List<FormQuestion> result = formService.createForm(formDto);
-        for (FormQuestion formQuestion : result){
+        for (FormQuestion formQuestion : result) {
             System.out.println(formQuestion.getIdForm() + " == " + formQuestion.getIdQuestion());
         }
         // Проверка результатов
@@ -90,7 +90,7 @@ public class FormServiceTest {
         assertEquals("Ожидается определенное количество FormQuestion", 3, result.size());
     }
 
-    private List<Form> createFormData(){
+    private List<Form> createFormData() {
         Scale scale1 = Scale.builder().id(1L).name("Scale 1")
                 .description("fdgdf")
                 .build();
@@ -113,7 +113,7 @@ public class FormServiceTest {
         return forms;
     }
 
-    private List<Question> createQuestions(){
+    private List<Question> createQuestions() {
         List<Variant> variantList = new ArrayList<>();
         List<Question> questionList = new ArrayList<>();
         // Quest 1 with 1 variant
@@ -121,7 +121,7 @@ public class FormServiceTest {
                 .score(2.00)
                 .build()
         );
-        questionList.add( Question.builder().id(1L).content("Question1")
+        questionList.add(Question.builder().id(1L).content("Question1")
                 .variants(variantList)
                 .build()
         );
@@ -130,7 +130,7 @@ public class FormServiceTest {
                 .score(4.00)
                 .build()
         );
-        questionList.add( Question.builder().id(2L).content("Question2")
+        questionList.add(Question.builder().id(2L).content("Question2")
                 .variants(variantList)
                 .build()
         );
@@ -139,7 +139,7 @@ public class FormServiceTest {
                 .score(5.00)
                 .build()
         );
-        questionList.add( Question.builder().id(3L).content("Question3")
+        questionList.add(Question.builder().id(3L).content("Question3")
                 .variants(variantList)
                 .build()
         );
