@@ -40,6 +40,7 @@ public class Doctor {
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     @JsonBackReference
+    @ToString.Exclude
     private Set<Patient> patients;
 
 
@@ -48,6 +49,7 @@ public class Doctor {
             name = "_user_id",
             referencedColumnName = "id"
     )
+    @ToString.Exclude
     private User user;
 
 }

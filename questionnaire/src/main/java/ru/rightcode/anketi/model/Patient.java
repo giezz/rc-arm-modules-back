@@ -1,18 +1,27 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.rightcode.anketi.adapter.LocalDateAdapter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
 @Table(schema = "doc")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,6 +66,15 @@ public class Patient {
 
     @Column(name = "polis", nullable = false, length = 16)
     private String polis;
+
+    @OneToMany(mappedBy = "patient")
+    @XmlElement(name = "answer")
+    private Set<Answer> answers = new HashSet<>();
+
+    @OneToMany(mappedBy = "patient")
+    @XmlElement(name = "formResult")
+    private Set<FormResult> formResults = new LinkedHashSet<>();
+
 
     /*
     @ManyToOne

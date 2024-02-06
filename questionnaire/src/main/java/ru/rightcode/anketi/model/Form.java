@@ -1,19 +1,23 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlType;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.xml.bind.annotation.*;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(schema = "doc")
+//@ToString(exclude = {"scale", "questions"})
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@NoArgsConstructor
+@AllArgsConstructor
 public class Form {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -26,7 +30,34 @@ public class Form {
     @Column(name = "description", nullable = false)
     private String description ;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scale_id")
+    @XmlTransient
     private Scale scale ;
+
+    @OneToMany(mappedBy = "form")
+    @ToString.Exclude
+    @XmlElement(name = "formResult")
+    private Set<FormResult> formResults = new LinkedHashSet<>();
+
+
+    @OneToMany(mappedBy = "idForm")
+    @ToString.Exclude
+    @XmlElement(name = "formQuestion")
+    private Set<FormQuestion> formQuestions = new LinkedHashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Form form = (Form) o;
+
+        return getId().equals(form.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

@@ -1,11 +1,12 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.xml.bind.annotation.*;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,6 +14,9 @@ import lombok.Setter;
 @Table(schema = "doc")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Variant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -28,5 +32,26 @@ public class Variant {
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
+    @XmlTransient
     private Question question_id;
+
+    @OneToMany(mappedBy = "variant")
+    @XmlElement(name = "answer")
+    @ToString.Exclude
+    private Set<Answer> answers = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Variant variant = (Variant) o;
+
+        return getId().equals(variant.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

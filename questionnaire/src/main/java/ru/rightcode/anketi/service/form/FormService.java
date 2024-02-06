@@ -1,11 +1,12 @@
 package ru.rightcode.anketi.service.form;
 
 import jakarta.jws.WebMethod;
-import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 import jakarta.xml.ws.RequestWrapper;
 import jakarta.xml.ws.ResponseWrapper;
-import ru.rightcode.anketi.model.Form;
+import ru.rightcode.anketi.dto.FormDto;
+import ru.rightcode.anketi.model.FormQuestion;
+import ru.rightcode.anketi.model.Question;
 
 import java.util.List;
 
@@ -17,19 +18,47 @@ public interface FormService {
             className = "ru.rightcode.anketi.service.form.GetFormsRequest")
     @ResponseWrapper(localName = "getFormsResponse",
             className = "ru.rightcode.anketi.service.form.GetFormsResponse")
-    List<Form> getForms();
+    List<FormDto> getAllForms();
 
     @WebMethod
     @RequestWrapper(localName = "getFormByNameRequest",
             className = "ru.rightcode.anketi.service.form.GetFormByNameRequest")
     @ResponseWrapper(localName = "getFormByNameResponse",
             className = "ru.rightcode.anketi.service.form.GetFormByNameResponse")
-    List<Form> getFormByName(String name);
+    List<FormDto> getFormByName(String name);
 
     @WebMethod
     @RequestWrapper(localName = "getFormByIdRequest",
             className = "ru.rightcode.anketi.service.form.GetFormByIdRequest")
     @ResponseWrapper(localName = "getFormByIdResponse",
             className = "ru.rightcode.anketi.service.form.GetFormByIdResponse")
-    List<Form> getFormById(Long id);
+    FormDto getFormById(Long id);
+
+    @WebMethod
+    @RequestWrapper(localName = "getQuestionsByFormRequest",
+            className = "ru.rightcode.anketi.service.form.GetQuestionsByFormRequest")
+    @ResponseWrapper(localName = "getQuestionsByFormResponse",
+            className = "ru.rightcode.anketi.service.form.GetQuestionsByFormResponse")
+    List<Question> getQuestionsByForm(FormDto form);
+
+    @WebMethod
+    @RequestWrapper(localName = "createFormRequest",
+            className = "ru.rightcode.anketi.service.form.CreateFormRequest")
+    @ResponseWrapper(localName = "createFormResponse",
+            className = "ru.rightcode.anketi.service.form.CreateFormResponse")
+    List<FormQuestion> createForm(FormDto form);
+
+    @WebMethod
+    @RequestWrapper(localName = "updateFormRequest",
+            className = "ru.rightcode.anketi.service.form.UpdateFormRequest")
+    @ResponseWrapper(localName = "updateFormResponse",
+            className = "ru.rightcode.anketi.service.form.UpdateFormResponse")
+    FormDto updateForm(FormDto form);
+
+    @WebMethod
+    @RequestWrapper(localName = "deleteFormRequest",
+            className = "ru.rightcode.anketi.service.form.DeleteFormRequest")
+    @ResponseWrapper(localName = "deleteFormResponse",
+            className = "ru.rightcode.anketi.service.form.DeleteFormResponse")
+    void deleteForm(Long id);
 }

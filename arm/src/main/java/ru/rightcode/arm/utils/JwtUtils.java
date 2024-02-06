@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import ru.rightcode.arm.model.Doctor;
 
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,9 @@ public class JwtUtils {
 
     @Value("${jwt.secret}")
     private String secret;
+
+    @Value("${jwt.lifetime}")
+    private Duration lifetime;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -77,11 +81,16 @@ public class JwtUtils {
                 )
         );
         claims.put("doctorId", doctor.getId());
+
+        long now = System.currentTimeMillis();
+        Date iat = new Date(now);
+        Date exp = new Date(now + lifetime.toMillis());
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .setIssuedAt(iat)
+                .setExpiration(exp)
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
