@@ -1,22 +1,23 @@
 package ru.rightcode.back.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(schema = "doc")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Form {
+public class Scale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -28,26 +29,24 @@ public class Form {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "scale_id")
-    private Scale scale;
+//    @OneToMany(mappedBy = "scale")
+//    @ToString.Exclude
+//    @XmlElement(name = "form")
+//    private List<Form> forms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "form")
+    @OneToMany(mappedBy = "scale")
     @ToString.Exclude
-    private List<FormResult> formResults = new ArrayList<>();
+    private List<Interpretation> interpretations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "idForm")
-    @ToString.Exclude
-    private List<FormQuestion> formQuestions = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Form form = (Form) o;
+        Scale scale = (Scale) o;
 
-        return getId().equals(form.getId());
+        return getId().equals(scale.getId());
     }
 
     @Override

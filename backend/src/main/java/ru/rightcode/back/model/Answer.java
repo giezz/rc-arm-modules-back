@@ -1,50 +1,52 @@
 package ru.rightcode.back.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
 @Table(schema = "doc")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Question {
-
+public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "content", nullable = false)
-    private String content;
+    // TODO: patient does not exist
+    @ManyToOne
+    @JoinColumn(
+            name = "patient_id",
+            referencedColumnName = "id"
+    )
+    private Patient patient;
 
-    @OneToMany(mappedBy = "question_id")
-    @ToString.Exclude
-    private List<Variant> variants = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "variant_id")
+    private Variant variant;
 
-    @OneToMany(mappedBy = "idQuestion")
-    @ToString.Exclude
-    private List<FormQuestion> formQuestions = new ArrayList<>();
-
+    @NotNull
+    @Column(name = "answered_at", nullable = false)
+    private Instant answeredAt;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Question question = (Question) o;
+        Answer answer = (Answer) o;
 
-        return getId().equals(question.getId());
+        return getId().equals(answer.getId());
     }
 
     @Override
