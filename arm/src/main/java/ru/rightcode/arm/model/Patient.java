@@ -1,12 +1,11 @@
 package ru.rightcode.arm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -75,21 +74,26 @@ public class Patient {
     private String polis;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "patient_status_id", nullable = false)
     private PatientStatus patientStatus;
 
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @OneToOne(optional = false)
     @JoinColumn(name = "passport_id", nullable = false)
     private Passport passport;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "doctor_id")
+    @JsonBackReference
     private Doctor doctor;
+
+    public Patient() {
+    }
+
+    public Patient(Long id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {

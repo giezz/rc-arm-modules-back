@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ru.rightcode.arm.dto.DoctorInfo;
 import ru.rightcode.arm.model.Doctor;
 
 import java.security.Key;
@@ -26,8 +27,9 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.lifetime}")
-    private Duration lifetime;
+    @Value("${jwt.lifetime-days}")
+    private long lifeTimeOfDays;
+
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -65,7 +67,7 @@ public class JwtUtils {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public String generateToken(UserDetails userDetails, Doctor doctor) {
+    public String generateToken(UserDetails userDetails, DoctorInfo doctor) {
         Map<String, Object> claims = new HashMap<>();
         List<String> roles = userDetails.getAuthorities()
                 .stream()
@@ -84,7 +86,7 @@ public class JwtUtils {
 
         long now = System.currentTimeMillis();
         Date iat = new Date(now);
-        Date exp = new Date(now + lifetime.toMillis());
+        Date exp = new Date(now + Duration.ofDays(lifeTimeOfDays).toMillis());
 
         return Jwts.builder()
                 .setClaims(claims)

@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
-public class ApiErrorResponse {
+public class ApiErrorResponse implements Serializable {
     private final int code;
     private final HttpStatus httpStatus;
 //    private final BusinessCodeError businessCode;

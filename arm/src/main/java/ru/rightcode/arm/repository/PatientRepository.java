@@ -29,8 +29,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpec
     Optional<Patient> findByPatientCode(@Param("patientCode") Long patientCode);
 
     @Modifying
-    @Query("update Patient p set p.doctor = :doctor where p.id = :id")
-    void addDoctor(@Param("doctor") Doctor doctor, @Param("id") Long id);
+    @Query("update Patient p set p.doctor.id = :doctorId where p.id = :id")
+    void addDoctor(@Param("doctorId") Long doctorId, @Param("id") Long id);
 
     @Modifying
     @Query("update Patient p set p.doctor = null where p.id = :id")

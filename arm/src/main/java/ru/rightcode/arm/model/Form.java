@@ -21,4 +21,11 @@ public class Form {
 
     @Column(name = "description")
     private String description;
+
+    public Form() {
+    }
+
+    public Form(Long id) {
+        this.id = id;
+    }
 }

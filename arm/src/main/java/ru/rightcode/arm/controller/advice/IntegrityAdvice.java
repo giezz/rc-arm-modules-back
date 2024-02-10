@@ -1,21 +1,21 @@
 package ru.rightcode.arm.controller.advice;
 
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.rightcode.arm.dto.response.ApiErrorResponse;
 
-@ControllerAdvice
-public class NotFoundAdvice {
+@RestControllerAdvice
+public class IntegrityAdvice {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    ResponseEntity<Object> tagNotFoundHandler(EntityNotFoundException e) {
-        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> integrityViolation() {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ApiErrorResponse apiResponse = new ApiErrorResponse(
                 httpStatus,
-                e.getMessage()
+                "Bad request"
         );
         return new ResponseEntity<>(apiResponse, httpStatus);
     }

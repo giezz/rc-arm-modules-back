@@ -1,14 +1,18 @@
 package ru.rightcode.arm.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ru.rightcode.arm.dto.DoctorIdInfo;
+import ru.rightcode.arm.dto.DoctorInfo;
 import ru.rightcode.arm.dto.request.JwtRequest;
 import ru.rightcode.arm.dto.response.JwtResponse;
 import ru.rightcode.arm.model.Doctor;
+import ru.rightcode.arm.repository.DoctorRepository;
 import ru.rightcode.arm.utils.JwtUtils;
 
 import java.util.stream.Collectors;
@@ -19,7 +23,7 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    private final DoctorService doctorService;
+    private final DoctorRepository doctorRepository;
 
     private final JwtUtils jwtUtils;
 
@@ -32,7 +36,9 @@ public class AuthenticationService {
                 )
         ).getPrincipal();
 
-        Doctor doctor = doctorService.getByLogin(userDetails.getUsername());
+        DoctorInfo doctor = doctorRepository
+                .findByUserUsername(userDetails.getUsername(), DoctorInfo.class)
+                .orElseThrow(EntityNotFoundException::new);
 
         return JwtResponse.builder()
                 .token(jwtUtils.generateToken(userDetails, doctor))

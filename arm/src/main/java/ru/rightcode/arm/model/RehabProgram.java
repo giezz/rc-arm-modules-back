@@ -1,20 +1,22 @@
 package ru.rightcode.arm.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.ToString;
 
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "rehab_program", schema = "doc")
+@ToString
 public class RehabProgram {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,40 +24,58 @@ public class RehabProgram {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
+    @ToString.Exclude
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "doctor_id")
+    @ToString.Exclude
     private Doctor doctor;
 
-    @NotNull
     @Column(name = "is_current", nullable = false)
     private Boolean isCurrent = false;
 
-    @NotNull
-    @Column(name = "start_date", nullable = false)
+    @Column(name = "creation_date")
+    private Instant creationDate;
+
+    @Column(name = "start_date")
     private LocalDate startDate;
 
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "start_form_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "start_form_id")
+//    @ToString.Exclude
     private Form startForm;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "end_form_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "end_form_id")
+//    @ToString.Exclude
     private Form endForm;
 
-    @OneToMany(mappedBy = "rehabProgram", orphanRemoval = true)
-    private Set<Module> modules = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<Module> modules = new ArrayList<>();
 
+    public void addModule(Module module) {
+        modules.add(module);
+        module.setRehabProgram(this);
+    }
+
+    public void addAllModules(List<Module> m) {
+        for (Module module : m) {
+            modules.add(module);
+            module.setRehabProgram(this);
+        }
+    }
+
+    public void setDoctorById(Long id) {
+        Doctor doc = new Doctor();
+        doc.setId(id);
+        doctor = doc;
+    }
 }
