@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -69,6 +71,9 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     private List<FormResult> formResults = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    private Doctor doctor;
 /*
 
     @NotNull

@@ -14,8 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.rightcode.back.service.UserService;
 import ru.rightcode.back.utils.JwtUtils;
-
 
 import java.io.IOException;
 import java.util.stream.Collectors;

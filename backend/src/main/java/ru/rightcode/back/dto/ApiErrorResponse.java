@@ -1,4 +1,4 @@
-package ru.rightcode.back.dto.response;
+package ru.rightcode.back.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

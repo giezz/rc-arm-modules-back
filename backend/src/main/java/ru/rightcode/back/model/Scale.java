@@ -1,10 +1,6 @@
 package ru.rightcode.back.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -29,10 +25,9 @@ public class Scale {
     @Column(name = "description", nullable = false)
     private String description;
 
-//    @OneToMany(mappedBy = "scale")
-//    @ToString.Exclude
-//    @XmlElement(name = "form")
-//    private List<Form> forms = new ArrayList<>();
+    @OneToMany(mappedBy = "scale")
+    @ToString.Exclude
+    private List<Form> forms = new ArrayList<>();
 
     @OneToMany(mappedBy = "scale")
     @ToString.Exclude
