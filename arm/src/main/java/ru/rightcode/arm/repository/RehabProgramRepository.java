@@ -24,7 +24,7 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
     Optional<RehabProgram> findByDoctorIdAndPatientIdAndIsCurrentTrue(Long doctorId, Long patientId);
 
     @Query("select exists(select 1 from RehabProgram rp where rp.doctor.id = :doctorId and rp.patient.id = :patientId and rp.isCurrent = true)")
-    boolean checkIfExists(
+    boolean checkIfCurrentExists(
             @Param("doctorId") Long doctorId,
             @Param("patientId") Long patientId
     );
