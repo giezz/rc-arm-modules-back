@@ -12,8 +12,8 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("api/v1/patients")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class PatientController {
 
     private final PatientService patientService;
@@ -41,9 +41,8 @@ public class PatientController {
 
     @GetMapping("/{code}")
     public ResponseEntity<?> getByCode(@PathVariable Long code) {
-        return ResponseEntity.ok(
-                patientService.getByCode(code)
-        );
+        return ResponseEntity
+                .ok(patientService.getByCode(code));
     }
 
     @PatchMapping("/add-doctor")
