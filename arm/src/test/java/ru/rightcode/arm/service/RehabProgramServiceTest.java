@@ -1,73 +1,111 @@
 package ru.rightcode.arm.service;
 
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import ru.rightcode.arm.dto.ModuleDto;
-import ru.rightcode.arm.dto.request.AddFormRequest;
-import ru.rightcode.arm.dto.request.AddModuleRequest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import ru.rightcode.arm.dto.DoctorIdInfo;
 import ru.rightcode.arm.dto.request.CreateRehabProgramRequest;
-import ru.rightcode.arm.dto.response.RehabProgramResponse;
-import ru.rightcode.arm.exceptions.NoPermissionException;
+import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
+import ru.rightcode.arm.model.RehabProgram;
+import ru.rightcode.arm.repository.DoctorRepository;
+import ru.rightcode.arm.repository.RehabProgramRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class RehabProgramServiceTest {
 
-    @Autowired
+    @Mock
+    private RehabProgramRepository rehabProgramRepository;
+    @Mock
+    private DoctorRepository doctorRepository;
+    @Mock
+    private RehabProgramResponseMapper rehabProgramResponseMapper;
+
+    @InjectMocks
     private RehabProgramService rehabProgramService;
 
     @Test
-    @Transactional
-    void getCurrent_test() {
-        System.out.println(rehabProgramService.getCurrent("admin", 1L));
+    void getCurrent_test_throws_EntityNotFoundException_rehab_program() {
+        String login = "";
+        when(doctorRepository.findByUserUsername(login, DoctorIdInfo.class)).thenReturn(Optional.of(() -> 1L));
+        when(rehabProgramRepository.findByDoctorIdAndPatientIdAndIsCurrentTrue(anyLong(), anyLong()))
+                .thenReturn(Optional.empty());
+
+
+        assertThrows(EntityNotFoundException.class, () -> rehabProgramService.getCurrent(login, 1L));
     }
 
     @Test
-    @Transactional
-    void createRehabProgram_test() {
-        CreateRehabProgramRequest request = new CreateRehabProgramRequest(
-                1L
-        );
-        System.out.println(
-                rehabProgramService.create("admin", request)
+    void getCurrent_test_throws_EntityNotFoundException_doctor() {
+        String login = "";
+        when(doctorRepository.findByUserUsername(login, DoctorIdInfo.class)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> rehabProgramService.getCurrent(login, 1L));
+    }
+
+    @Test
+    void getCurrent_valid() {
+        String login = "";
+        long doctorId = 1L;
+
+        when(doctorRepository.findByUserUsername(login, DoctorIdInfo.class)).thenReturn(Optional.of(() -> doctorId));
+        when(rehabProgramRepository.findByDoctorIdAndPatientIdAndIsCurrentTrue(doctorId, 1L))
+                .thenReturn(Optional.of(new RehabProgram()));
+
+        rehabProgramService.getCurrent(login, doctorId);
+
+        verify(rehabProgramRepository, times(1))
+                .findByDoctorIdAndPatientIdAndIsCurrentTrue(doctorId, 1L);
+    }
+
+    @Test
+    void create_throws_EntityNotFoundException_doctor() {
+        when(doctorRepository.findByUserUsername("", DoctorIdInfo.class)).thenReturn(Optional.empty());
+        assertThrows(
+                EntityNotFoundException.class,
+                () -> rehabProgramService.create("", new CreateRehabProgramRequest(1L))
         );
     }
 
     @Test
-    @Transactional
-    void updateRehabProgramWithWrongUser_test() {
-        AddFormRequest addFormRequest = new AddFormRequest(2L, AddFormRequest.FormType.START);
+    void create_throws_EntityExistsException_rehab_program() {
+        when(doctorRepository.findByUserUsername("", DoctorIdInfo.class)).thenReturn(Optional.of(() -> 1L));
+        when(rehabProgramRepository.checkIfCurrentExists(anyLong(), anyLong())).thenReturn(true);
 
-        assertThrows(NoPermissionException.class, () -> {
-            rehabProgramService.addForm("user", addFormRequest, 22222L);
-        });
+        assertThrows(
+                EntityExistsException.class,
+                () -> rehabProgramService.create("", new CreateRehabProgramRequest(1L)),
+                "Программа реабилтации уже существует"
+        );
     }
 
     @Test
-    @Transactional
-    void addModule_test() {
-        final String newModuleName = "superTestModule";
-        AddModuleRequest request = new AddModuleRequest(
-                newModuleName
-        );
-        RehabProgramResponse rehabProgramResponse = rehabProgramService
-                .addModule("admin", request, 22L);
+    void create_valid() {
+        long doctorId = 1L;
+        var request = new CreateRehabProgramRequest(1L);
+        String login = "";
 
-        final List<ModuleDto> modules = rehabProgramResponse.modules();
-        ModuleDto moduleDto = modules.stream()
-                .filter(m -> m.name().equals(newModuleName))
-                .findFirst()
-                .orElseThrow();
+        when(doctorRepository.findByUserUsername(login, DoctorIdInfo.class)).thenReturn(Optional.of(() -> doctorId));
+        when(rehabProgramRepository.checkIfCurrentExists(doctorId, request.patientId())).thenReturn(false);
 
-        System.out.println(moduleDto);
+        ArgumentCaptor<RehabProgram> rehabProgramCaptor = ArgumentCaptor.forClass(RehabProgram.class);
+        when(rehabProgramRepository.save(rehabProgramCaptor.capture())).thenReturn(new RehabProgram());
 
-        assertEquals(newModuleName, moduleDto.name());
+        rehabProgramService.create(login, request);
+
+        assertTrue(rehabProgramCaptor.getValue().getIsCurrent());
+
+        verify(rehabProgramRepository, times(1)).checkIfCurrentExists(doctorId, request.patientId());
+        verify(rehabProgramRepository, times(1)).save(any(RehabProgram.class));
     }
-
 }
