@@ -4,19 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.rightcode.anketi.dto.FormDto;
+import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.exception.NotFoundException;
-import ru.rightcode.anketi.model.Form;
-import ru.rightcode.anketi.model.FormQuestion;
-import ru.rightcode.anketi.model.Question;
-import ru.rightcode.anketi.model.Scale;
-import ru.rightcode.anketi.repository.FormQuestionRepository;
-import ru.rightcode.anketi.repository.FormRepository;
-import ru.rightcode.anketi.repository.QuestionRepository;
-import ru.rightcode.anketi.repository.ScaleRepository;
+import ru.rightcode.anketi.model.*;
+import ru.rightcode.anketi.repository.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -34,6 +30,9 @@ public class FormServiceImpl{
 
     @Autowired
     private final FormQuestionRepository formQuestionRepository;
+
+    @Autowired
+    private final VariantRepository variantRepository;
 
 
     public List<FormDto> getAllForms() {
@@ -55,7 +54,7 @@ public class FormServiceImpl{
     public FormDto getFormById(Long id) {
         Form form = formRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Form not found with id: " + id));
-        List<FormQuestion> formQuestionList = formQuestionRepository.findFormQuestionsByIdForm(form);
+        List<FormQuestion> formQuestionList = formQuestionRepository.findByIdForm(form);
         List<Question> questions = new ArrayList<>();
         for (FormQuestion fq : formQuestionList){
             if (fq.getIdForm().getId().equals(form.getId())){
@@ -85,17 +84,18 @@ public class FormServiceImpl{
         Form form = convertToEntity(formDTO, scale);
         List<FormQuestion> formQuestionList = new ArrayList<>();
 
-        List<Question> questions = formDTO.getQuestions();
+        List<QuestionDto> questions = formDTO.getQuestions();
         if (questions == null) {
             throw new NotFoundException("Form required List<Question>");
         }
-        for (Question question : questions) {
+        for (QuestionDto question : questions) {
             if (!questionRepository.existsById(question.getId())) {
-                questionRepository.save(question);
+                continue;
             }
+            Optional<Question> q = questionConvertToEntity(question);
             FormQuestion formQuestion1 = FormQuestion.builder()
                     .idForm(form)
-                    .idQuestion(question)
+                    .idQuestion(q.orElse(null))
                     .createdAt(Instant.now())
                     .build();
 
@@ -139,14 +139,19 @@ public class FormServiceImpl{
 
 
     private FormDto convertToDTO(Form form, List<Question> questions) {
-        FormDto formDTO = FormDto.builder()
+        List<QuestionDto> questionDtos = new ArrayList<>();
+        if (!questions.isEmpty()){
+            for (Question q : questions){
+                questionDtos.add(questionConvertToDto(q));
+            }
+        }
+        return FormDto.builder()
                 .id(form.getId())
                 .name(form.getName())
                 .description(form.getDescription())
                 .scaleId(form.getScale() != null ? form.getScale().getId() : null)
-                .questions(questions)
+                .questions(!questionDtos.isEmpty() ? questionDtos : null)
                 .build();
-        return formDTO;
     }
 
     private Form convertToEntity(FormDto formDTO, Scale scale) {
@@ -160,6 +165,27 @@ public class FormServiceImpl{
         }
 
         return form;
+    }
+
+    private QuestionDto questionConvertToDto(Question question){
+        return QuestionDto.builder()
+                .id(question.getId())
+                .content(question.getContent())
+                .build();
+    }
+
+    private Optional<Question> questionConvertToEntity(QuestionDto questionDto){
+        if (questionRepository.existsById(questionDto.getId())){
+            return questionRepository.findById(questionDto.getId());
+        }else {
+            List<Variant> variantList = variantRepository.findAllByQuestion_id(questionDto.getId());
+            return Optional.ofNullable(
+                    Question.builder()
+                            .id(questionDto.getId())
+                            .content(questionDto.getContent())
+                            .variants(variantList)
+                            .build());
+        }
     }
 
 }

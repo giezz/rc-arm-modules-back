@@ -26,7 +26,7 @@ public class Variant {
     @Column(name = "score", nullable = false)
     private Double score;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question_id;
 

@@ -1,7 +1,6 @@
 package ru.rightcode.anketi.dto;
 
 import lombok.*;
-import ru.rightcode.anketi.model.Question;
 
 import java.util.List;
 
@@ -16,5 +15,5 @@ public class FormDto {
     private String description;
     private Long scaleId;
 
-    private List<Question> questions;
+    private List<QuestionDto> questions;
 }

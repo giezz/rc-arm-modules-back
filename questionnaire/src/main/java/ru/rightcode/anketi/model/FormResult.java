@@ -24,7 +24,7 @@ public class FormResult {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "form_id", nullable = false)
     private Form form;
@@ -38,7 +38,7 @@ public class FormResult {
     private LocalDate creationDate;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
