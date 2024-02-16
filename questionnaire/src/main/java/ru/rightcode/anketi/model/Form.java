@@ -1,10 +1,11 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -13,8 +14,6 @@ import java.util.Set;
 @Entity
 @Table(schema = "doc")
 //@ToString(exclude = {"scale", "questions"})
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 @NoArgsConstructor
 @AllArgsConstructor
 public class Form {
@@ -31,19 +30,18 @@ public class Form {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scale_id")
-    @XmlTransient
     private Scale scale;
 
     @OneToMany(mappedBy = "form")
     @ToString.Exclude
-    @XmlElement(name = "formResult")
+    @EqualsAndHashCode.Exclude
     private Set<FormResult> formResults = new LinkedHashSet<>();
 
 
     @OneToMany(mappedBy = "idForm")
     @ToString.Exclude
-    @XmlElement(name = "formQuestion")
-    private Set<FormQuestion> formQuestions = new LinkedHashSet<>();
+    @EqualsAndHashCode.Exclude
+    private List<FormQuestion> formQuestions = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

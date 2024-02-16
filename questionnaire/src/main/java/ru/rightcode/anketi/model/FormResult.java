@@ -2,7 +2,6 @@ package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.xml.bind.annotation.XmlTransient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +27,6 @@ public class FormResult {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "form_id", nullable = false)
-    @XmlTransient
     private Form form;
 
     @NotNull
@@ -43,7 +41,6 @@ public class FormResult {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "patient_id", nullable = false)
-    @XmlTransient
     private Patient patient;
 
 }

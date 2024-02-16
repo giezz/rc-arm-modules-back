@@ -1,10 +1,6 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlTransient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,8 +8,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(schema = "doc")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 public class Exercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -31,7 +25,6 @@ public class Exercise {
 
     @ManyToOne
     @JoinColumn(name = "exercise_type_id")
-    @XmlTransient
     private ExerciseType exerciseType;
 
     @Override

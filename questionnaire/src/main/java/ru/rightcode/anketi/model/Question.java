@@ -1,10 +1,6 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -15,8 +11,6 @@ import java.util.List;
 @Setter
 @Entity
 @Table(schema = "doc")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -32,12 +26,10 @@ public class Question {
 
     @OneToMany(mappedBy = "question_id")
     @ToString.Exclude
-    @XmlElement(name = "variant")
     private List<Variant> variants = new ArrayList<>();
 
     @OneToMany(mappedBy = "idQuestion")
     @ToString.Exclude
-    @XmlElement(name = "formQuestion")
     private List<FormQuestion> formQuestions = new ArrayList<>();
 
 

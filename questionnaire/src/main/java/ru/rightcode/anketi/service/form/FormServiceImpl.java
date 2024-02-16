@@ -1,6 +1,5 @@
 package ru.rightcode.anketi.service.form;
 
-import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@WebService
 @RequiredArgsConstructor
-public class FormServiceImpl implements FormService {
+@Service
+public class FormServiceImpl{
 
     @Autowired
     private final FormRepository formRepository;
@@ -38,34 +36,41 @@ public class FormServiceImpl implements FormService {
     private final FormQuestionRepository formQuestionRepository;
 
 
-    @Override
     public List<FormDto> getAllForms() {
         List<Form> forms = formRepository.findAll();
         return forms.stream()
-                .map(this::convertToDTO)
+                .map((Form form) -> convertToDTO(form, null))
                 .collect(Collectors.toList());
     }
 
-    @Override
+
     public List<FormDto> getFormByName(String name) {
         List<Form> forms = formRepository.findAllByName(name);
         return forms.stream()
-                .map(this::convertToDTO)
+                .map((Form form) -> convertToDTO(form, null))
                 .collect(Collectors.toList());
     }
 
-    @Override
+
     public FormDto getFormById(Long id) {
         Form form = formRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Form not found with id: " + id));
-        return convertToDTO(form);
+        List<FormQuestion> formQuestionList = formQuestionRepository.findFormQuestionsByIdForm(form);
+        List<Question> questions = new ArrayList<>();
+        for (FormQuestion fq : formQuestionList){
+            if (fq.getIdForm().getId().equals(form.getId())){
+                questions.add(fq.getIdQuestion());
+            }
+        }
+        return convertToDTO(form, questions);
     }
 
-    @Override
+
     public List<Question> getQuestionsByForm(FormDto formDTO) {
         Scale scale = validateScaleId(formDTO.getScaleId());
         Form form = convertToEntity(formDTO, scale);
-        List<FormQuestion> formQuestion = formQuestionRepository.findFormQuestionsByIdForm(form);
+        List<FormQuestion> formQuestion =
+                formQuestionRepository.findFormQuestionsByIdForm(form);
         List<Question> questionList = new ArrayList<>();
         for (FormQuestion fq : formQuestion) {
             questionList.add(fq.getIdQuestion());
@@ -74,7 +79,7 @@ public class FormServiceImpl implements FormService {
     }
 
 
-    @Override
+
     public List<FormQuestion> createForm(FormDto formDTO) {
         Scale scale = validateScaleId(formDTO.getScaleId());
         Form form = convertToEntity(formDTO, scale);
@@ -102,7 +107,7 @@ public class FormServiceImpl implements FormService {
         return formQuestionList;
     }
 
-    @Override
+
     public FormDto updateForm(FormDto formDTO) {
         Scale scale = validateScaleId(formDTO.getScaleId());
 
@@ -115,23 +120,12 @@ public class FormServiceImpl implements FormService {
         existingForm.setScale(scale);
 
         Form updatedForm = formRepository.save(existingForm);
-        return convertToDTO(updatedForm);
+        return convertToDTO(updatedForm, null);
     }
 
-    @Override
+
     public void deleteForm(Long id) {
         formRepository.deleteById(id);
-    }
-
-    private FormDto convertToDTO(Form form) {
-        FormDto formDTO = FormDto.builder()
-                .id(form.getId())
-                .name(form.getName())
-                .description(form.getDescription())
-                .scaleId(form.getScale() != null ? form.getScale().getId() : null)
-                .questions(null)
-                .build();
-        return formDTO;
     }
 
     private Scale validateScaleId(Long scaleId) {
@@ -141,6 +135,18 @@ public class FormServiceImpl implements FormService {
 
         return scaleRepository.findById(scaleId)
                 .orElseThrow(() -> new NotFoundException("Scale not found with id: " + scaleId));
+    }
+
+
+    private FormDto convertToDTO(Form form, List<Question> questions) {
+        FormDto formDTO = FormDto.builder()
+                .id(form.getId())
+                .name(form.getName())
+                .description(form.getDescription())
+                .scaleId(form.getScale() != null ? form.getScale().getId() : null)
+                .questions(questions)
+                .build();
+        return formDTO;
     }
 
     private Form convertToEntity(FormDto formDTO, Scale scale) {

@@ -1,10 +1,6 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -14,8 +10,6 @@ import java.util.List;
 @Setter
 @Entity
 @Table(schema = "doc")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,7 +32,6 @@ public class Scale {
 
     @OneToMany(mappedBy = "scale")
     @ToString.Exclude
-    @XmlElement(name = "interpretation")
     private List<Interpretation> interpretations = new ArrayList<>();
 
 

@@ -1,7 +1,6 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.*;
 import lombok.*;
 
 import java.util.HashSet;
@@ -11,8 +10,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(schema = "doc")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,11 +28,9 @@ public class Variant {
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
-    @XmlTransient
     private Question question_id;
 
     @OneToMany(mappedBy = "variant")
-    @XmlElement(name = "answer")
     @ToString.Exclude
     private Set<Answer> answers = new HashSet<>();
 

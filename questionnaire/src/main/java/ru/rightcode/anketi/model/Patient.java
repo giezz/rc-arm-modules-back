@@ -1,13 +1,10 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.rightcode.anketi.adapter.LocalDateAdapter;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -41,11 +38,9 @@ public class Patient {
     private String lastName;
 
     @Column(name = "birth_date", nullable = false)
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate birthDate;
 
     @Column(name = "death_date")
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate deathDate;
 
     @Column(name = "address", nullable = false, length = -1)
@@ -67,11 +62,9 @@ public class Patient {
     private String polis;
 
     @OneToMany(mappedBy = "patient")
-    @XmlElement(name = "answer")
     private Set<Answer> answers = new HashSet<>();
 
     @OneToMany(mappedBy = "patient")
-    @XmlElement(name = "formResult")
     private Set<FormResult> formResults = new LinkedHashSet<>();
 
 

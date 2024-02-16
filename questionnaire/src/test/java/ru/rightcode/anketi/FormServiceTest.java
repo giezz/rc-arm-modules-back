@@ -9,11 +9,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.model.*;
+import ru.rightcode.anketi.repository.FormQuestionRepository;
 import ru.rightcode.anketi.repository.FormRepository;
 import ru.rightcode.anketi.repository.QuestionRepository;
 import ru.rightcode.anketi.repository.ScaleRepository;
 import ru.rightcode.anketi.service.form.FormServiceImpl;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,9 @@ public class FormServiceTest {
 
     @Mock
     private QuestionRepository questionRepository;
+
+    @Mock
+    private FormQuestionRepository formQuestionRepository;
 
     @InjectMocks
     private FormServiceImpl formService;
@@ -88,6 +93,10 @@ public class FormServiceTest {
         // например, проверьте, что результат не равен null и содержит ожидаемое количество элементов
         assertNotNull(result);
         assertEquals("Ожидается определенное количество FormQuestion", 3, result.size());
+        Form form = convertToEntity(formDto, scale);
+        assertEquals("Assert True",
+                createFormQuestions(form, questions).get(0).getIdForm().getName(),
+                result.get(0).getIdForm().getName());
     }
 
     private List<Form> createFormData() {
@@ -144,5 +153,32 @@ public class FormServiceTest {
                 .build()
         );
         return questionList;
+    }
+
+    private List<FormQuestion> createFormQuestions(Form form, List<Question> questionList){
+        List<FormQuestion> formQuestionList = new ArrayList<>();
+        for (Question q: questionList){
+            formQuestionList.add(
+                    FormQuestion.builder()
+                            .idForm(form)
+                            .idQuestion(q)
+                            .createdAt(Instant.now())
+                            .build()
+            );
+        }
+        return formQuestionList;
+    }
+
+    private Form convertToEntity(FormDto formDTO, Scale scale) {
+        Form form = new Form();
+        form.setId(formDTO.getId());
+        form.setName(formDTO.getName());
+        form.setDescription(formDTO.getDescription());
+
+        if (scale != null) {
+            form.setScale(scale);
+        }
+
+        return form;
     }
 }
