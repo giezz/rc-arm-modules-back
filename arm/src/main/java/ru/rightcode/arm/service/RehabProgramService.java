@@ -1,5 +1,6 @@
 package ru.rightcode.arm.service;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,18 +32,23 @@ public class RehabProgramService {
     public RehabProgramResponse getCurrent(String doctorLogin, Long patientId) {
         DoctorIdInfo doctor = getDoctorByLogin(doctorLogin);
         RehabProgram rehabProgram = rehabProgramRepository
-                .findByDoctorIdAndPatientIdAndIsCurrentTrue(doctor.getId(), patientId).orElseThrow();
+                .findByDoctorIdAndPatientIdAndIsCurrentTrue(doctor.getId(), patientId)
+                .orElseThrow(EntityNotFoundException::new);
         return rehabProgramResponseMapper.map(rehabProgram);
     }
 
     @Transactional
     public RehabProgramResponse create(String doctorLogin, CreateRehabProgramRequest request) {
-        //check if current exists
         DoctorIdInfo doctor = getDoctorByLogin(doctorLogin);
+
+        if (rehabProgramRepository.checkIfCurrentExists(doctor.getId(), request.patientId())) {
+            throw new EntityExistsException("Программа реабилтации уже существует");
+        }
+
         RehabProgram rehabProgram = new RehabProgram();
         rehabProgram.setDoctorById(doctor.getId());
         rehabProgram.setPatient(new Patient(request.patientId()));
-
+        rehabProgram.setIsCurrent(true);
 
         return rehabProgramResponseMapper.map(rehabProgramRepository.save(rehabProgram));
     }

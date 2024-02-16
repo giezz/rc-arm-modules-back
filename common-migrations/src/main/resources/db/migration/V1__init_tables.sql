@@ -28,12 +28,12 @@ SET search_path TO pg_catalog,public,doc;
 CREATE TABLE doc.doctor (
                             id bigserial NOT NULL,
                             doctor_code bigint NOT NULL,
+                            _user_id bigint NOT NULL,
                             first_name varchar(255) NOT NULL,
                             middle_name varchar(255),
                             last_name varchar(255) NOT NULL,
                             email varchar(255) NOT NULL,
                             phone_number varchar(18) NOT NULL,
-                            _user_id bigint NOT NULL,
                             CONSTRAINT doctor_pk PRIMARY KEY (id),
                             CONSTRAINT doctor_code_uq UNIQUE (doctor_code)
 );
@@ -46,20 +46,21 @@ ALTER TABLE doc.doctor OWNER TO postgres;
 CREATE TABLE doc.patient (
                              id bigserial NOT NULL,
                              patient_code bigint NOT NULL,
+                             doctor_id bigint,
+                             patient_status_id bigint NOT NULL,
+                             passport_id bigint NOT NULL,
+                             _user_id bigint NOT NULL,
                              first_name varchar(255) NOT NULL,
                              middle_name varchar(255),
                              last_name varchar(255) NOT NULL,
-                             birth_date date NOT NULL,
-                             death_date date,
-                             address text NOT NULL,
                              phone_number varchar(18) NOT NULL,
-                             work_place_data text NOT NULL,
-                             bookmark text,
                              snils char(11) NOT NULL,
                              polis char(16) NOT NULL,
-                             patient_status_id bigint NOT NULL,
-                             passport_id bigint NOT NULL,
-                             doctor_id bigint,
+                             death_date date,
+                             birth_date date NOT NULL,
+                             address text NOT NULL,
+                             bookmark text,
+                             work_place_data text NOT NULL,
                              CONSTRAINT patient_pk PRIMARY KEY (id),
                              CONSTRAINT patient_code_uq UNIQUE (patient_code)
 );
@@ -71,9 +72,9 @@ ALTER TABLE doc.patient OWNER TO postgres;
 -- DROP TABLE IF EXISTS doc.form CASCADE;
 CREATE TABLE doc.form (
                           id bigserial NOT NULL,
+                          scale_id bigint,
                           name text NOT NULL,
                           description text,
-                          scale_id bigint,
                           CONSTRAINT form_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -84,10 +85,10 @@ ALTER TABLE doc.form OWNER TO postgres;
 -- DROP TABLE IF EXISTS doc.exercise CASCADE;
 CREATE TABLE doc.exercise (
                               id bigserial NOT NULL,
-                              name text NOT NULL,
-                              video_url varchar(2083) NOT NULL,
-                              description text,
                               exercise_type_id bigint,
+                              video_url varchar(2083) NOT NULL,
+                              name text NOT NULL,
+                              description text,
                               CONSTRAINT exercise_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -118,11 +119,12 @@ CREATE TABLE doc.rehab_program (
                                    id bigserial NOT NULL,
                                    patient_id bigint NOT NULL,
                                    doctor_id bigint,
+                                   start_form_id bigint,
+                                   end_form_id bigint,
                                    is_current boolean NOT NULL,
-                                   start_date date NOT NULL,
+                                   creation_date timestamp,
+                                   start_date date,
                                    end_date date,
-                                   start_form_id bigint NOT NULL,
-                                   end_form_id bigint NOT NULL,
                                    CONSTRAINT rehabilitation_program_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -140,9 +142,9 @@ ALTER TABLE doc.rehab_program ADD CONSTRAINT patient_fk FOREIGN KEY (patient_id)
 -- DROP TABLE IF EXISTS doc.module CASCADE;
 CREATE TABLE doc.module (
                             id bigserial NOT NULL,
-                            name text NOT NULL,
                             rehab_program_id bigint NOT NULL,
-                            finished_at date,
+                            finished_at timestamp,
+                            name text NOT NULL,
                             CONSTRAINT module_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -178,13 +180,13 @@ ALTER TABLE doc.rehab_program ADD CONSTRAINT end_form_fk FOREIGN KEY (end_form_i
 -- DROP TABLE IF EXISTS doc.protocol CASCADE;
 CREATE TABLE doc.protocol (
                               id bigserial NOT NULL,
+                              patient_id bigint NOT NULL,
+                              rehab_program_id bigint NOT NULL,
+                              creation_date date NOT NULL,
                               is_final boolean NOT NULL,
                               rehab_result text NOT NULL,
                               recommendations text NOT NULL,
                               rehab_diagnosis text NOT NULL,
-                              creation_date date NOT NULL,
-                              rehab_program_id bigint NOT NULL,
-                              patient_id bigint NOT NULL,
                               CONSTRAINT protocol_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -204,8 +206,8 @@ CREATE TABLE doc.passport (
                               id bigserial NOT NULL,
                               series char(4) NOT NULL,
                               number char(6) NOT NULL,
-                              issued text NOT NULL,
                               issued_date date NOT NULL,
+                              issued text NOT NULL,
                               CONSTRAINT passport_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -394,9 +396,9 @@ ALTER TABLE doc.doctor_position ADD CONSTRAINT job_position_fk FOREIGN KEY (job_
 -- DROP TABLE IF EXISTS doc.variant CASCADE;
 CREATE TABLE doc.variant (
                              id bigserial NOT NULL,
-                             content text NOT NULL,
-                             score numeric(100,2) NOT NULL,
                              question_id bigint NOT NULL,
+                             score numeric(100,2) NOT NULL,
+                             content text NOT NULL,
                              CONSTRAINT answer_variant_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -414,68 +416,6 @@ ALTER TABLE doc.variant ADD CONSTRAINT question_fk FOREIGN KEY (question_id)
 -- ALTER TABLE doc.answer DROP CONSTRAINT IF EXISTS variant_fk CASCADE;
 ALTER TABLE doc.answer ADD CONSTRAINT variant_fk FOREIGN KEY (variant_id)
     REFERENCES doc.variant (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: doc.module_exercise | type: TABLE --
--- DROP TABLE IF EXISTS doc.module_exercise CASCADE;
-CREATE TABLE doc.module_exercise (
-                                     module_id bigint NOT NULL,
-                                     id_exercise bigint NOT NULL,
-                                     block_id bigint NOT NULL,
-                                     CONSTRAINT module_exercise_pk PRIMARY KEY (id_exercise,module_id)
-);
--- ddl-end --
-
--- object: exercise_fk | type: CONSTRAINT --
--- ALTER TABLE doc.module_exercise DROP CONSTRAINT IF EXISTS exercise_fk CASCADE;
-ALTER TABLE doc.module_exercise ADD CONSTRAINT exercise_fk FOREIGN KEY (id_exercise)
-    REFERENCES doc.exercise (id) MATCH FULL
-    ON DELETE CASCADE ON UPDATE CASCADE;
--- ddl-end --
-
--- object: doc.module_form | type: TABLE --
--- DROP TABLE IF EXISTS doc.module_form CASCADE;
-CREATE TABLE doc.module_form (
-                                 module_id bigint NOT NULL,
-                                 form_id bigint NOT NULL,
-                                 block_id bigint NOT NULL,
-                                 CONSTRAINT module_form_pk PRIMARY KEY (module_id,form_id)
-);
--- ddl-end --
-
--- object: module_fk | type: CONSTRAINT --
--- ALTER TABLE doc.module_exercise DROP CONSTRAINT IF EXISTS module_fk CASCADE;
-ALTER TABLE doc.module_exercise ADD CONSTRAINT module_fk FOREIGN KEY (module_id)
-    REFERENCES doc.module (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: block_fk | type: CONSTRAINT --
--- ALTER TABLE doc.module_exercise DROP CONSTRAINT IF EXISTS block_fk CASCADE;
-ALTER TABLE doc.module_exercise ADD CONSTRAINT block_fk FOREIGN KEY (block_id)
-    REFERENCES doc.block (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: block_fk | type: CONSTRAINT --
--- ALTER TABLE doc.module_form DROP CONSTRAINT IF EXISTS block_fk CASCADE;
-ALTER TABLE doc.module_form ADD CONSTRAINT block_fk FOREIGN KEY (block_id)
-    REFERENCES doc.block (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: module_fk | type: CONSTRAINT --
--- ALTER TABLE doc.module_form DROP CONSTRAINT IF EXISTS module_fk CASCADE;
-ALTER TABLE doc.module_form ADD CONSTRAINT module_fk FOREIGN KEY (module_id)
-    REFERENCES doc.module (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: form_fk | type: CONSTRAINT --
--- ALTER TABLE doc.module_form DROP CONSTRAINT IF EXISTS form_fk CASCADE;
-ALTER TABLE doc.module_form ADD CONSTRAINT form_fk FOREIGN KEY (form_id)
-    REFERENCES doc.form (id) MATCH FULL
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
@@ -512,10 +452,10 @@ ALTER TABLE doc.rehab_program_log ADD CONSTRAINT rehab_program_fk FOREIGN KEY (r
 -- DROP TABLE IF EXISTS doc.interpretation CASCADE;
 CREATE TABLE doc.interpretation (
                                     id bigserial NOT NULL,
+                                    scale_id bigint NOT NULL,
                                     min_value numeric(100,2) NOT NULL,
                                     max_value numeric(100,2) NOT NULL,
                                     description text NOT NULL,
-                                    scale_id bigint NOT NULL,
                                     CONSTRAINT interpretation_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -541,9 +481,9 @@ ALTER TABLE doc.protocol ADD CONSTRAINT patient_fk FOREIGN KEY (patient_id)
 CREATE TABLE doc.form_result (
                                  id bigserial NOT NULL,
                                  form_id bigint NOT NULL,
+                                 patient_id bigint NOT NULL,
                                  score numeric(100,2) NOT NULL,
                                  creation_date date NOT NULL,
-                                 patient_id bigint NOT NULL,
                                  CONSTRAINT form_result_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -653,3 +593,82 @@ ALTER TABLE doc.module ADD CONSTRAINT rehab_program_fk FOREIGN KEY (rehab_progra
     REFERENCES doc.rehab_program (id) MATCH FULL
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
+
+-- object: _user_fk | type: CONSTRAINT --
+-- ALTER TABLE doc.patient DROP CONSTRAINT IF EXISTS _user_fk CASCADE;
+ALTER TABLE doc.patient ADD CONSTRAINT _user_fk FOREIGN KEY (_user_id)
+    REFERENCES doc._user (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: doc.module_exercise | type: TABLE --
+-- DROP TABLE IF EXISTS doc.module_exercise CASCADE;
+CREATE TABLE doc.module_exercise (
+                                     id bigserial NOT NULL,
+                                     module_id bigint NOT NULL,
+                                     exercise_id bigint NOT NULL,
+                                     block_id bigint NOT NULL,
+                                     finished_at timestamp,
+                                     CONSTRAINT module_exercise_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE doc.module_exercise OWNER TO postgres;
+-- ddl-end --
+
+-- object: module_fk | type: CONSTRAINT --
+-- ALTER TABLE doc.module_exercise DROP CONSTRAINT IF EXISTS module_fk CASCADE;
+ALTER TABLE doc.module_exercise ADD CONSTRAINT module_fk FOREIGN KEY (module_id)
+    REFERENCES doc.module (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: exercise_fk | type: CONSTRAINT --
+-- ALTER TABLE doc.module_exercise DROP CONSTRAINT IF EXISTS exercise_fk CASCADE;
+ALTER TABLE doc.module_exercise ADD CONSTRAINT exercise_fk FOREIGN KEY (exercise_id)
+    REFERENCES doc.exercise (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: block_fk | type: CONSTRAINT --
+-- ALTER TABLE doc.module_exercise DROP CONSTRAINT IF EXISTS block_fk CASCADE;
+ALTER TABLE doc.module_exercise ADD CONSTRAINT block_fk FOREIGN KEY (block_id)
+    REFERENCES doc.block (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: doc.module_form | type: TABLE --
+-- DROP TABLE IF EXISTS doc.module_form CASCADE;
+CREATE TABLE doc.module_form (
+                                 id bigserial NOT NULL,
+                                 module_id bigint NOT NULL,
+                                 form_id bigint NOT NULL,
+                                 block_id bigint NOT NULL,
+                                 finished_at timestamp,
+                                 CONSTRAINT module_form_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE doc.module_form OWNER TO postgres;
+-- ddl-end --
+
+-- object: module_fk | type: CONSTRAINT --
+-- ALTER TABLE doc.module_form DROP CONSTRAINT IF EXISTS module_fk CASCADE;
+ALTER TABLE doc.module_form ADD CONSTRAINT module_fk FOREIGN KEY (module_id)
+    REFERENCES doc.module (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: form_fk | type: CONSTRAINT --
+-- ALTER TABLE doc.module_form DROP CONSTRAINT IF EXISTS form_fk CASCADE;
+ALTER TABLE doc.module_form ADD CONSTRAINT form_fk FOREIGN KEY (form_id)
+    REFERENCES doc.form (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: block_fk | type: CONSTRAINT --
+-- ALTER TABLE doc.module_form DROP CONSTRAINT IF EXISTS block_fk CASCADE;
+ALTER TABLE doc.module_form ADD CONSTRAINT block_fk FOREIGN KEY (block_id)
+    REFERENCES doc.block (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+
