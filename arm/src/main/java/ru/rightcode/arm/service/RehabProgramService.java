@@ -24,11 +24,11 @@ import ru.rightcode.arm.repository.RehabProgramRepository;
 public class RehabProgramService {
 
     private final RehabProgramRepository rehabProgramRepository;
-
     private final DoctorRepository doctorRepository;
 
     private final RehabProgramResponseMapper rehabProgramResponseMapper;
 
+    @Deprecated
     public RehabProgramResponse getCurrent(String doctorLogin, Long patientId) {
         DoctorIdInfo doctor = getDoctorByLogin(doctorLogin);
         RehabProgram rehabProgram = rehabProgramRepository
