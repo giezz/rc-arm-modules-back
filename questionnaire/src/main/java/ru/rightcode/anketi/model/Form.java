@@ -43,6 +43,12 @@ public class Form {
     @EqualsAndHashCode.Exclude
     private List<FormQuestion> formQuestions = new ArrayList<>();
 
+    public Form(Long id, String name, String description, Scale scale){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.scale = scale;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

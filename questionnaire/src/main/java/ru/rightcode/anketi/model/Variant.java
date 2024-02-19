@@ -34,6 +34,12 @@ public class Variant {
     @ToString.Exclude
     private Set<Answer> answers = new HashSet<>();
 
+    public Variant(Long id, String content, Double score) {
+        this.id = id;
+        this.content = content;
+        this.score = score;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

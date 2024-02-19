@@ -3,6 +3,7 @@ package ru.rightcode.anketi.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.service.form.FormServiceImpl;
 
 @RestController
@@ -20,5 +21,10 @@ public class FormController {
     @GetMapping("/all")
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok(formService.getAllForms());
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createForm(@RequestBody FormDto formDto){
+        return ResponseEntity.ok(formService.createForm(formDto));
     }
 }

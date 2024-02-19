@@ -3,6 +3,8 @@ package ru.rightcode.anketi;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.rightcode.anketi.dto.FormDto;
+import ru.rightcode.anketi.dto.QuestionDto;
+import ru.rightcode.anketi.dto.VariantDto;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Variant;
 
@@ -42,17 +44,17 @@ class AnketiApplicationTests {
     }
 
     @Test
-    void createForm() {
-        List<Variant> variantList = new ArrayList<>();
-        variantList.add(Variant.builder()
+    void createFormDto() {
+        List<VariantDto> variantList = new ArrayList<>();
+        variantList.add(VariantDto.builder()
                 .id(1L)
                 .score(10.0)
                 .content("TEST DTO BACKEDN")
                 .build()
         );
 
-        List<Question> questionList = new ArrayList<>();
-        questionList.add(Question.builder()
+        List<QuestionDto> questionList = new ArrayList<>();
+        questionList.add(QuestionDto.builder()
                 .id(1L)
                 .content("Quest1")
                 .variants(variantList)

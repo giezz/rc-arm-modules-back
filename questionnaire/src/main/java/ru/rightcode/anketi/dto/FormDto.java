@@ -10,10 +10,8 @@ import java.util.List;
 @Getter
 @Setter
 public class FormDto {
-    private Long id;
     private String name;
     private String description;
     private Long scaleId;
-
     private List<QuestionDto> questions;
 }

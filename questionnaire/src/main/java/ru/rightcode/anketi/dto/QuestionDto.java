@@ -9,9 +9,8 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class QuestionDto {
-
+public class QuestionDto{
     private Long id;
     private String content;
-    private List<VariantDto> variantDtoList;
+    private List<VariantDto> variants;
 }

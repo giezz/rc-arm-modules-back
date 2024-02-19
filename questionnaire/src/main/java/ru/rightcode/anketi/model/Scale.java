@@ -34,6 +34,11 @@ public class Scale {
     @ToString.Exclude
     private List<Interpretation> interpretations = new ArrayList<>();
 
+    public Scale(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
     @Override
     public boolean equals(Object o) {
