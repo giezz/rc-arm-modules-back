@@ -27,8 +27,7 @@ public class ModuleController {
     @PostMapping("/{id}/add-form")
     public ResponseEntity<?> addForm(@PathVariable Long id,
                                      @RequestBody AddModuleFormRequest request,
-                                     Principal principal
-    ) {
+                                     Principal principal) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(moduleService.addForm(principal.getName(), request, id));
@@ -37,8 +36,7 @@ public class ModuleController {
     @PostMapping("/{id}/add-exercise")
     public ResponseEntity<?> addExercise(@PathVariable Long id,
                                          @RequestBody AddModuleExerciseRequest request,
-                                         Principal principal
-    ) {
+                                         Principal principal) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(moduleService.addExercise(principal.getName(), request, id));
@@ -47,8 +45,7 @@ public class ModuleController {
     @DeleteMapping("/{id}/delete-form/{moduleFormId}")
     public ResponseEntity<?> deleteForm(@PathVariable("id") Long moduleId,
                                         @PathVariable Long moduleFormId,
-                                        Principal principal
-    ) {
+                                        Principal principal) {
         return ResponseEntity
                 .ok(moduleService.deleteForm(principal.getName(), moduleId, moduleFormId));
     }
@@ -56,8 +53,7 @@ public class ModuleController {
     @DeleteMapping("/{id}/delete-exercise/{moduleExerciseId}")
     public ResponseEntity<?> deleteExercise(@PathVariable("id") Long moduleId,
                                             @PathVariable Long moduleExerciseId,
-                                            Principal principal
-    ) {
+                                            Principal principal) {
         return ResponseEntity
                 .ok(moduleService.deleteExercise(principal.getName(), moduleId, moduleExerciseId));
     }

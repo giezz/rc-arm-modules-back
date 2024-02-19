@@ -10,8 +10,8 @@ import ru.rightcode.arm.dto.request.JwtRequest;
 import ru.rightcode.arm.service.AuthenticationService;
 
 @RestController
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthenticationService authenticationService;

@@ -22,11 +22,8 @@ import ru.rightcode.arm.repository.ModuleRepository;
 public class ModuleService {
 
     private final ModuleRepository moduleRepository;
-
     private final RehabProgramService rehabProgramService;
-
     private final ModuleFormRepository moduleFormRepository;
-
     private final ModuleExerciseRepository moduleExerciseRepository;
 
     private final ModuleDetailsResponseMapper moduleDetailsResponseMapper;
