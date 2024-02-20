@@ -9,6 +9,7 @@ import ru.rightcode.arm.dto.DoctorIdInfo;
 import ru.rightcode.arm.dto.request.PatientRequest;
 import ru.rightcode.arm.dto.response.PatientResponse;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
+import ru.rightcode.arm.exceptions.PatientNotFoundException;
 import ru.rightcode.arm.mapper.PatientResponseMapper;
 import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
 import ru.rightcode.arm.model.Patient;
@@ -39,7 +40,8 @@ public class PatientService {
     public List<PatientResponse> getAll(PatientRequest patientRequest) {
         Optional<Specification<Patient>> spec = specificationBuilder(patientRequest);
 
-        return spec.map(patientRepository::findAll).orElseGet(patientRepository::findAll)
+        return spec.map(patientRepository::findAll)
+                .orElseGet(patientRepository::findAll)
                 .stream()
                 .map(patientResponseMapper::map)
                 .toList();
@@ -47,7 +49,7 @@ public class PatientService {
 
     public PatientResponse getByCode(Long code) {
         final Patient patient = patientRepository.findByPatientCode(code)
-                .orElseThrow(() -> new EntityNotFoundException(code.toString()));
+                .orElseThrow(() -> new PatientNotFoundException(code));
 
         return patientResponseMapper.mapWithAllData(patient);
     }
@@ -55,7 +57,7 @@ public class PatientService {
     public RehabProgramResponse getCurrentRehabProgram(Long code) {
         Patient patient = patientRepository
                 .findByPatientCode(code)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new PatientNotFoundException(code));
 
         RehabProgram rehabProgram = rehabProgramRepository
                 .findByPatientIdAndIsCurrentTrue(patient.getId())
@@ -67,7 +69,7 @@ public class PatientService {
     public List<RehabProgramResponse> getAllRehabPrograms(Long code) {
         Patient patient = patientRepository
                 .findByPatientCode(code)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new PatientNotFoundException(code));
 
         List<RehabProgram> programs = rehabProgramRepository.
                 findAllByPatientId(patient.getId());
