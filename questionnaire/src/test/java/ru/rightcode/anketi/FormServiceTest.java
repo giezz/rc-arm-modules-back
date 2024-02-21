@@ -124,7 +124,7 @@ public class FormServiceTest {
         Mockito.when(questionRepository.existsById(Mockito.anyLong())).thenReturn(true);
 
         // Вызов сервисного метода
-        List<FormQuestion> formQuestions = formService.createForm(formDto);
+        Form formId = formService.createForm(formDto);
 
         // Проверка вызова методов репозиториев
         // проверяет, был ли вызван метод saveAll один раз с аргументом любого списка на объекте formQuestionRepository

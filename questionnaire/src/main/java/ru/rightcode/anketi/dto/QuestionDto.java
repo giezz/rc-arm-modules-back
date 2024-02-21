@@ -1,5 +1,6 @@
 package ru.rightcode.anketi.dto;
 
+import jakarta.annotation.Nullable;
 import lombok.*;
 
 import java.util.List;
@@ -10,7 +11,10 @@ import java.util.List;
 @Getter
 @Setter
 public class QuestionDto{
-    private Long id;
+    @Nullable
+    private Long id ;
+    @Nullable
     private String content;
+    @Nullable
     private List<VariantDto> variants;
 }
