@@ -10,19 +10,22 @@ import ru.rightcode.anketi.dto.VariantDto;
 import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.mapper.FormDtoMapper;
 import ru.rightcode.anketi.mapper.QuestionDtoMapper;
-import ru.rightcode.anketi.model.*;
+import ru.rightcode.anketi.mapper.VariantDtoMapper;
+import ru.rightcode.anketi.model.Form;
+import ru.rightcode.anketi.model.FormQuestion;
+import ru.rightcode.anketi.model.Question;
+import ru.rightcode.anketi.model.Variant;
 import ru.rightcode.anketi.repository.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class FormServiceImpl{
+public class FormServiceImpl {
 
     @Autowired
     private final FormRepository formRepository;
@@ -39,10 +42,9 @@ public class FormServiceImpl{
     @Autowired
     private final VariantRepository variantRepository;
 
-    @Autowired
     private final FormDtoMapper formDtoMapper;
-
     private final QuestionDtoMapper questionDtoMapper;
+    private final VariantDtoMapper variantDtoMapper;
 
 
     public List<FormDto> getAllForms() {
@@ -60,41 +62,89 @@ public class FormServiceImpl{
                 .collect(Collectors.toList());
     }
 
-
     public FormDto getFormById(Long id) {
         Form form = formRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Form not found with id: " + id));
         List<FormQuestion> formQuestionList = formQuestionRepository.findByIdForm(form);
         List<Question> questions = new ArrayList<>();
-        for (FormQuestion fq : formQuestionList){
-            if (fq.getIdForm().getId().equals(form.getId())){
+        for (FormQuestion fq : formQuestionList) {
+            if (fq.getIdForm().getId().equals(form.getId())) {
                 questions.add(fq.getIdQuestion());
             }
         }
         return formDtoMapper.toDto(form);
     }
 
+    // TODO: При указании существующих вариантов ответа, невозможно указать один и тот же вариант к нескольким вопросам
     public FormDto createForm(FormDto formDTO) {
+
         Form form = formDtoMapper.toEntity(formDTO);
-        List<FormQuestion> formQuestionList = new ArrayList<>();
-
         List<QuestionDto> questionDtos = formDTO.questions();
-        List<Question> questionList = new ArrayList<>();
-        if (questionDtos == null) {
-            throw new NotFoundException("Form required List<Question>");
+        // Проверка на пустой questions
+        if (questionDtos.isEmpty()) {
+            return formDtoMapper.toDto(form);
         }
-        for (QuestionDto question : questionDtos) {
-            Question q = questionConvertToEntity(question);
 
-            questionList.add(q);
-            FormQuestion formQuestion1 = FormQuestion.builder()
-                    .idForm(form)
-                    .idQuestion(q)
-                    .createdAt(Instant.now())
-                    .build();
+        List<FormQuestion> formQuestionList = new ArrayList<>();
+        List<Variant> variantList = new ArrayList<>();
+        List<Question> questionList = questionDtoMapper.listToEntity(questionDtos);
+        // Проверка если указано только id
+        if (questionDtos.stream().allMatch(q -> q.getId() != null)){
+            List<Long> ids = questionList.stream()
+                    .map(Question::getId)
+                    .toList();
+            List<Question> questionListFromDb = questionRepository.findQuestionsByIds(ids);
 
-            formQuestionList.add(formQuestion1);
+            for (Question q : questionListFromDb) {
+                FormQuestion formQuestion1 = FormQuestion.builder()
+                        .idForm(form)
+                        .idQuestion(q)
+                        .createdAt(Instant.now())
+                        .build();
+
+                formQuestionList.add(formQuestion1);
+                /*// Проверка на наличие вариантов ответов
+                List<VariantDto> variantDtos = questionDtos.stream()
+                        .filter(questionDto -> questionDto.getId().equals(q.getId()))
+                        .findFirst()
+                        .map(QuestionDto::getVariants)
+                        .orElse(null);
+                if (variantDtos != null) {
+                    for (VariantDto variantDto : variantDtos) {
+                        Variant variant = variantDtoMapper.toEntity(variantDto);
+                        variant.setQuestion_id(q);
+                        variantList.add(variant);
+                    }
+                }*/
+            }
+        }else {
+            // Создание новых вопросов, если указаны все остальные поля кроме идентификатора
+            for (QuestionDto questionDto : questionDtos) {
+                if (questionDto.getId() == null) {
+                    Question question = questionDtoMapper.toEntity(questionDto);
+                    questionList.add(question);
+                    FormQuestion formQuestion = FormQuestion.builder()
+                            .idForm(form)
+                            .idQuestion(question)
+                            .createdAt(Instant.now())
+                            .build();
+                    formQuestionList.add(formQuestion);
+
+                    // Создание вариантов ответов
+                    List<VariantDto> variantDtos = questionDto.getVariants();
+                    if (variantDtos != null) {
+                        for (VariantDto variantDto : variantDtos) {
+                            Variant variant = variantDtoMapper.toEntity(variantDto);
+                            variant.setQuestion_id(question);
+                            variantList.add(variant);
+                        }
+                    }
+                }
+            }
+            questionRepository.saveAll(questionList);
+            variantRepository.saveAll(variantList);
         }
+
         Form form1 = formRepository.save(form);
         formQuestionRepository.saveAll(formQuestionList);
 
@@ -123,66 +173,4 @@ public class FormServiceImpl{
         formRepository.deleteById(id);
     }
 
-
-    public Question questionConvertToEntity(QuestionDto questionDto) {
-        Long questionId = questionDto.getId();
-        if (questionId != null) {
-            return questionRepository.findById(questionId)
-                    .orElseThrow(()->
-                            new NotFoundException("Question not found with id: "+ questionId)
-                    );
-        }
-        // TODO: toEntity уже сделаны, необходимо сохранить данные если они новые
-        List<VariantDto> variantDtoList = questionDto.getVariants();
-        List<Variant> variantList = new ArrayList<>();
-        Question question = Question.builder()
-                .content(questionDto.getContent())
-                .build();
-        if (variantDtoList != null) {
-            for (VariantDto variantDto : variantDtoList) {
-                // TODO: Необходимо сначала собрать все данные,
-                //  только потом отправлять на бд с проверкой есть ли они
-                variantList.add(variantConvertToEntity(variantDto, question));
-            }
-        }
-        Question question1 = questionDtoMapper.toEntity(questionDto);
-        Question q = questionRepository.save(questionDtoMapper.toEntity(questionDto));
-        variantRepository.saveAll(variantList);
-        return q;
-    }
-
-    public Variant variantConvertToEntity(VariantDto variantDto, Question question){
-        Long variantId = variantDto.getId();
-        if (variantId != null) {
-            Optional<Variant> optionalVariant = variantRepository.findById(variantId);
-            if (optionalVariant.isPresent()) {
-                return optionalVariant.get();
-            }
-        }
-
-        return Variant.builder()
-                .content(variantDto.getContent())
-                .score(variantDto.getScore())
-                .question_id(question)
-                .build();
-    }
-
-    public VariantDto variantConvertToDto(Variant variant){
-        Optional<Variant> variant1 = variantRepository.findById(variant.getId());
-        if (variant1.isPresent()){
-            Variant object = variant1.get();
-            return VariantDto.builder()
-                    .id(object.getId())
-                    .content(object.getContent())
-                    .score(object.getScore())
-                    .build();
-        }else{
-            Variant newVariant = variantRepository.save(variant);
-            return VariantDto.builder()
-                    .id(newVariant.getId())
-                    .content(newVariant.getContent())
-                    .score(newVariant.getScore())
-                    .build();
-        }
-    }
 }

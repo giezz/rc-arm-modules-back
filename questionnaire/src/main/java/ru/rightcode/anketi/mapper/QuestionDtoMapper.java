@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.dto.VariantDto;
+import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Variant;
+import ru.rightcode.anketi.repository.QuestionRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +17,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionDtoMapper implements Mapper<QuestionDto, Question>{
     private final VariantDtoMapper variantDtoMapper;
+    private final QuestionRepository questionRepository;
 
     @Override
     public Question toEntity(QuestionDto questionDto) {
+        if (questionDto.getId() != null){
+            Optional<Question> q = questionRepository.findById(questionDto.getId());
+            if (q.isPresent()){
+                return q.get();
+            }else{
+                throw new NotFoundException("Question not found with id: "+ questionDto.getId());
+            }
+        }
+
         Question question = new Question();
         question.setId(questionDto.getId());
         question.setContent(questionDto.getContent());
