@@ -33,4 +33,9 @@ public class FormController {
         return ResponseEntity.ok(formService.getFormByName(name));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        formService.deleteForm(id);
+        return ResponseEntity.ok("Deleted Form with id: "+ id);
+    }
 }
