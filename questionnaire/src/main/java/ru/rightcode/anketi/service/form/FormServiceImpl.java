@@ -103,19 +103,6 @@ public class FormServiceImpl {
                         .build();
 
                 formQuestionList.add(formQuestion1);
-                /*// Проверка на наличие вариантов ответов
-                List<VariantDto> variantDtos = questionDtos.stream()
-                        .filter(questionDto -> questionDto.getId().equals(q.getId()))
-                        .findFirst()
-                        .map(QuestionDto::getVariants)
-                        .orElse(null);
-                if (variantDtos != null) {
-                    for (VariantDto variantDto : variantDtos) {
-                        Variant variant = variantDtoMapper.toEntity(variantDto);
-                        variant.setQuestion_id(q);
-                        variantList.add(variant);
-                    }
-                }*/
             }
         }else {
             // Создание новых вопросов, если указаны все остальные поля кроме идентификатора
@@ -151,26 +138,12 @@ public class FormServiceImpl {
         return formDtoMapper.toDto(form1);
     }
 
-
-
-    /*public FormDto updateForm(FormDto formDTO) {
-        Scale scale = validateScaleId(formDTO.getScaleId());
-
-        Form existingForm = formRepository.findById(formDTO.getId())
-                .orElseThrow(() -> new NotFoundException("Form not found with id: " + formDTO.getId()));
-
-        // Update fields
-        existingForm.setName(formDTO.getName());
-        existingForm.setDescription(formDTO.getDescription());
-        existingForm.setScale(scale);
-
-        Form updatedForm = formRepository.save(existingForm);
-        return formConvertToDTO(updatedForm, null);
-    }*/
-
-
     public void deleteForm(Long id) {
         formRepository.deleteById(id);
+    }
+
+    private boolean allQuestionsHaveIds(List<QuestionDto> questions) {
+        return questions.stream().allMatch(q -> q.getId() != null);
     }
 
 }
