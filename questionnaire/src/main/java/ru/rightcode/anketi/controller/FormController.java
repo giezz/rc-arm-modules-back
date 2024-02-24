@@ -28,7 +28,7 @@ public class FormController {
         return ResponseEntity.ok(formService.createForm(formDto));
     }
 
-    @GetMapping("/name")
+    @GetMapping("/")
     public ResponseEntity<?> getByName(@RequestParam String name){
         return ResponseEntity.ok(formService.getFormByName(name));
     }
