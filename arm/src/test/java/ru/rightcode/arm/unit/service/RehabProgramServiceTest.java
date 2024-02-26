@@ -1,4 +1,4 @@
-package ru.rightcode.arm.service;
+package ru.rightcode.arm.unit.service;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +14,7 @@ import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
 import ru.rightcode.arm.model.RehabProgram;
 import ru.rightcode.arm.repository.DoctorRepository;
 import ru.rightcode.arm.repository.RehabProgramRepository;
+import ru.rightcode.arm.service.RehabProgramService;
 
 import java.util.Optional;
 
