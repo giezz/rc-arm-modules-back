@@ -252,10 +252,12 @@ ALTER TABLE doc.answer OWNER TO postgres;
 
 -- object: doc.form_question | type: TABLE --
 -- DROP TABLE IF EXISTS doc.form_question CASCADE;
-CREATE TABLE doc.form_question (
-                                   id_form bigint NOT NULL,
-                                   id_question bigint NOT NULL,
-                                   CONSTRAINT form_question_pk PRIMARY KEY (id_form,id_question)
+CREATE TABLE doc.form_question
+(
+    id          bigserial PRIMARY KEY NOT NULL,
+    id_question bigserial             NOT NULL,
+    id_form     bigserial             NOT NULL,
+    created_at  timestamp NULL
 );
 -- ddl-end --
 

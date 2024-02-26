@@ -68,20 +68,46 @@ INSERT INTO doc.block (id, name) VALUES (3, 'Заминка');
 -- Data for Name: exercise_type; Type: TABLE DATA; Schema: doc; Owner: postgres
 --
 
-INSERT INTO doc.exercise_type (id, name) VALUES (1, 'тест1');
+
+INSERT INTO doc.scale (name, description)
+VALUES ('Шкала A', 'Описание шкалы A'),
+       ('Шкала B', 'Описание шкалы B'),
+       ('Шкала C', 'Описание шкалы C');
+-- Добавление данных в таблицу doc.question
+INSERT INTO doc.question (content)
+VALUES ('Вопрос 1'),
+       ('Вопрос 2'),
+       ('Вопрос 3');
+
+INSERT INTO doc.exercise_type (name)
+VALUES ('Тип упражнения 1'),
+       ('Тип упражнения 2'),
+       ('Тип упражнения 3');
+
+INSERT INTO doc.variant (content, score, question_id)
+VALUES ('Вариант 1', 5.0, 1),
+       ('Вариант 2', 3.0, 1),
+       ('Вариант 3', 2.5, 1),
+       ('Вариант 1', 4.0, 2),
+       ('Вариант 2', 2.0, 2),
+       ('Вариант 3', 1.5, 2);
+-- Добавление данных в таблицу doc.form
+INSERT INTO doc.form (name, description, scale_id)
+VALUES ('Форма 1', 'Описание формы 1', 1),
+       ('Форма 2', 'Описание формы 2', 2),
+       ('Форма 3', 'Описание формы 3', 3);
+
+-- Добавление данных в таблицу doc.exercise
+INSERT INTO doc.exercise (name, video_url, description, exercise_type_id)
+VALUES ('Упражнение 1', 'https://www.example.com/video1', 'Описание упражнения 1', 1),
+       ('Упражнение 2', 'https://www.example.com/video2', 'Описание упражнения 2', 2),
+       ('Упражнение 3', 'https://www.example.com/video3', 'Описание упражнения 3', 3);
 
 
---
--- Data for Name: exercise; Type: TABLE DATA; Schema: doc; Owner: postgres
---
 
-INSERT INTO doc.exercise (id, name, video_url, description, exercise_type_id) VALUES (1, 'тестовое упражнение', 'https://vk.com', NULL, 1);
-INSERT INTO doc.exercise (id, name, video_url, description, exercise_type_id) VALUES (3, 'test', 'test', 'test', NULL);
-
---
--- Data for Name: form; Type: TABLE DATA; Schema: doc; Owner: postgres
---
-
-INSERT INTO doc.form (id, name, description, scale_id) VALUES (1, 'тест анкета 1', 'описание', NULL);
-INSERT INTO doc.form (id, name, description, scale_id) VALUES (2, 'тест анкета 2', 'описание', NULL);
-INSERT INTO doc.form (id, name, description, scale_id) VALUES (3, 'анкета для программы', 'описание', NULL);
+-- Добавление связей между формами и вопросами в таблицу doc.form_question
+INSERT INTO doc.form_question (id_form, id_question)
+VALUES (1, 1),
+       (2, 2),
+       (2, 3),
+       (3, 3);

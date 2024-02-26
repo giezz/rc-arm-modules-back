@@ -1,18 +1,18 @@
 package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
 @Table(schema = "doc")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -20,13 +20,33 @@ public class Answer {
     private Long id;
 
     // TODO: patient does not exist
-    /*
-    @Column(name = "patient_id", nullable = false)
-    private String patient_id;
-    */
+    @ManyToOne
+    @JoinColumn(
+            name = "patient_id",
+            referencedColumnName = "id"
+    )
+    private Patient patient;
 
     @ManyToOne
     @JoinColumn(name = "variant_id")
-    private Variant variant_id;
+    private Variant variant;
 
+    @NotNull
+    @Column(name = "answered_at", nullable = false)
+    private Instant answeredAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Answer answer = (Answer) o;
+
+        return getId().equals(answer.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }
