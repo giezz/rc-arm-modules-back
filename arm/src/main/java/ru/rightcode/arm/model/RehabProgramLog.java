@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
-import ru.rightcode.arm.listener.RehabProgramRevisionListener;
+//import ru.rightcode.arm.listener.RehabProgramRevisionListener;
 
 import java.time.LocalDate;
 
