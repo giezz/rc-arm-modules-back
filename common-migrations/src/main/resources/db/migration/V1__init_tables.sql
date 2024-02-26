@@ -252,25 +252,27 @@ ALTER TABLE doc.answer OWNER TO postgres;
 
 -- object: doc.form_question | type: TABLE --
 -- DROP TABLE IF EXISTS doc.form_question CASCADE;
-CREATE TABLE doc.form_question
-(
-    id          bigserial PRIMARY KEY NOT NULL,
-    id_question bigserial             NOT NULL,
-    id_form     bigserial             NOT NULL,
-    created_at  timestamp NULL
+CREATE TABLE doc.form_question (
+                            id bigserial NOT NULL,
+                            question_id bigint NOT NULL,
+                            form_id bigint NOT NULL,
+                            created_at timestamp,
+                            CONSTRAINT form_question_pk PRIMARY KEY (id)
 );
+-- ddl-end --
+ALTER TABLE doc.form_question OWNER TO postgres;
 -- ddl-end --
 
 -- object: form_fk | type: CONSTRAINT --
 -- ALTER TABLE doc.form_question DROP CONSTRAINT IF EXISTS form_fk CASCADE;
-ALTER TABLE doc.form_question ADD CONSTRAINT form_fk FOREIGN KEY (id_form)
+ALTER TABLE doc.form_question ADD CONSTRAINT form_fk FOREIGN KEY (form_id)
     REFERENCES doc.form (id) MATCH FULL
     ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: question_fk | type: CONSTRAINT --
 -- ALTER TABLE doc.form_question DROP CONSTRAINT IF EXISTS question_fk CASCADE;
-ALTER TABLE doc.form_question ADD CONSTRAINT question_fk FOREIGN KEY (id_question)
+ALTER TABLE doc.form_question ADD CONSTRAINT question_fk FOREIGN KEY (question_id)
     REFERENCES doc.question (id) MATCH FULL
     ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
