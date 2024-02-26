@@ -21,10 +21,11 @@ import ru.rightcode.arm.repository.ModuleRepository;
 @Transactional(readOnly = true)
 public class ModuleService {
 
-    private final ModuleRepository moduleRepository;
-    private final RehabProgramService rehabProgramService;
     private final ModuleFormRepository moduleFormRepository;
     private final ModuleExerciseRepository moduleExerciseRepository;
+    private final ModuleRepository moduleRepository;
+
+    private final RestrictionsService restrictionsService;
 
     private final ModuleDetailsResponseMapper moduleDetailsResponseMapper;
 
@@ -83,10 +84,10 @@ public class ModuleService {
     }
     
     private Module getModuleIfDoctorCanEditModule(String doctorLogin, Long moduleId) {
-        DoctorIdInfo doctor = rehabProgramService.getDoctorByLogin(doctorLogin);
+        DoctorIdInfo doctor = restrictionsService.getDoctorByLogin(doctorLogin);
 
         Module module = moduleRepository.findById(moduleId).orElseThrow(EntityNotFoundException::new);
-        rehabProgramService.checkIfDoctorCanEdit(doctor.getId(), module.getRehabProgram().getId());
+        restrictionsService.canDoctorEditRehabProgram(doctor.getId(), module.getRehabProgram().getId());
 
         return module;
     }
