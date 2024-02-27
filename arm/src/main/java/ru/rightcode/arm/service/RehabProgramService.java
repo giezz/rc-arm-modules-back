@@ -55,7 +55,7 @@ public class RehabProgramService {
     public RehabProgramResponse addForm(String doctorLogin, AddFormRequest request, Long programId) {
         DoctorIdInfo doctor = restrictionsService.getDoctorByLogin(doctorLogin);
 
-        if (restrictionsService.canDoctorEditRehabProgram(doctor.getId(), programId)) {
+        if (!restrictionsService.canDoctorEditRehabProgram(doctor.getId(), programId)) {
             throw new NoPermissionException("Нет прав на редактирование данной программы реабилитации");
         }
 
@@ -74,7 +74,7 @@ public class RehabProgramService {
     public RehabProgramResponse addModule(String doctorLogin, AddModuleRequest request, Long programId) {
         DoctorIdInfo doctor = restrictionsService.getDoctorByLogin(doctorLogin);
 
-        if (restrictionsService.canDoctorEditRehabProgram(doctor.getId(), programId)) {
+        if (!restrictionsService.canDoctorEditRehabProgram(doctor.getId(), programId)) {
             throw new NoPermissionException("Нет прав на редактирование данной программы реабилитации");
         }
 
