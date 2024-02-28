@@ -26,9 +26,11 @@ public class RehabProgramService {
     private final RestrictionsService restrictionsService;
     private final RehabProgramResponseMapper rehabProgramResponseMapper;
 
+    private final DoctorService doctorService;
+
     @Deprecated
     public RehabProgramResponse getCurrent(String doctorLogin, Long patientId) {
-        DoctorIdInfo doctor = restrictionsService.getDoctorByLogin(doctorLogin);
+        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
         RehabProgram rehabProgram = rehabProgramRepository
                 .findByDoctorIdAndPatientIdAndIsCurrentTrue(doctor.getId(), patientId)
                 .orElseThrow(EntityNotFoundException::new);
@@ -37,7 +39,11 @@ public class RehabProgramService {
 
     @Transactional
     public RehabProgramResponse create(String doctorLogin, CreateRehabProgramRequest request) {
-        DoctorIdInfo doctor = restrictionsService.getDoctorByLogin(doctorLogin);
+        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
+
+        if (!restrictionsService.canDoctorCreateRehaProgram(doctor.getId(), request.patientId())) {
+            throw new NoPermissionException("Нет прав на создание программы реабилитации у данного пациента");
+        }
 
         if (rehabProgramRepository.checkIfCurrentExists(doctor.getId(), request.patientId())) {
             throw new EntityExistsException("Программа реабилтации уже существует");
@@ -53,7 +59,7 @@ public class RehabProgramService {
 
     @Transactional
     public RehabProgramResponse addForm(String doctorLogin, AddFormRequest request, Long programId) {
-        DoctorIdInfo doctor = restrictionsService.getDoctorByLogin(doctorLogin);
+        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
 
         if (!restrictionsService.canDoctorEditRehabProgram(doctor.getId(), programId)) {
             throw new NoPermissionException("Нет прав на редактирование данной программы реабилитации");
@@ -72,7 +78,7 @@ public class RehabProgramService {
 
     @Transactional
     public RehabProgramResponse addModule(String doctorLogin, AddModuleRequest request, Long programId) {
-        DoctorIdInfo doctor = restrictionsService.getDoctorByLogin(doctorLogin);
+        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
 
         if (!restrictionsService.canDoctorEditRehabProgram(doctor.getId(), programId)) {
             throw new NoPermissionException("Нет прав на редактирование данной программы реабилитации");

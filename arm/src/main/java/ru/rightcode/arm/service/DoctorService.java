@@ -1,7 +1,9 @@
 package ru.rightcode.arm.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.rightcode.arm.dto.DoctorIdInfo;
 import ru.rightcode.arm.model.Doctor;
 import ru.rightcode.arm.model.Patient;
 import ru.rightcode.arm.repository.DoctorRepository;
@@ -22,4 +24,11 @@ public class DoctorService {
     public List<Patient> getPatients(Doctor doctor) {
         return doctor.getPatients();
     }
+
+    public DoctorIdInfo getDoctorIdByLogin(String login) {
+        return doctorRepository
+                .findByUserUsername(login, DoctorIdInfo.class)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
 }
