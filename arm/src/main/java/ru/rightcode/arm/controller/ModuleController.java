@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.AddModuleExerciseRequest;
 import ru.rightcode.arm.dto.request.AddModuleFormRequest;
+import ru.rightcode.arm.dto.request.RenameModuleRequest;
 import ru.rightcode.arm.service.ModuleService;
 
 import java.security.Principal;
@@ -20,8 +21,14 @@ public class ModuleController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        return ResponseEntity
-                .ok(moduleService.getById(id));
+        return ResponseEntity.ok(moduleService.getById(id));
+    }
+
+    @PatchMapping("/{id}/name")
+    public ResponseEntity<?> rename(@PathVariable Long id,
+                                    @RequestBody RenameModuleRequest request,
+                                    Principal principal) {
+        return ResponseEntity.ok(moduleService.renameModule(principal.getName(), request, id));
     }
 
     @PostMapping("/{id}/add-form")

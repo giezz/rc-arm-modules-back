@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.DoctorIdInfo;
 import ru.rightcode.arm.dto.request.AddModuleExerciseRequest;
 import ru.rightcode.arm.dto.request.AddModuleFormRequest;
+import ru.rightcode.arm.dto.request.RenameModuleRequest;
 import ru.rightcode.arm.dto.response.ModuleDetailsResponse;
 import ru.rightcode.arm.mapper.ModuleDetailsResponseMapper;
 import ru.rightcode.arm.model.Module;
@@ -26,6 +27,7 @@ public class ModuleService {
     private final ModuleRepository moduleRepository;
 
     private final RestrictionsService restrictionsService;
+    private final DoctorService doctorService;
 
     private final ModuleDetailsResponseMapper moduleDetailsResponseMapper;
 
@@ -39,6 +41,13 @@ public class ModuleService {
         FIXME:
             производительность запросов у обновлений/удалений?
      */
+    @Transactional
+    public ModuleDetailsResponse renameModule(String doctorLogin, RenameModuleRequest request, Long moduleId) {
+        Module module = getModuleIfDoctorCanEditModule(doctorLogin, moduleId);
+        module.setName(request.newName());
+        return moduleDetailsResponseMapper.map(moduleRepository.save(module));
+    }
+
     @Transactional
     public ModuleDetailsResponse addForm(String doctorLogin, AddModuleFormRequest request, Long moduleId) {
         Module module = getModuleIfDoctorCanEditModule(doctorLogin, moduleId);
@@ -84,7 +93,7 @@ public class ModuleService {
     }
     
     private Module getModuleIfDoctorCanEditModule(String doctorLogin, Long moduleId) {
-        DoctorIdInfo doctor = restrictionsService.getDoctorByLogin(doctorLogin);
+        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
 
         Module module = moduleRepository.findById(moduleId).orElseThrow(EntityNotFoundException::new);
         restrictionsService.canDoctorEditRehabProgram(doctor.getId(), module.getRehabProgram().getId());
