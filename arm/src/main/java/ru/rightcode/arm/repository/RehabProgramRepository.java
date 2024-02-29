@@ -21,6 +21,7 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
     @NonNull
     Optional<RehabProgram> findById(@NonNull Long Long);
 
+    @Deprecated
     @EntityGraph(attributePaths = {RehabProgram_.MODULES, RehabProgram_.START_FORM, RehabProgram_.END_FORM})
     Optional<RehabProgram> findByDoctorIdAndPatientIdAndIsCurrentTrue(Long doctorId, Long patientId);
 
