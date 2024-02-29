@@ -7,6 +7,7 @@ import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.FormQuestion;
+import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.repository.ScaleRepository;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Component
 public class FormDtoMapper implements Mapper<FormDto, Form> {
     private final ScaleRepository scaleRepository;
+    private final QuestionDtoMapper questionDtoMapper;
     private final Function<FormQuestion, QuestionDto> formQuestionToDtoMapper;
 
     @Override
@@ -49,6 +51,18 @@ public class FormDtoMapper implements Mapper<FormDto, Form> {
                 .description(form.getDescription())
                 .scaleId(form.getScale().getId())
                 .questions(questionList)
+                .build();
+    }
+
+    public FormDto toDto(Form form, List<Question> questionList){
+        return FormDto.builder()
+                .id(form.getId())
+                .name(form.getName())
+                .description(form.getDescription())
+                .scaleId(form.getScale().getId())
+                .questions(questionList.stream()
+                        .map(questionDtoMapper::toDto).collect(Collectors.toList())
+                )
                 .build();
     }
 }
