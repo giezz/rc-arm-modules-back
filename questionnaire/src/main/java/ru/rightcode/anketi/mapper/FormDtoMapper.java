@@ -3,16 +3,12 @@ package ru.rightcode.anketi.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rightcode.anketi.dto.FormDto;
-import ru.rightcode.anketi.dto.QuestionDto;
-import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.model.Form;
-import ru.rightcode.anketi.model.FormQuestion;
 import ru.rightcode.anketi.model.Question;
+import ru.rightcode.anketi.model.Scale;
 import ru.rightcode.anketi.repository.ScaleRepository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -20,24 +16,26 @@ import java.util.stream.Collectors;
 public class FormDtoMapper implements Mapper<FormDto, Form> {
     private final ScaleRepository scaleRepository;
     private final QuestionDtoMapper questionDtoMapper;
-    private final Function<FormQuestion, QuestionDto> formQuestionToDtoMapper;
 
     @Override
     public Form toEntity(FormDto formDto) {
-        return Form.builder()
-                .id(formDto.id())
-                .name(formDto.name())
-                .description(formDto.description())
-                .scale(scaleRepository.findById(formDto.scaleId())
-                        .orElseThrow(() ->
-                                new NotFoundException("Scale not found with id: " + formDto.scaleId())
-                        ))
-                .build();
+        if (formDto == null) {
+            throw new IllegalArgumentException("FormDto cannot be null");
+        }
+        Scale scale = scaleRepository.findById(formDto.getScaleId()).orElse(null);
+        if (scale == null) {
+            throw new IllegalArgumentException("Scale with id " + formDto.getScaleId() + " not found");
+        }
+        return new Form(
+                formDto.getName(),
+                formDto.getDescription(),
+                scale);
     }
+
 
     @Override
     public FormDto toDto(Form form){
-        final List<QuestionDto> questionList = Optional.ofNullable(form.getFormQuestions())
+        /*final List<QuestionDto> questionList = Optional.ofNullable(form.getFormQuestions())
                 .map(formQuestions ->
                         formQuestions
                                 .stream()
@@ -51,7 +49,8 @@ public class FormDtoMapper implements Mapper<FormDto, Form> {
                 .description(form.getDescription())
                 .scaleId(form.getScale().getId())
                 .questions(questionList)
-                .build();
+                .build();*/
+        return null;
     }
 
     public FormDto toDto(Form form, List<Question> questionList){

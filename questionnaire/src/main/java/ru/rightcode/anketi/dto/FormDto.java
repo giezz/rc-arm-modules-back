@@ -2,15 +2,17 @@ package ru.rightcode.anketi.dto;
 
 import lombok.*;
 
-import java.io.Serializable;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public record FormDto(
-        Long id,
-        String name,
-        String description,
-        Long scaleId,
-        List<QuestionDto> questions
-) implements Serializable {
+@Getter
+@Setter
+public class FormDto{
+    private Long id;
+    private String name;
+    private String description;
+    private Long scaleId;
+    private List<QuestionDto> questions;
 }

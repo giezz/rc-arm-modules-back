@@ -11,14 +11,14 @@ import java.util.Optional;
 
 @Repository
 public interface FormRepository extends JpaRepository<Form, Long> {
-    List<Form> findAllByName(String name);
-
     @Override
     @EntityGraph(attributePaths = {"formQuestions.idQuestion.variants"})
     @NonNull
     Optional<Form> findById(Long aLong);
 
     List<Form> findFormById(Long id);
+
+    List<Form> findAllByName(String name);
 
     /*@Query(value = "select sum(v.score) from Form f " +
             "join FormQuestion fq on fq.id=f.id " +
