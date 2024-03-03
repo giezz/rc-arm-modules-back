@@ -3,12 +3,16 @@ package ru.rightcode.anketi.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rightcode.anketi.dto.FormDto;
+import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.model.Form;
+import ru.rightcode.anketi.model.FormQuestion;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Scale;
 import ru.rightcode.anketi.repository.ScaleRepository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -16,6 +20,7 @@ import java.util.stream.Collectors;
 public class FormDtoMapper implements Mapper<FormDto, Form> {
     private final ScaleRepository scaleRepository;
     private final QuestionDtoMapper questionDtoMapper;
+    private final Function<FormQuestion, QuestionDto> formQuestionToDtoMapper;
 
     @Override
     public Form toEntity(FormDto formDto) {
@@ -35,7 +40,7 @@ public class FormDtoMapper implements Mapper<FormDto, Form> {
 
     @Override
     public FormDto toDto(Form form){
-        /*final List<QuestionDto> questionList = Optional.ofNullable(form.getFormQuestions())
+        final List<QuestionDto> questionList = Optional.ofNullable(form.getFormQuestions())
                 .map(formQuestions ->
                         formQuestions
                                 .stream()
@@ -43,14 +48,15 @@ public class FormDtoMapper implements Mapper<FormDto, Form> {
                                 .collect(Collectors.toList())
                 )
                 .orElse(null);
+
         return FormDto.builder()
                 .id(form.getId())
                 .name(form.getName())
                 .description(form.getDescription())
                 .scaleId(form.getScale().getId())
                 .questions(questionList)
-                .build();*/
-        return null;
+                .build();
+//        return null;
     }
 
     public FormDto toDto(Form form, List<Question> questionList){
@@ -60,7 +66,8 @@ public class FormDtoMapper implements Mapper<FormDto, Form> {
                 .description(form.getDescription())
                 .scaleId(form.getScale().getId())
                 .questions(questionList.stream()
-                        .map(questionDtoMapper::toDto).collect(Collectors.toList())
+                        .map(questionDtoMapper::toDto)
+                        .collect(Collectors.toList())
                 )
                 .build();
     }

@@ -23,7 +23,7 @@ public class FormQuestionDtoMapper implements Mapper<FormQuestionDto, FormQuesti
         final Form idForm = Optional.ofNullable(object.getFormDto())
                 .map(formDtoMapper::toEntity)
                 .orElse(null);
-        final Question questionList = Optional.ofNullable(object.getQuestionDtoList().get(0))
+        final Question questionList = Optional.ofNullable(object.getQuestionDto())
                 .map(questionDtoMapper::toEntity)
                 .orElse(null);
 
@@ -43,23 +43,23 @@ public class FormQuestionDtoMapper implements Mapper<FormQuestionDto, FormQuesti
         final Form idForm = Optional.ofNullable(object.getFormDto())
                 .map(formDtoMapper::toEntity)
                 .orElse(null);
-        final List<Question> questionList = Optional.ofNullable(object.getQuestionDtoList())
-                .map(questionDtoMapper::listToEntity)
+        final Question questionList = Optional.ofNullable(object.getQuestionDto())
+                .map(questionDtoMapper::toEntity)
                 .orElse(null);
         List<FormQuestion> formQuestionList = new ArrayList<>();
-        if (questionList == null || questionList.isEmpty()){
+        if (questionList == null){
             return formQuestionList;
         }
-        for (Question q: questionList){
+//        for (Question q: questionList){
             formQuestionList.add(
                     FormQuestion.builder()
                             .id(object.getId())
                             .idForm(idForm)
-                            .idQuestion(q)
+                            .idQuestion(questionList)
                             .createdAt(object.getCreatedAt())
                             .build()
             );
-        }
+//        }
 
         return formQuestionList;
     }

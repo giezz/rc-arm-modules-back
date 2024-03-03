@@ -8,6 +8,7 @@ import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.dto.VariantDto;
 import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.mapper.FormDtoMapper;
+import ru.rightcode.anketi.mapper.mapstruct.FormMapper;
 import ru.rightcode.anketi.mapper.QuestionDtoMapper;
 import ru.rightcode.anketi.mapper.VariantDtoMapper;
 import ru.rightcode.anketi.model.*;
@@ -32,13 +33,12 @@ public class FormServiceImpl {
     private final QuestionDtoMapper questionDtoMapper;
     private final VariantDtoMapper variantDtoMapper;
     private final ScaleRepository scaleRepository;
+    private final FormMapper formMapper;
 
 
     public List<FormDto> getAllForms() {
         List<Form> forms = formRepository.findAll();
-        return forms.stream()
-                .map(formDtoMapper::toDto)
-                .collect(Collectors.toList());
+        return forms.stream().map(formMapper::toDto).toList();
     }
 
 
@@ -89,7 +89,7 @@ public class FormServiceImpl {
         formQuestionRepository.saveAll(formQuestionList);
 
         //        return getFormById(form1.getId());
-        return formDtoMapper.toDto(form1);
+        return formDtoMapper.toDto(form1, questionList);
     }
 
     private List<Question> processQuestions(List<QuestionDto> questionDtos, List<FormQuestion> formQuestionList,

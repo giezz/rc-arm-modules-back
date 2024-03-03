@@ -3,7 +3,6 @@ package ru.rightcode.anketi.dto;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +12,7 @@ import java.util.List;
 public class FormQuestionDto {
     private Long id;
     private FormDto formDto;
-    private List<QuestionDto> questionDtoList;
+    private QuestionDto questionDto;
     private Instant createdAt;
 
 }
