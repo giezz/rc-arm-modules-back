@@ -31,7 +31,7 @@ public class RehabProgramController {
                 .body(rehabProgramService.create(principal.getName(), request));
     }
 
-    @PatchMapping("/{programId}/add-form")
+    @PutMapping("/{programId}/form")
     public ResponseEntity<?> addForm(Principal principal,
                                      @RequestBody AddFormRequest request,
                                      @PathVariable Long programId) {
@@ -44,7 +44,7 @@ public class RehabProgramController {
         );
     }
 
-    @PatchMapping("/{programId}/add-module")
+    @PutMapping("/{programId}/module")
     public ResponseEntity<?> addModule(Principal principal,
                                        @RequestBody AddModuleRequest request,
                                        @PathVariable Long programId) {

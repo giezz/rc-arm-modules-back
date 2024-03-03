@@ -31,7 +31,7 @@ public class ModuleController {
         return ResponseEntity.ok(moduleService.renameModule(principal.getName(), request, id));
     }
 
-    @PostMapping("/{id}/add-form")
+    @PostMapping("/{id}/form")
     public ResponseEntity<?> addForm(@PathVariable Long id,
                                      @RequestBody AddModuleFormRequest request,
                                      Principal principal) {
@@ -40,7 +40,7 @@ public class ModuleController {
                 .body(moduleService.addForm(principal.getName(), request, id));
     }
 
-    @PostMapping("/{id}/add-exercise")
+    @PostMapping("/{id}/exercise")
     public ResponseEntity<?> addExercise(@PathVariable Long id,
                                          @RequestBody AddModuleExerciseRequest request,
                                          Principal principal) {
@@ -49,7 +49,7 @@ public class ModuleController {
                 .body(moduleService.addExercise(principal.getName(), request, id));
     }
 
-    @DeleteMapping("/{id}/delete-form/{moduleFormId}")
+    @DeleteMapping("/{id}/form/{moduleFormId}")
     public ResponseEntity<?> deleteForm(@PathVariable("id") Long moduleId,
                                         @PathVariable Long moduleFormId,
                                         Principal principal) {
@@ -57,7 +57,7 @@ public class ModuleController {
                 .ok(moduleService.deleteForm(principal.getName(), moduleId, moduleFormId));
     }
 
-    @DeleteMapping("/{id}/delete-exercise/{moduleExerciseId}")
+    @DeleteMapping("/{id}/exercise/{moduleExerciseId}")
     public ResponseEntity<?> deleteExercise(@PathVariable("id") Long moduleId,
                                             @PathVariable Long moduleExerciseId,
                                             Principal principal) {

@@ -55,14 +55,14 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getAllRehabPrograms(code));
     }
 
-    @PatchMapping("/add-doctor")
+    @PutMapping("/doctor")
     public ResponseEntity<?> addDoctor(Principal principal,
                                        @RequestBody Long patientId) {
         patientService.addDoctor(patientId, principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/remove-doctor")
+    @DeleteMapping("/doctor")
     public ResponseEntity<?> removeDoctor(@RequestBody Long patientId) {
         patientService.removeDoctor(patientId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
