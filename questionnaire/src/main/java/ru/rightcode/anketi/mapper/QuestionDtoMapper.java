@@ -56,6 +56,14 @@ public class QuestionDtoMapper implements Mapper<QuestionDto, Question>{
                 .build();
     }
 
+    public QuestionDto toDto(Question question, List<Variant> variants){
+        return QuestionDto.builder()
+                .id(question.getId())
+                .content(question.getContent())
+                .variants(variants.stream().map(variantDtoMapper::toDto).toList())
+                .build();
+    }
+
     public List<Question> listToEntity(List<QuestionDto> questionDtoList){
         return questionDtoList.stream()
                 .map(this::toEntity)

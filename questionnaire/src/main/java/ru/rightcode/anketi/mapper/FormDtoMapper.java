@@ -66,7 +66,7 @@ public class FormDtoMapper implements Mapper<FormDto, Form> {
                 .description(form.getDescription())
                 .scaleId(form.getScale().getId())
                 .questions(questionList.stream()
-                        .map(questionDtoMapper::toDto)
+                        .map(q-> questionDtoMapper.toDto(q, q.getVariants()))
                         .collect(Collectors.toList())
                 )
                 .build();
