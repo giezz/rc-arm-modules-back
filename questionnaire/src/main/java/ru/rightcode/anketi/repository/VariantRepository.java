@@ -19,4 +19,9 @@ public interface VariantRepository extends JpaRepository<Variant, Long> {
     @EntityGraph(attributePaths = {"question_id", "answers"})
     @NonNull
     Optional<Variant> findById(Long id);
+
+    @Override
+    @EntityGraph(attributePaths = {})
+    @NonNull
+    List<Variant> findAll();
 }

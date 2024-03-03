@@ -21,6 +21,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @NonNull
     Optional<Question> findById(Long id);
 
+    @Override
+    @EntityGraph(attributePaths = {"variants"})
+    @NonNull
+    List<Question> findAll();
+
     @Query("SELECT q FROM Question q WHERE q.id IN :ids")
     List<Question> findQuestionsByIds(List<Long> ids);
 

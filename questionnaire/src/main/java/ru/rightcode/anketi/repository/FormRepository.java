@@ -16,6 +16,11 @@ public interface FormRepository extends JpaRepository<Form, Long> {
     @NonNull
     Optional<Form> findById(Long aLong);
 
+    @Override
+    @EntityGraph(attributePaths = {"scale", "formQuestions.idQuestion"})
+    @NonNull
+    List<Form> findAll ();
+
     List<Form> findFormById(Long id);
 
     List<Form> findAllByName(String name);
