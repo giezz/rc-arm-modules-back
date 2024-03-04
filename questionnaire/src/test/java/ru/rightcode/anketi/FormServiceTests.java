@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.dto.VariantDto;
-import ru.rightcode.anketi.mapper.FormDtoMapper;
-import ru.rightcode.anketi.mapper.QuestionDtoMapper;
 import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Scale;

@@ -17,7 +17,8 @@ public interface QuestionMapper {
     QuestionDto toDto(Question question);
 
     @Mapping(target = "formQuestions", ignore = true)
+    @Mapping(target = "variants", source = "variants")
     Question toEntity(QuestionDto questionDto);
-    List<QuestionDto> toEntityList(List<Question> questions);
-    List<Question> toDtoList(List<QuestionDto> questionDtoList);
+    List<QuestionDto> toDtoList(List<Question> questions);
+    List<Question> toEntityList(List<QuestionDto> questionDtoList);
 }

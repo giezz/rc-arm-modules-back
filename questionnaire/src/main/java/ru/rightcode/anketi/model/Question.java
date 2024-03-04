@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -26,25 +28,19 @@ public class Question {
 
     @OneToMany(mappedBy = "question_id")
     @ToString.Exclude
-    private List<Variant> variants = new ArrayList<>();
+    private Set<Variant> variants = new HashSet<>();
 
     @OneToMany(mappedBy = "idQuestion")
     @ToString.Exclude
     private List<FormQuestion> formQuestions = new ArrayList<>();
 
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Question question = (Question) o;
-
-        return getId().equals(question.getId());
+    public int hashCode() {
+        return super.hashCode();
     }
 
     @Override
-    public int hashCode() {
-        return getId().hashCode();
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }
