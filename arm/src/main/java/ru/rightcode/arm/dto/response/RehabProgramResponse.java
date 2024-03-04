@@ -3,6 +3,7 @@ package ru.rightcode.arm.dto.response;
 import ru.rightcode.arm.dto.ModuleDto;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,8 +14,8 @@ import java.util.List;
 public record RehabProgramResponse(
         Long id,
         Boolean isCurrent,
-        LocalDate startDate,
-        LocalDate endDate,
+        Instant startDate,
+        Instant endDate,
         FormResponse startForm,
         FormResponse endForm,
         List<ModuleDto> modules

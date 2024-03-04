@@ -10,13 +10,10 @@ import ru.rightcode.arm.model.FormResult;
 @RequiredArgsConstructor
 public class FormResultResponseMapper implements Mapper<FormResult, FormResultResponse> {
 
-    private final FormResponseMapper formResponseMapper;
-
     @Override
     public FormResultResponse map(FormResult object) {
-        FormResponse formResponse = formResponseMapper.map(object.getForm());
         return new FormResultResponse(
-                formResponse,
+                object.getId(),
                 object.getScore(),
                 object.getCreationDate()
         );
