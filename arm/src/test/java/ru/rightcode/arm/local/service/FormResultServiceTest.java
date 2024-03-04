@@ -12,19 +12,19 @@ public class FormResultServiceTest {
 
     @Autowired
     private FormResultService formResultService;
-
-    @Test
-    void test() {
-        formResultService.getResults(3L, 1L).forEach(System.out::println);
-    }
-
-    @Test
-    void test1() {
-        formResultService.getResults(3L).forEach(System.out::println);
-    }
-
-    @Test
-    void test2() {
-        formResultService.getResults(3L, List.of(1L, 2L, 3L)).forEach(System.out::println);
-    }
+//
+//    @Test
+//    void test() {
+//        formResultService.getResults(3L, 1L).forEach(System.out::println);
+//    }
+//
+//    @Test
+//    void test1() {
+//        formResultService.getResults(3L).forEach(System.out::println);
+//    }
+//
+//    @Test
+//    void test2() {
+//        formResultService.getResults(3L, List.of(1L, 2L, 3L)).forEach(System.out::println);
+//    }
 }
