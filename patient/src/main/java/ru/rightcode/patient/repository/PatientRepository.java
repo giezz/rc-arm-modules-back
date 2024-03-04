@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
-    <T> Optional<T> findByUserUsername(@Param("login") String login, Class<T> projection);
+    <T> Optional<T> findByUserLogin(@Param("login") String login, Class<T> projection);
 }

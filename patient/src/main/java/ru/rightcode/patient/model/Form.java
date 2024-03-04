@@ -3,12 +3,14 @@ package ru.rightcode.patient.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "form", schema = "doc")
+@Table(name = "form", schema = "anketi")
 public class Form {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

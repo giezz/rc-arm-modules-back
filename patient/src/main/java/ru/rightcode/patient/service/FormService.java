@@ -1,6 +1,6 @@
 package ru.rightcode.patient.service;
 
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +10,7 @@ import ru.rightcode.patient.model.*;
 import ru.rightcode.patient.repository.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,50 +20,43 @@ import java.util.List;
 public class FormService {
 
     private final AnswerRepository answerRepository;
-    private final ModuleFormRepository moduleFormRepository;
     private final FormResultRepository formResultRepository;
     private final PatientRepository patientRepository;
     private final VariantRepository variantRepository;
+    private final RehabProgramRepository rehabProgramRepository;
 
     // Нет никаких проверок на соответсвие бизнес-логики
+
     @Transactional
     public BigDecimal submitAnswers(Long formId, List<AnswerRequest> request, String login) {
-        PatientInfo patientInfo = patientRepository.findByUserUsername(login, PatientInfo.class)
-                .orElseThrow(EntityNotFoundException::new);
-
+        PatientInfo patientInfo = patientRepository.findByUserLogin(login, PatientInfo.class).orElseThrow();
         List<Variant> variants = variantRepository
                 .findAllById(request.stream().map(AnswerRequest::variantId).toList());
-
+        FormResult formResult = createResult(patientInfo.getId(), formId, variants);
         List<Answer> answers = new ArrayList<>();
-        Patient patient = new Patient();
-        patient.setId(patientInfo.getId());
-
         for (Variant variant : variants) {
-            answers.add(new Answer(patient, variant));
+            Answer answer = new Answer();
+            answer.setFormResult(formResult);
+            answer.setVariant(variant);
+            answers.add(answer);
         }
-
         answerRepository.saveAll(answers);
-
-        return calculateFormScore(formId, patient, variants);
+        return formResult.getScore();
     }
 
-//    @Transactional
-    public BigDecimal calculateFormScore(Long formId, Patient patient, List<Variant> variants) {
+    private FormResult createResult(Long patientId, Long formId, List<Variant> variants) {
         BigDecimal sum = BigDecimal.valueOf(0);
+        RehabProgram rehabProgram = rehabProgramRepository.findByPatientIdAndIsCurrentTrue(patientId).orElseThrow();
         for (Variant variant : variants) {
             sum = sum.add(variant.getScore());
         }
-
         Form form = new Form();
         form.setId(formId);
-
         FormResult formResult = new FormResult();
         formResult.setForm(form);
-        formResult.setPatient(patient);
+        formResult.setRehabProgram(rehabProgram);
         formResult.setScore(sum);
-        formResult.setCreationDate(LocalDate.now());
-        formResultRepository.save(formResult);
-
-        return sum;
+        formResult.setCreationDate(Instant.now());
+        return formResultRepository.save(formResult);
     }
 }
