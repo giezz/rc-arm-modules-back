@@ -7,19 +7,21 @@ import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.dto.VariantDto;
 import ru.rightcode.anketi.exception.NotFoundException;
-import ru.rightcode.anketi.mapper.FormDtoMapper;
-import ru.rightcode.anketi.mapper.QuestionDtoMapper;
 import ru.rightcode.anketi.mapper.VariantDtoMapper;
+import ru.rightcode.anketi.mapper.mapstruct.FormMapper;
+import ru.rightcode.anketi.mapper.mapstruct.QuestionMapper;
 import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.FormQuestion;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Variant;
-import ru.rightcode.anketi.repository.*;
+import ru.rightcode.anketi.repository.FormQuestionRepository;
+import ru.rightcode.anketi.repository.FormRepository;
+import ru.rightcode.anketi.repository.QuestionRepository;
+import ru.rightcode.anketi.repository.VariantRepository;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -31,40 +33,38 @@ public class FormServiceImpl {
     private final FormQuestionRepository formQuestionRepository;
     private final VariantRepository variantRepository;
 
-    private final FormDtoMapper formDtoMapper;
-    private final QuestionDtoMapper questionDtoMapper;
     private final VariantDtoMapper variantDtoMapper;
-    private final ScaleRepository scaleRepository;
-//    private final FormMapper formMapper;
+    private final QuestionMapper questionMapper;
+    private final FormMapper formMapper;
 
 
     public List<FormDto> getAllForms() {
         List<Form> forms = formRepository.findAll();
-        return forms.stream().map
-                        (formDtoMapper::toDto)
-                .toList();
+        return forms.stream().map((Form form) -> formMapper.toDto(
+                form, form.getFormQuestions().stream().map(FormQuestion::getIdQuestion).toList()
+        )).toList();
     }
 
 
     public List<FormDto> getFormByName(String name) {
         List<Form> forms = formRepository.findAllByName(name);
-        return forms.stream()
-                .map(formDtoMapper::toDto)
-                .collect(Collectors.toList());
+        return forms.stream().map((Form form) -> formMapper.toDto(
+                form, form.getFormQuestions().stream().map(FormQuestion::getIdQuestion).toList()
+        )).toList();
     }
 
     public FormDto getFormById(Long id) {
         Form form = formRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Form not found with id: " + id));
 //            formDtoMapper.toDto(form);
-        List<FormQuestion> formQuestionList = formQuestionRepository.findByIdForm(form);
+        List<FormQuestion> formQuestionList = form.getFormQuestions();
         List<Question> questions = new ArrayList<>();
         for (FormQuestion fq : formQuestionList) {
             if (fq.getIdForm().getId().equals(form.getId())) {
                 questions.add(fq.getIdQuestion());
             }
         }
-        return formDtoMapper.toDto(form, questions);
+        return formMapper.toDto(form, questions);
     }
 
     public void deleteForm(Long id) {
@@ -74,7 +74,7 @@ public class FormServiceImpl {
 
     // При указании id варианта, возвращается указанный id варианта, однако создался новый
     public FormDto createForm(FormDto formDTO) {
-        Form form = formDtoMapper.toEntity(formDTO);
+        Form form = formMapper.toEntity(formDTO);
 
         List<QuestionDto> questionDtos = formDTO.getQuestions();
 
@@ -93,7 +93,7 @@ public class FormServiceImpl {
         formQuestionRepository.saveAll(formQuestionList);
 
         //        return getFormById(form1.getId());
-        return formDtoMapper.toDto(form1, questionList);
+        return formMapper.toDto(form1, questionList);
     }
 
     private List<Question> processQuestions(List<QuestionDto> questionDtos, List<FormQuestion> formQuestionList,
@@ -139,7 +139,7 @@ public class FormServiceImpl {
 
     private void processNewQuestion(QuestionDto questionDto, Form form, List<FormQuestion> formQuestionList,
                                     List<Variant> variantList, List<Question> questionList) {
-        Question question = questionDtoMapper.toEntity(questionDto);
+        Question question = questionMapper.toEntity(questionDto);
         questionList.add(question);
         FormQuestion formQuestion = createFormQuestion(form, question);
         formQuestionList.add(formQuestion);
