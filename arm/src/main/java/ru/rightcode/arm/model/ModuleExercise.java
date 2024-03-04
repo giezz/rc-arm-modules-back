@@ -1,19 +1,20 @@
 package ru.rightcode.arm.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
 import java.util.Objects;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "module_exercise", schema = "doc")
+@Table(name = "module_exercise", schema = "arm")
 public class ModuleExercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,15 +22,14 @@ public class ModuleExercise {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "module_id", nullable = false)
-    @JsonBackReference
-    private Module module;
-
-    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "module_id", nullable = false)
+    private Module module;
 
     @NotNull
     @ManyToOne(optional = false)
@@ -62,4 +62,5 @@ public class ModuleExercise {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
 }

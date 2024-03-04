@@ -10,8 +10,5 @@ import java.util.List;
 
 @Repository
 public interface FormResultRepository extends JpaRepository<FormResult, Long> {
-    List<FormResult> findByPatientIdAndFormId(Long patientId, Long formId);
-    List<FormResult> findByPatientId(Long patientId);
-    @EntityGraph(attributePaths = {FormResult_.FORM})
-    List<FormResult> findByPatientIdAndFormIdIn(Long patientId, List<Long> formIds);
+    List<FormResult> findByRehabProgramId(Long programId);
 }

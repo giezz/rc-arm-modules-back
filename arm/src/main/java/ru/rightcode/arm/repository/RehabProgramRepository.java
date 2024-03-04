@@ -16,19 +16,9 @@ import java.util.Optional;
 @Repository
 public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long> {
 
-    @Override
-    @EntityGraph(attributePaths = {RehabProgram_.MODULES, RehabProgram_.START_FORM, RehabProgram_.END_FORM})
-    @NonNull
-    Optional<RehabProgram> findById(@NonNull Long Long);
-
-    @Deprecated
-    @EntityGraph(attributePaths = {RehabProgram_.MODULES, RehabProgram_.START_FORM, RehabProgram_.END_FORM})
-    Optional<RehabProgram> findByDoctorIdAndPatientIdAndIsCurrentTrue(Long doctorId, Long patientId);
-
-    @EntityGraph(attributePaths = {RehabProgram_.MODULES, RehabProgram_.START_FORM, RehabProgram_.END_FORM})
     Optional<RehabProgram> findByPatientIdAndIsCurrentTrue(Long patientId);
 
-    @EntityGraph(attributePaths = {RehabProgram_.MODULES, RehabProgram_.START_FORM, RehabProgram_.END_FORM})
+
     List<RehabProgram> findAllByPatientId(Long patientId);
 
     @Query("select exists(select 1 from RehabProgram rp where rp.doctor.id = :doctorId and rp.patient.id = :patientId and rp.isCurrent = true)")

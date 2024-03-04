@@ -1,28 +1,28 @@
 package ru.rightcode.arm.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@Entity
-@Table(schema = "doc")
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@Entity
+@Table(name = "block", schema = "arm")
 public class Block {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column
+    @NotNull
+    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
-
-    public Block() {
-    }
 
     public Block(Long id) {
         this.id = id;
     }
+
 }

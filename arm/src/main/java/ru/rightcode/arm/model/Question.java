@@ -3,12 +3,14 @@ package ru.rightcode.arm.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "question")
+@Table(name = "question", schema = "anketi")
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,10 +6,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.rightcode.arm.model.Form;
 
+import java.util.Optional;
+
 @Repository
 public interface FormRepository extends JpaRepository<Form, Long> {
-
-    @Query("select exists(select 1 from Form f where f.id = :formId)")
-    boolean checkIfExists(@Param("formId") Long formId);
-
+    @Query("select f from Form f join fetch f.results where f.id = :id")
+    Optional<Form> findFormWithResults(@Param("id") Long id);
 }

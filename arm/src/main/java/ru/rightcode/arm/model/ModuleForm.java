@@ -1,20 +1,20 @@
 package ru.rightcode.arm.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.internal.util.collections.LazySet;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
 import java.util.Objects;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "module_form", schema = "doc")
+@Table(name = "module_form", schema = "arm")
 public class ModuleForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,15 +22,14 @@ public class ModuleForm {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "module_id", nullable = false)
-    @JsonBackReference
-    private Module module;
-
-    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "form_id", nullable = false)
     private Form form;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "module_id", nullable = false)
+    private Module module;
 
     @NotNull
     @ManyToOne(optional = false)
@@ -63,4 +62,5 @@ public class ModuleForm {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
 }

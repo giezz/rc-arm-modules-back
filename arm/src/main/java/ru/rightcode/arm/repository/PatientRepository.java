@@ -27,16 +27,4 @@ public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpec
 
     @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS, Patient_.PASSPORT})
     Optional<Patient> findByPatientCode(@Param("patientCode") Long patientCode);
-
-    @Modifying
-    @Query("update Patient p set p.doctor.id = :doctorId where p.id = :patientId")
-    void addDoctor(@Param("doctorId") Long doctorId, @Param("patientId") Long patientId);
-
-    @Modifying
-    @Query("update Patient p set p.doctor = null where p.id = :id")
-    void removeDoctor(@Param("id") Long id);
-
-    @Query("select exists(select 1 from Patient p where p.id = :patientId and p.doctor.id = :doctorId)")
-    boolean checkIfDoctorCanCreateRehabProgram(@Param("doctorId") Long doctorId, @Param("patientId") Long patientId);
-
 }
