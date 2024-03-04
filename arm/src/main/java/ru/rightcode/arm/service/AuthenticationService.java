@@ -17,8 +17,8 @@ import ru.rightcode.arm.utils.JwtUtils;
 
 import java.util.stream.Collectors;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
