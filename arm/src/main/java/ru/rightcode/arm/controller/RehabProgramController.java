@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.AddFormRequest;
 import ru.rightcode.arm.dto.request.AddModuleRequest;
 import ru.rightcode.arm.dto.request.CreateRehabProgramRequest;
+import ru.rightcode.arm.service.FormResultService;
 import ru.rightcode.arm.service.RehabProgramService;
 
 import java.security.Principal;
@@ -18,10 +19,11 @@ import java.security.Principal;
 public class RehabProgramController {
 
     private final RehabProgramService rehabProgramService;
+    private final FormResultService formResultService;
 
-    @GetMapping("/patient/{patientId}/current")
-    public ResponseEntity<?> getCurrent(Principal principal, @PathVariable Long patientId) {
-        return ResponseEntity.ok(rehabProgramService.getCurrent(principal.getName(), patientId));
+    @GetMapping("/{programId}/results")
+    public ResponseEntity<?> getResults(@PathVariable Long programId) {
+        return ResponseEntity.ok(formResultService.getResults(programId));
     }
 
     @PostMapping
