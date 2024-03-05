@@ -5,22 +5,24 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.dto.VariantDto;
+import ru.rightcode.anketi.mapper.VariantDtoMapper;
+import ru.rightcode.anketi.mapper.mapstruct.FormMapper;
+import ru.rightcode.anketi.mapper.mapstruct.QuestionMapper;
+import ru.rightcode.anketi.mapper.mapstruct.VariantMapper;
 import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Scale;
+import ru.rightcode.anketi.model.Variant;
 import ru.rightcode.anketi.repository.*;
 import ru.rightcode.anketi.service.form.FormServiceImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,10 +44,16 @@ public class FormServiceTests {
     private VariantRepository variantRepository;
 
     @Mock
-    private FormDtoMapper formDtoMapper;
+    private FormMapper formDtoMapper;
 
     @Mock
-    private QuestionDtoMapper questionDtoMapper;
+    private QuestionMapper questionDtoMapper;
+
+    @Mock
+    private VariantDtoMapper variantDtoMapper;
+
+    @Mock
+    private VariantMapper variantMapper;
 
     @Mock
     private ScaleRepository scaleRepository;
@@ -61,7 +69,7 @@ public class FormServiceTests {
                 .build();
         Scale scale = Scale.builder().id(1L).description("ggg").name("fff")
                 .build();
-        scaleRepository.save(scale);
+
         // Мокируем вызовы репозиториев и мапперов
         when(scaleRepository.findById(1L)).thenReturn(Optional.of(scale));
 
@@ -72,8 +80,8 @@ public class FormServiceTests {
         toEntity.setScale(scaleRepository.findById(formDto.getScaleId()).orElse(null));
 
         when(formDtoMapper.toEntity(formDto)).thenReturn(toEntity);
-//        when(questionRepository.findById(anyLong())).thenReturn(Optional.ofNullable(any(Question.class)));
         when(formRepository.findById(anyLong())).thenReturn(Optional.ofNullable(any(Form.class)));
+
         // Вызываем тестируемый метод
         FormDto result = formService.createForm(formDto);
 
@@ -87,56 +95,72 @@ public class FormServiceTests {
 //        verify(formQuestionRepository, times(1)).saveAll(anyList());
     }
 
-    // Не работает, возвращает из formDtoMapper.toEntity(formDto) = null
-    // Создание анкеты со списком id вопросов
     @Test
-    @Transactional
-    public void testCreateFormIdsQuestions() {
+    public void testGetFormByName() {
         // Создаем тестовые данные
-        // questionRepository.saveAll(questionList.stream().map(questionDtoMapper::toEntity).collect(Collectors.toList()));
-        List<QuestionDto> idsQuestionDtos = idsQuestionDtoListCreateData();
-        List<Long> idsQuest = idsQuestionDtos.stream().map(QuestionDto::getId).toList();
-        FormDto formDto = FormDto.builder().name("Test Form")
-                .description("Test Description")
-                .scaleId(1L)
-                .questions(idsQuestionDtos)
-                .build();
+        String name = "Test Form";
+        Form form1 = new Form();
+        form1.setId(1L);
+        Form form2 = new Form();
+        form2.setId(2L);
+        List<Form> forms = List.of(form1, form2);
 
-        Scale scale = Scale.builder().id(1L).description("ggg").name("fff")
-                .build();
-        scaleRepository.save(scale);
-        // Мокируем вызовы репозиториев и мапперов
-        when(scaleRepository.findById(1L)).thenReturn(Optional.of(scale));
-
-        Form toEntity = new Form();
-        toEntity.setId(formDto.getId());
-        toEntity.setName(formDto.getName());
-        toEntity.setDescription(formDto.getDescription());
-        toEntity.setScale(scale);
-
-        Optional<Scale> scale1 = scaleRepository.findById(scale.getId());
-        Optional<Question> question = questionRepository.findById(1L);
-        assertTrue(scale1.isPresent());
-        assertTrue(question.isPresent());
-//        when(questionRepository.findById(anyLong())).thenReturn(Optional.ofNullable(any(Question.class)));
-        when(formDtoMapper.toEntity(formDto)).thenReturn(toEntity);
-        when(questionRepository.findById(anyLong())).thenReturn(Optional.ofNullable(any(Question.class)));
-
-//        when(questionRepository.findById(anyLong())).thenReturn(Optional.ofNullable(any(Question.class)));
-        when(formRepository.findById(anyLong())).thenReturn(Optional.ofNullable(any(Form.class)));
+        // Настройка поведения моков
+        when(formRepository.findAllByName(name)).thenReturn(forms);
+        when(formDtoMapper.toDto(any(Form.class), anyList())).thenReturn(new FormDto());
 
         // Вызываем тестируемый метод
-        FormDto result = formService.createForm(formDto);
+        List<FormDto> result = formService.getFormByName(name);
 
-        // Проверяем, что результат не равен null
+        // Проверяем, что результат не равен null и содержит две формы
         assertNotNull(result);
+        assertEquals(2, result.size());
 
-        // Проверяем, что был вызван метод save у formRepository один раз
-        verify(formRepository, times(1)).save(any(Form.class));
-
-        // Проверяем, что был вызван метод saveAll у formQuestionRepository один раз
-        verify(formQuestionRepository, times(1)).saveAll(anyList());
+        // Проверяем, что был вызван метод findAllByName у formRepository один раз
+        verify(formRepository, times(1)).findAllByName(name);
     }
+
+    @Test
+    public void testGetFormById() {
+        // Создаем тестовые данные
+        Long id = 1L;
+        Form form = new Form();
+        form.setId(id);
+        form.setName("Form1");
+        form.setDescription("Description1");
+
+        FormDto formDto = new FormDto();
+        formDto.setId(form.getId());
+        formDto.setName(form.getName());
+        formDto.setDescription(form.getDescription());
+        List<Question> questionList = new ArrayList<>();
+
+        when(formRepository.findById(id)).thenReturn(Optional.of(form));
+        when(formDtoMapper.toDto(form, questionList)).thenReturn(formDto);
+
+        // Вызываем тестируемый метод
+        FormDto result = formService.getFormById(id);
+
+        // Проверяем, что результат не равен null и содержит правильный ID
+        assertNotNull(result);
+        assertEquals(id, result.getId());
+
+        // Проверяем, что был вызван метод findById у formRepository один раз
+        verify(formRepository, times(1)).findById(id);
+    }
+
+    @Test
+    public void testDeleteForm() {
+        // Создаем тестовые данные
+        Long id = 1L;
+
+        // Вызываем тестируемый метод
+        formService.deleteForm(id);
+
+        // Проверяем, что был вызван метод deleteById у formRepository один раз с правильным ID
+        verify(formRepository, times(1)).deleteById(id);
+    }
+
 
     private FormDto formDtoCreateData(Long scaleId, List<QuestionDto> questionDtos){
         return FormDto.builder().name("Test Form")
@@ -150,29 +174,29 @@ public class FormServiceTests {
         List<VariantDto> variantList = new ArrayList<>();
         List<QuestionDto> questionList = new ArrayList<>();
         // Quest 1 with 1 variant
-        variantList.add(VariantDto.builder().id(1L).content("Variant 1")
+        variantList.add(VariantDto.builder().content("Variant 1")
                 .score(2.00)
                 .build()
         );
-        questionList.add(QuestionDto.builder().id(1L).content("Question1")
+        questionList.add(QuestionDto.builder().content("Question1")
                 .variants(variantList)
                 .build()
         );
         // Quest 2 with 2 variants
-        variantList.add(VariantDto.builder().id(2L).content("Variant 2")
+        variantList.add(VariantDto.builder().content("Variant 2")
                 .score(4.00)
                 .build()
         );
-        questionList.add(QuestionDto.builder().id(2L).content("Question2")
+        questionList.add(QuestionDto.builder().content("Question2")
                 .variants(variantList)
                 .build()
         );
         // Quest 3 with 3 variants
-        variantList.add(VariantDto.builder().id(3L).content("Variant 3")
+        variantList.add(VariantDto.builder().content("Variant 3")
                 .score(5.00)
                 .build()
         );
-        questionList.add(QuestionDto.builder().id(3L).content("Question3")
+        questionList.add(QuestionDto.builder().content("Question3")
                 .variants(variantList)
                 .build()
         );
@@ -187,5 +211,31 @@ public class FormServiceTests {
                     .build());
         }
         return questionDtos;
+    }
+
+    private List<Question> questionListEntities(){
+        List<QuestionDto> questionDtoList = questionDtoListCreateData();
+        List<Question> questions = new ArrayList<>();
+        for (QuestionDto qd: questionDtoList){
+            Set<Variant> variants = new HashSet<>();
+            for (VariantDto vd: qd.getVariants()){
+                Variant v = new Variant();
+                v.setContent(vd.getContent());
+                v.setScore(vd.getScore());
+                variants.add(v);
+            }
+            Question q = new Question();
+            q.setContent(qd.getContent());
+            q.setVariants(variants);
+            questions.add(q);
+        }
+        return questions;
+    }
+
+    private Variant variantCreate(Question question){
+        return Variant.builder().content("Variant 1")
+                .score(2.00)
+                .question_id(question)
+                .build();
     }
 }
