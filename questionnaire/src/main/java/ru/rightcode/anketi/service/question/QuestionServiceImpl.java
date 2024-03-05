@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.anketi.dto.QuestionDto;
-import ru.rightcode.anketi.mapper.QuestionDtoMapper;
+import ru.rightcode.anketi.mapper.mapstruct.QuestionMapper;
 import ru.rightcode.anketi.repository.QuestionRepository;
 
 import java.util.List;
@@ -17,10 +17,10 @@ public class QuestionServiceImpl {
     @Autowired
     private final QuestionRepository questionRepository;
 
-    private final QuestionDtoMapper questionMapper;
+    private final QuestionMapper questionMapper;
 
     @Autowired
-    public QuestionServiceImpl(QuestionDtoMapper questionMapper,
+    public QuestionServiceImpl(QuestionMapper questionMapper,
                                QuestionRepository questionRepository) {
         this.questionMapper= questionMapper;
         this.questionRepository = questionRepository;
