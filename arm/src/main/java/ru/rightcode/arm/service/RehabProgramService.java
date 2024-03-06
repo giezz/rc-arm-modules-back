@@ -2,10 +2,12 @@ package ru.rightcode.arm.service;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.DoctorIdInfo;
+import ru.rightcode.arm.dto.RehabProgramInfo;
 import ru.rightcode.arm.dto.request.AddFormRequest;
 import ru.rightcode.arm.dto.request.AddModuleRequest;
 import ru.rightcode.arm.dto.request.CreateRehabProgramRequest;
@@ -16,6 +18,9 @@ import ru.rightcode.arm.model.Module;
 import ru.rightcode.arm.model.Patient;
 import ru.rightcode.arm.model.RehabProgram;
 import ru.rightcode.arm.repository.RehabProgramRepository;
+
+import java.time.Instant;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +33,11 @@ public class RehabProgramService {
 
     private final DoctorService doctorService;
 
+    public List<RehabProgramInfo> getProgramsByCurrentDoctor(String doctorLogin) {
+        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
+        return rehabProgramRepository.findAllByDoctorId(doctor.getId());
+    }
+
     @Transactional
     public RehabProgramResponse create(String doctorLogin, CreateRehabProgramRequest request) {
         DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
@@ -38,6 +48,7 @@ public class RehabProgramService {
         rehabProgram.setDoctorById(doctor.getId());
         rehabProgram.setPatient(new Patient(request.patientId()));
         rehabProgram.setIsCurrent(true);
+        rehabProgram.setCreatedAt(Instant.now());
 
         return rehabProgramResponseMapper.map(rehabProgramRepository.save(rehabProgram));
     }
