@@ -36,4 +36,11 @@ public class FormService {
         );
     }
 
+    public List<FormWithResultsResponse> getFormsResults(Long programId) {
+        return formRepository.findFormsWithResultsByRehabProgramId(programId)
+                .stream()
+                .map(formWithResultsResponseMapper::map)
+                .toList();
+    }
+
 }

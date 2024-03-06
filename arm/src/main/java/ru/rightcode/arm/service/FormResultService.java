@@ -18,10 +18,9 @@ public class FormResultService {
     private final FormResultResponseMapper formResultResponseMapper;
 
     public List<FormResultResponse> getResults(Long programId) {
-//        return formResultRepository.findByRehabProgramId(programId)
-//                .stream()
-//                .map(formResultResponseMapper::map)
-//                .toList();
-        return null;
+        return formResultRepository.findByRehabProgramId(programId)
+                .stream()
+                .map(formResultResponseMapper::map)
+                .toList();
     }
 }
