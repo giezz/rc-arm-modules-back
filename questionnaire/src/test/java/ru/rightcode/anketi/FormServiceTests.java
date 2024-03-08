@@ -8,20 +8,21 @@ import org.mockito.junit.MockitoJUnitRunner;
 import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.dto.VariantDto;
-import ru.rightcode.anketi.mapper.VariantDtoMapper;
+import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.mapper.mapstruct.FormMapper;
-import ru.rightcode.anketi.mapper.mapstruct.QuestionMapper;
-import ru.rightcode.anketi.mapper.mapstruct.VariantMapper;
 import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Scale;
-import ru.rightcode.anketi.model.Variant;
-import ru.rightcode.anketi.repository.*;
+import ru.rightcode.anketi.repository.FormRepository;
+import ru.rightcode.anketi.repository.ScaleRepository;
 import ru.rightcode.anketi.service.form.FormServiceImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
@@ -35,28 +36,11 @@ public class FormServiceTests {
     private FormRepository formRepository;
 
     @Mock
-    private QuestionRepository questionRepository;
-
-    @Mock
-    private FormQuestionRepository formQuestionRepository;
-
-    @Mock
-    private VariantRepository variantRepository;
+    private ScaleRepository scaleRepository;
 
     @Mock
     private FormMapper formDtoMapper;
 
-    @Mock
-    private QuestionMapper questionDtoMapper;
-
-    @Mock
-    private VariantDtoMapper variantDtoMapper;
-
-    @Mock
-    private VariantMapper variantMapper;
-
-    @Mock
-    private ScaleRepository scaleRepository;
 
     // Создание анкеты без вопросов
     @Test
@@ -144,6 +128,8 @@ public class FormServiceTests {
         // Проверяем, что результат не равен null и содержит правильный ID
         assertNotNull(result);
         assertEquals(id, result.getId());
+        assertEquals(form.getName(), result.getName());
+        assertEquals(form.getDescription(), result.getDescription());
 
         // Проверяем, что был вызван метод findById у formRepository один раз
         verify(formRepository, times(1)).findById(id);
@@ -157,17 +143,10 @@ public class FormServiceTests {
         // Вызываем тестируемый метод
         formService.deleteForm(id);
 
+        assertThrows(NotFoundException.class, () -> formService.getFormById(id));
+
         // Проверяем, что был вызван метод deleteById у formRepository один раз с правильным ID
         verify(formRepository, times(1)).deleteById(id);
-    }
-
-
-    private FormDto formDtoCreateData(Long scaleId, List<QuestionDto> questionDtos){
-        return FormDto.builder().name("Test Form")
-                .description("Test Description")
-                .scaleId(scaleId)
-                .questions(questionDtos)
-                .build();
     }
 
     private List<QuestionDto> questionDtoListCreateData() {
@@ -203,39 +182,4 @@ public class FormServiceTests {
         return questionList;
     }
 
-    private List<QuestionDto> idsQuestionDtoListCreateData(){
-        List<QuestionDto> questionDtos = new ArrayList<>();
-        for (QuestionDto questionDto : questionDtoListCreateData()) {
-            questionDtos.add(QuestionDto.builder()
-                    .id(questionDto.getId())
-                    .build());
-        }
-        return questionDtos;
-    }
-
-    private List<Question> questionListEntities(){
-        List<QuestionDto> questionDtoList = questionDtoListCreateData();
-        List<Question> questions = new ArrayList<>();
-        for (QuestionDto qd: questionDtoList){
-            Set<Variant> variants = new HashSet<>();
-            for (VariantDto vd: qd.getVariants()){
-                Variant v = new Variant();
-                v.setContent(vd.getContent());
-                v.setScore(vd.getScore());
-                variants.add(v);
-            }
-            Question q = new Question();
-            q.setContent(qd.getContent());
-            q.setVariants(variants);
-            questions.add(q);
-        }
-        return questions;
-    }
-
-    private Variant variantCreate(Question question){
-        return Variant.builder().content("Variant 1")
-                .score(2.00)
-                .question_id(question)
-                .build();
-    }
 }
