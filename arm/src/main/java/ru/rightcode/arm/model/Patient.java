@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -74,39 +75,26 @@ public class Patient {
     private String polis;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_status_id", nullable = false)
     private PatientStatus patientStatus;
 
     @NotNull
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "passport_id", nullable = false)
     private Passport passport;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
-    @JsonBackReference
     private Doctor doctor;
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private List<RehabProgram> rehabPrograms;
 
     public Patient() {
     }
 
     public Patient(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Patient patient = (Patient) o;
-
-        return getId().equals(patient.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
     }
 }

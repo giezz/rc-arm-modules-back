@@ -3,6 +3,7 @@ package ru.rightcode.arm.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.PatientRequest;
 import ru.rightcode.arm.service.PatientService;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("api/v1/patients")
 @CrossOrigin(origins = "*")
+//@PreAuthorize("hasRole('DOCTOR')") // для теста
 @RequiredArgsConstructor
 public class PatientController {
 
@@ -41,18 +43,26 @@ public class PatientController {
 
     @GetMapping("/{code}")
     public ResponseEntity<?> getByCode(@PathVariable Long code) {
-        return ResponseEntity
-                .ok(patientService.getByCode(code));
+        return ResponseEntity.ok(patientService.getByCode(code));
     }
 
-    @PatchMapping("/add-doctor")
+    @GetMapping("/{code}/rehab-programs")
+    public ResponseEntity<?> getRehabPrograms(@PathVariable Long code,
+                                              @RequestParam(required = false) boolean current) {
+        if (current) {
+            return ResponseEntity.ok(patientService.getCurrentRehabProgram(code));
+        }
+        return ResponseEntity.ok(patientService.getAllRehabPrograms(code));
+    }
+
+    @PutMapping("/doctor")
     public ResponseEntity<?> addDoctor(Principal principal,
                                        @RequestBody Long patientId) {
         patientService.addDoctor(patientId, principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/remove-doctor")
+    @DeleteMapping("/doctor")
     public ResponseEntity<?> removeDoctor(@RequestBody Long patientId) {
         patientService.removeDoctor(patientId);
         return ResponseEntity.status(HttpStatus.CREATED).build();

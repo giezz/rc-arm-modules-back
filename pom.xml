@@ -20,6 +20,7 @@
         <module>med-cart</module>
         <module>questionnaire</module>
         <module>common-migrations</module>
+        <module>patient</module>
     </modules>
 
 </project>

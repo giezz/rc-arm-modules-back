@@ -1,4 +1,4 @@
-package ru.rightcode.arm.service;
+package ru.rightcode.arm.unit.service;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 

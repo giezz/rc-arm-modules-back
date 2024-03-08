@@ -7,6 +7,7 @@ public record ModuleExerciseDto(
         Long id,
         Long exerciseId,
         String exerciseName,
+        String thumbnailUrl,
         Long blockId,
         Instant finishedAt
 ) implements Serializable {

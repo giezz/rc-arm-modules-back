@@ -19,10 +19,6 @@ public class RehabProgramController {
 
     private final RehabProgramService rehabProgramService;
 
-    /*
-        FIXME:
-            плохой апи дизайн
-     */
     @GetMapping("/patient/{patientId}/current")
     public ResponseEntity<?> getCurrent(Principal principal, @PathVariable Long patientId) {
         return ResponseEntity.ok(rehabProgramService.getCurrent(principal.getName(), patientId));
@@ -30,15 +26,15 @@ public class RehabProgramController {
 
     @PostMapping
     public ResponseEntity<?> create(Principal principal, @RequestBody CreateRehabProgramRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(rehabProgramService.create(principal.getName(), request));
     }
 
-    @PatchMapping("/{programId}/add-form")
+    @PutMapping("/{programId}/form")
     public ResponseEntity<?> addForm(Principal principal,
                                      @RequestBody AddFormRequest request,
-                                     @PathVariable Long programId
-    ) {
+                                     @PathVariable Long programId) {
         return ResponseEntity.ok(
                 rehabProgramService.addForm(
                         principal.getName(),
@@ -48,11 +44,10 @@ public class RehabProgramController {
         );
     }
 
-    @PatchMapping("/{programId}/add-module")
+    @PutMapping("/{programId}/module")
     public ResponseEntity<?> addModule(Principal principal,
-                                     @RequestBody AddModuleRequest request,
-                                     @PathVariable Long programId
-    ) {
+                                       @RequestBody AddModuleRequest request,
+                                       @PathVariable Long programId) {
         return ResponseEntity.ok(
                 rehabProgramService.addModule(
                         principal.getName(),

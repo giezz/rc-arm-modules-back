@@ -13,8 +13,8 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("api/v1/doctors")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class DoctorController {
 
     private final DoctorService doctorService;

@@ -19,6 +19,7 @@ public class ModuleExerciseDtoMapper implements Mapper<ModuleExercise, ModuleExe
                 object.getId(),
                 object.getExercise().getId(),
                 object.getExercise().getName(),
+                "",
                 object.getBlock().getId(),
                 object.getFinishedAt()
         );

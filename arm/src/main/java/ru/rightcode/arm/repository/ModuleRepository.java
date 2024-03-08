@@ -15,8 +15,7 @@ import java.util.Optional;
 public interface ModuleRepository extends JpaRepository<Module, Long> {
 
     @Override
-//    @EntityGraph(attributePaths = {Module_.FORMS, Module_.EXERCISES})
-//    @Query("select m from Module m join fetch m.forms join fetch m.exercises where m.id = :id")
+    @EntityGraph(attributePaths = {"exercises.exercise.exerciseType", "exercises.block", "forms.form", "forms.block"})
     @NonNull
     Optional<Module> findById(@NonNull @Param("id") Long id);
 }

@@ -106,7 +106,7 @@ VALUES ('Упражнение 1', 'https://www.example.com/video1', 'Описа�
 
 
 -- Добавление связей между формами и вопросами в таблицу doc.form_question
-INSERT INTO doc.form_question (id_form, id_question)
+INSERT INTO doc.form_question (form_id, question_id)
 VALUES (1, 1),
        (2, 2),
        (2, 3),

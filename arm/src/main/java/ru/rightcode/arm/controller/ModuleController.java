@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.AddModuleExerciseRequest;
 import ru.rightcode.arm.dto.request.AddModuleFormRequest;
+import ru.rightcode.arm.dto.request.RenameModuleRequest;
 import ru.rightcode.arm.service.ModuleService;
 
 import java.security.Principal;
@@ -20,44 +21,46 @@ public class ModuleController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        return ResponseEntity
-                .ok(moduleService.getById(id));
+        return ResponseEntity.ok(moduleService.getById(id));
     }
 
-    @PostMapping("/{id}/add-form")
+    @PatchMapping("/{id}/name")
+    public ResponseEntity<?> rename(@PathVariable Long id,
+                                    @RequestBody RenameModuleRequest request,
+                                    Principal principal) {
+        return ResponseEntity.ok(moduleService.renameModule(principal.getName(), request, id));
+    }
+
+    @PostMapping("/{id}/form")
     public ResponseEntity<?> addForm(@PathVariable Long id,
                                      @RequestBody AddModuleFormRequest request,
-                                     Principal principal
-    ) {
+                                     Principal principal) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(moduleService.addForm(principal.getName(), request, id));
     }
 
-    @PostMapping("/{id}/add-exercise")
+    @PostMapping("/{id}/exercise")
     public ResponseEntity<?> addExercise(@PathVariable Long id,
                                          @RequestBody AddModuleExerciseRequest request,
-                                         Principal principal
-    ) {
+                                         Principal principal) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(moduleService.addExercise(principal.getName(), request, id));
     }
 
-    @DeleteMapping("/{id}/delete-form/{moduleFormId}")
+    @DeleteMapping("/{id}/form/{moduleFormId}")
     public ResponseEntity<?> deleteForm(@PathVariable("id") Long moduleId,
                                         @PathVariable Long moduleFormId,
-                                        Principal principal
-    ) {
+                                        Principal principal) {
         return ResponseEntity
                 .ok(moduleService.deleteForm(principal.getName(), moduleId, moduleFormId));
     }
 
-    @DeleteMapping("/{id}/delete-exercise/{moduleExerciseId}")
+    @DeleteMapping("/{id}/exercise/{moduleExerciseId}")
     public ResponseEntity<?> deleteExercise(@PathVariable("id") Long moduleId,
                                             @PathVariable Long moduleExerciseId,
-                                            Principal principal
-    ) {
+                                            Principal principal) {
         return ResponseEntity
                 .ok(moduleService.deleteExercise(principal.getName(), moduleId, moduleExerciseId));
     }
