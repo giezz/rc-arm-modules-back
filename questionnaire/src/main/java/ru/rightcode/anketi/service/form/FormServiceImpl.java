@@ -7,9 +7,9 @@ import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.dto.VariantDto;
 import ru.rightcode.anketi.exception.NotFoundException;
-import ru.rightcode.anketi.mapper.VariantDtoMapper;
 import ru.rightcode.anketi.mapper.mapstruct.FormMapper;
 import ru.rightcode.anketi.mapper.mapstruct.QuestionMapper;
+import ru.rightcode.anketi.mapper.mapstruct.VariantMapper;
 import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.FormQuestion;
 import ru.rightcode.anketi.model.Question;
@@ -33,7 +33,7 @@ public class FormServiceImpl {
     private final FormQuestionRepository formQuestionRepository;
     private final VariantRepository variantRepository;
 
-    private final VariantDtoMapper variantDtoMapper;
+    private final VariantMapper variantDtoMapper;
     private final QuestionMapper questionMapper;
     private final FormMapper formMapper;
 
@@ -67,12 +67,15 @@ public class FormServiceImpl {
         return formMapper.toDto(form, questions);
     }
 
+    // TODO: Добавить логику обработки анкеты
+
     public void deleteForm(Long id) {
         formRepository.deleteById(id);
     }
 
 
     // При указании id варианта, возвращается указанный id варианта, однако создался новый
+    @Transactional
     public FormDto createForm(FormDto formDTO) {
         Form form = formMapper.toEntity(formDTO);
 
