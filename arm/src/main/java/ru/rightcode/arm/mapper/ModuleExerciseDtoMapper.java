@@ -24,8 +24,4 @@ public class ModuleExerciseDtoMapper implements Mapper<ModuleExercise, ModuleExe
                 object.getFinishedAt()
         );
     }
-
-    public List<ModuleExerciseDto> mapAll(Collection<ModuleExercise> moduleExercise) {
-        return moduleExercise.stream().map(this::map).collect(Collectors.toList());
-    }
 }

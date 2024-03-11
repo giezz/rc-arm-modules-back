@@ -17,11 +17,26 @@ import java.util.Optional;
 @Repository
 public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long> {
 
-    Optional<RehabProgram> findByPatientIdAndIsCurrentTrue(Long patientId);
 
-    List<RehabProgram> findAllByPatientId(Long patientId);
+    List<RehabProgramInfo> findAllByPatientId(Long patientId);
+    @Override
+    @NonNull
+    @EntityGraph(attributePaths = {"forms.form", RehabProgram_.MODULES})
+    Optional<RehabProgram> findById(@NonNull Long id);
 
+    @EntityGraph(attributePaths = {RehabProgram_.PATIENT})
     List<RehabProgramInfo> findAllByDoctorId(Long id);
+
+    @Query("select rp from RehabProgram rp " +
+            "left join fetch rp.modules " +
+            "where rp.isCurrent = true and rp.patient.id = :id")
+    Optional<RehabProgram> findCurrentWithModules(@Param("id") Long id);
+
+    @Query("select rp from RehabProgram rp " +
+            "left join fetch rp.forms f " +
+            "join fetch f.form " +
+            "where rp.isCurrent = true and rp.patient.id = :id")
+    Optional<RehabProgram> findCurrentWithProgramForms(@Param("id") Long id);
 
     @Query("select exists(select 1 from RehabProgram rp where rp.doctor.id = :doctorId and rp.patient.id = :patientId and rp.isCurrent = true)")
     boolean checkIfCurrentExists(
@@ -31,12 +46,4 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
 
     @Query("select exists(select 1 from RehabProgram rp where rp.doctor.id = :doctorId and rp.id = :programId)")
     boolean checkIfDoctorCanEdit(@Param("doctorId") Long doctorId, @Param("programId") Long programId);
-
-    @Modifying
-    @Query("update RehabProgram rp set rp.startForm.id = :formId where rp.id = :programId")
-    void addStartForm(@Param("formId") Long formId, @Param("programId") Long programId);
-
-    @Modifying
-    @Query("update RehabProgram rp set rp.endForm.id = :formId where rp.id = :programId")
-    void addEndForm(@Param("formId") Long formId, @Param("programId") Long programId);
 }

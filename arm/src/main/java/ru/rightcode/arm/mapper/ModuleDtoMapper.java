@@ -24,7 +24,4 @@ public class ModuleDtoMapper implements Mapper<Module, ModuleDto> {
         );
     }
 
-    public List<ModuleDto> mapAll(Collection<Module> modules) {
-        return modules.stream().map(this::map).collect(Collectors.toList());
-    }
 }

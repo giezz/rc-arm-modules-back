@@ -8,6 +8,8 @@ import java.time.Instant;
 public interface RehabProgramInfo {
     Long getId();
 
+    PatientInfo getPatient();
+
     Boolean getIsCurrent();
 
     Instant getCreatedAt();

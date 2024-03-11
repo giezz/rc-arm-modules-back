@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.rightcode.arm.dto.RehabProgramInfo;
 import ru.rightcode.arm.dto.request.PatientRequest;
 import ru.rightcode.arm.dto.response.PatientResponse;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
@@ -13,6 +14,7 @@ import ru.rightcode.arm.mapper.PatientResponseMapper;
 import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
 import ru.rightcode.arm.model.Patient;
 import ru.rightcode.arm.model.RehabProgram;
+import ru.rightcode.arm.model.RehabProgram_;
 import ru.rightcode.arm.repository.PatientRepository;
 import ru.rightcode.arm.repository.RehabProgramRepository;
 import ru.rightcode.arm.repository.specification.PatientSpecification;
@@ -55,21 +57,21 @@ public class PatientService {
         Patient patient = patientRepository
                 .findByPatientCode(code)
                 .orElseThrow(() -> new PatientNotFoundException(code));
-        RehabProgram rehabProgram = rehabProgramRepository
-                .findByPatientIdAndIsCurrentTrue(patient.getId())
+        RehabProgram rehabProgram = rehabProgramRepository.findCurrentWithModules(patient.getId())
                 .orElseThrow(EntityNotFoundException::new);
+        rehabProgramRepository
+                .findCurrentWithProgramForms(patient.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Нет 2"));
 
         return rehabProgramResponseMapper.map(rehabProgram);
     }
 
-    public List<RehabProgramResponse> getAllRehabPrograms(Long code) {
+    public List<RehabProgramInfo> getAllRehabPrograms(Long code) {
         Patient patient = patientRepository
                 .findByPatientCode(code)
                 .orElseThrow(() -> new PatientNotFoundException(code));
-        List<RehabProgram> programs = rehabProgramRepository.
-                findAllByPatientId(patient.getId());
 
-        return programs.stream().map(rehabProgramResponseMapper::map).toList();
+        return rehabProgramRepository.findAllByPatientId(patient.getId());
     }
 
     private Optional<Specification<Patient>> specificationBuilder(PatientRequest patientRequest) {

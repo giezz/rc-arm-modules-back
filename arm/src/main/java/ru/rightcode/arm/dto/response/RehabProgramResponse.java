@@ -16,8 +16,7 @@ public record RehabProgramResponse(
         Boolean isCurrent,
         Instant startDate,
         Instant endDate,
-        FormResponse startForm,
-        FormResponse endForm,
+        List<ProgramFormResponse> forms,
         List<ModuleDto> modules
 ) implements Serializable {
 }

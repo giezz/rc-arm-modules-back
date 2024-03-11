@@ -17,9 +17,4 @@ public class FormController {
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(formService.getAll());
     }
-
-    @GetMapping("/{id}/results")
-    public ResponseEntity<?> getResults(@PathVariable Long id) {
-        return ResponseEntity.ok(formService.getFormResults(id));
-    }
 }

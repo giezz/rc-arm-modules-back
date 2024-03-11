@@ -12,9 +12,4 @@ import java.util.Optional;
 
 @Repository
 public interface FormRepository extends JpaRepository<Form, Long> {
-    @Query("select f from Form f join fetch f.results where f.id = :id")
-    Optional<Form> findFormWithResults(@Param("id") Long id);
-
-    @Query("select f from Form f join fetch f.results fr where fr.rehabProgram.id = :id order by fr.creationDate asc")
-    List<Form> findFormsWithResultsByRehabProgramId(@Param("id") Long id);
 }
