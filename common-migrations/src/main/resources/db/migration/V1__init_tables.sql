@@ -4,6 +4,14 @@
 -- Project Site: pgmodeler.io
 -- Model Author: ---
 
+-- Database creation must be performed outside a multi lined SQL file.
+-- These commands were put in this file only as a convenience.
+--
+-- object: rc_doc | type: DATABASE --
+-- DROP DATABASE IF EXISTS rc_doc;
+-- CREATE DATABASE rc_doc;
+-- ddl-end --
+
 
 -- object: arm | type: SCHEMA --
 -- DROP SCHEMA IF EXISTS arm CASCADE;
@@ -118,10 +126,8 @@ CREATE TABLE arm.rehab_program (
                                    id bigserial NOT NULL,
                                    doctor_id bigint NOT NULL,
                                    patient_id bigint NOT NULL,
-                                   start_form_id bigint,
-                                   end_form_id bigint,
                                    is_current boolean NOT NULL,
-                                   created_at timestamp,
+                                   created_at timestamp NOT NULL,
                                    start_date timestamp,
                                    end_date timestamp,
                                    CONSTRAINT rehabilitation_program_pk PRIMARY KEY (id)
@@ -152,20 +158,6 @@ CREATE TABLE arm.block (
 );
 -- ddl-end --
 ALTER TABLE arm.block OWNER TO postgres;
--- ddl-end --
-
--- object: start_form_fk | type: CONSTRAINT --
--- ALTER TABLE arm.rehab_program DROP CONSTRAINT IF EXISTS start_form_fk CASCADE;
-ALTER TABLE arm.rehab_program ADD CONSTRAINT start_form_fk FOREIGN KEY (start_form_id)
-    REFERENCES anketi.form (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: end_form_fk | type: CONSTRAINT --
--- ALTER TABLE arm.rehab_program DROP CONSTRAINT IF EXISTS end_form_fk CASCADE;
-ALTER TABLE arm.rehab_program ADD CONSTRAINT end_form_fk FOREIGN KEY (end_form_id)
-    REFERENCES anketi.form (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: arm.protocol | type: TABLE --
@@ -228,16 +220,16 @@ CREATE TABLE anketi.question (
 ALTER TABLE anketi.question OWNER TO postgres;
 -- ddl-end --
 
--- object: arm.answer | type: TABLE --
--- DROP TABLE IF EXISTS arm.answer CASCADE;
-CREATE TABLE arm.answer (
-                            id bigserial NOT NULL,
-                            variant_id bigint,
-                            form_result_id bigint NOT NULL,
-                            CONSTRAINT answer_pk PRIMARY KEY (id)
+-- object: arm.program_form_answer | type: TABLE --
+-- DROP TABLE IF EXISTS arm.program_form_answer CASCADE;
+CREATE TABLE arm.program_form_answer (
+                                         id bigserial NOT NULL,
+                                         variant_id bigint,
+                                         program_form_id bigint NOT NULL,
+                                         CONSTRAINT answer_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE arm.answer OWNER TO postgres;
+ALTER TABLE arm.program_form_answer OWNER TO postgres;
 -- ddl-end --
 
 -- object: anketi.scale | type: TABLE --
@@ -298,8 +290,8 @@ ALTER TABLE anketi.variant ADD CONSTRAINT question_fk FOREIGN KEY (question_id)
 -- ddl-end --
 
 -- object: variant_fk | type: CONSTRAINT --
--- ALTER TABLE arm.answer DROP CONSTRAINT IF EXISTS variant_fk CASCADE;
-ALTER TABLE arm.answer ADD CONSTRAINT variant_fk FOREIGN KEY (variant_id)
+-- ALTER TABLE arm.program_form_answer DROP CONSTRAINT IF EXISTS variant_fk CASCADE;
+ALTER TABLE arm.program_form_answer ADD CONSTRAINT variant_fk FOREIGN KEY (variant_id)
     REFERENCES anketi.variant (id) MATCH FULL
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
@@ -323,20 +315,6 @@ ALTER TABLE anketi.interpretation OWNER TO postgres;
 ALTER TABLE anketi.interpretation ADD CONSTRAINT scale_fk FOREIGN KEY (scale_id)
     REFERENCES anketi.scale (id) MATCH FULL
     ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: arm.form_result | type: TABLE --
--- DROP TABLE IF EXISTS arm.form_result CASCADE;
-CREATE TABLE arm.form_result (
-                                 id bigserial NOT NULL,
-                                 rehab_program_id bigint NOT NULL,
-                                 form_id bigint NOT NULL,
-                                 score numeric(100,2) NOT NULL,
-                                 creation_date timestamp NOT NULL,
-                                 CONSTRAINT form_result_pk PRIMARY KEY (id)
-);
--- ddl-end --
-ALTER TABLE arm.form_result OWNER TO postgres;
 -- ddl-end --
 
 -- object: arm._user | type: TABLE --
@@ -427,27 +405,6 @@ ALTER TABLE arm.module_exercise ADD CONSTRAINT exercise_fk FOREIGN KEY (exercise
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: arm.module_form | type: TABLE --
--- DROP TABLE IF EXISTS arm.module_form CASCADE;
-CREATE TABLE arm.module_form (
-                                 id bigserial NOT NULL,
-                                 form_id bigint NOT NULL,
-                                 module_id bigint NOT NULL,
-                                 block_id bigint NOT NULL,
-                                 finished_at timestamp,
-                                 CONSTRAINT module_form_pk PRIMARY KEY (id)
-);
--- ddl-end --
-ALTER TABLE arm.module_form OWNER TO postgres;
--- ddl-end --
-
--- object: form_fk | type: CONSTRAINT --
--- ALTER TABLE arm.module_form DROP CONSTRAINT IF EXISTS form_fk CASCADE;
-ALTER TABLE arm.module_form ADD CONSTRAINT form_fk FOREIGN KEY (form_id)
-    REFERENCES anketi.form (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
 -- object: anketi.form_question | type: TABLE --
 -- DROP TABLE IF EXISTS anketi.form_question CASCADE;
 CREATE TABLE anketi.form_question (
@@ -475,44 +432,16 @@ ALTER TABLE anketi.form_question ADD CONSTRAINT question_fk FOREIGN KEY (questio
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: form_result_fk | type: CONSTRAINT --
--- ALTER TABLE arm.answer DROP CONSTRAINT IF EXISTS form_result_fk CASCADE;
-ALTER TABLE arm.answer ADD CONSTRAINT form_result_fk FOREIGN KEY (form_result_id)
-    REFERENCES arm.form_result (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: rehab_program_fk | type: CONSTRAINT --
--- ALTER TABLE arm.form_result DROP CONSTRAINT IF EXISTS rehab_program_fk CASCADE;
-ALTER TABLE arm.form_result ADD CONSTRAINT rehab_program_fk FOREIGN KEY (rehab_program_id)
-    REFERENCES arm.rehab_program (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
 -- object: module_fk | type: CONSTRAINT --
 -- ALTER TABLE arm.module_exercise DROP CONSTRAINT IF EXISTS module_fk CASCADE;
 ALTER TABLE arm.module_exercise ADD CONSTRAINT module_fk FOREIGN KEY (module_id)
     REFERENCES arm.module (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
+    ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: block_fk | type: CONSTRAINT --
 -- ALTER TABLE arm.module_exercise DROP CONSTRAINT IF EXISTS block_fk CASCADE;
 ALTER TABLE arm.module_exercise ADD CONSTRAINT block_fk FOREIGN KEY (block_id)
-    REFERENCES arm.block (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: module_fk | type: CONSTRAINT --
--- ALTER TABLE arm.module_form DROP CONSTRAINT IF EXISTS module_fk CASCADE;
-ALTER TABLE arm.module_form ADD CONSTRAINT module_fk FOREIGN KEY (module_id)
-    REFERENCES arm.module (id) MATCH FULL
-    ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: block_fk | type: CONSTRAINT --
--- ALTER TABLE arm.module_form DROP CONSTRAINT IF EXISTS block_fk CASCADE;
-ALTER TABLE arm.module_form ADD CONSTRAINT block_fk FOREIGN KEY (block_id)
     REFERENCES arm.block (id) MATCH FULL
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
@@ -531,10 +460,111 @@ ALTER TABLE arm.rehab_program ADD CONSTRAINT doctor_fk FOREIGN KEY (doctor_id)
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
+-- object: arm.program_form | type: TABLE --
+-- DROP TABLE IF EXISTS arm.program_form CASCADE;
+CREATE TABLE arm.program_form (
+                                  id bigserial NOT NULL,
+                                  rehab_program_id bigint NOT NULL,
+                                  form_id bigint NOT NULL,
+                                  type_id bigint,
+                                  finished_at timestamp,
+                                  score numeric(100,2),
+                                  CONSTRAINT program_form_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE arm.program_form OWNER TO postgres;
+-- ddl-end --
+
 -- object: form_fk | type: CONSTRAINT --
--- ALTER TABLE arm.form_result DROP CONSTRAINT IF EXISTS form_fk CASCADE;
-ALTER TABLE arm.form_result ADD CONSTRAINT form_fk FOREIGN KEY (form_id)
+-- ALTER TABLE arm.program_form DROP CONSTRAINT IF EXISTS form_fk CASCADE;
+ALTER TABLE arm.program_form ADD CONSTRAINT form_fk FOREIGN KEY (form_id)
     REFERENCES anketi.form (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: arm.type | type: TABLE --
+-- DROP TABLE IF EXISTS arm.type CASCADE;
+CREATE TABLE arm.type (
+                          id bigserial NOT NULL,
+                          name varchar(255) NOT NULL,
+                          CONSTRAINT type_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE arm.type OWNER TO postgres;
+-- ddl-end --
+
+-- object: type_fk | type: CONSTRAINT --
+-- ALTER TABLE arm.program_form DROP CONSTRAINT IF EXISTS type_fk CASCADE;
+ALTER TABLE arm.program_form ADD CONSTRAINT type_fk FOREIGN KEY (type_id)
+    REFERENCES arm.type (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: rehab_program_fk | type: CONSTRAINT --
+-- ALTER TABLE arm.program_form DROP CONSTRAINT IF EXISTS rehab_program_fk CASCADE;
+ALTER TABLE arm.program_form ADD CONSTRAINT rehab_program_fk FOREIGN KEY (rehab_program_id)
+    REFERENCES arm.rehab_program (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: arm.module_form | type: TABLE --
+-- DROP TABLE IF EXISTS arm.module_form CASCADE;
+CREATE TABLE arm.module_form (
+                                 id bigserial NOT NULL,
+                                 module_id bigint NOT NULL,
+                                 form_id bigint NOT NULL,
+                                 finished_at timestamp,
+                                 score numeric(100,2),
+                                 CONSTRAINT module_form_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE arm.module_form OWNER TO postgres;
+-- ddl-end --
+
+-- object: module_fk | type: CONSTRAINT --
+-- ALTER TABLE arm.module_form DROP CONSTRAINT IF EXISTS module_fk CASCADE;
+ALTER TABLE arm.module_form ADD CONSTRAINT module_fk FOREIGN KEY (module_id)
+    REFERENCES arm.module (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: form_fk | type: CONSTRAINT --
+-- ALTER TABLE arm.module_form DROP CONSTRAINT IF EXISTS form_fk CASCADE;
+ALTER TABLE arm.module_form ADD CONSTRAINT form_fk FOREIGN KEY (form_id)
+    REFERENCES anketi.form (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: program_form_fk | type: CONSTRAINT --
+-- ALTER TABLE arm.program_form_answer DROP CONSTRAINT IF EXISTS program_form_fk CASCADE;
+ALTER TABLE arm.program_form_answer ADD CONSTRAINT program_form_fk FOREIGN KEY (program_form_id)
+    REFERENCES arm.program_form (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: arm.module_form_answer | type: TABLE --
+-- DROP TABLE IF EXISTS arm.module_form_answer CASCADE;
+CREATE TABLE arm.module_form_answer (
+                                        id bigserial NOT NULL,
+                                        variant_id bigint NOT NULL,
+                                        module_form_id bigint NOT NULL,
+                                        CONSTRAINT module_form_answer_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE arm.module_form_answer OWNER TO postgres;
+-- ddl-end --
+
+-- object: module_form_fk | type: CONSTRAINT --
+-- ALTER TABLE arm.module_form_answer DROP CONSTRAINT IF EXISTS module_form_fk CASCADE;
+ALTER TABLE arm.module_form_answer ADD CONSTRAINT module_form_fk FOREIGN KEY (module_form_id)
+    REFERENCES arm.module_form (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: variant_fk | type: CONSTRAINT --
+-- ALTER TABLE arm.module_form_answer DROP CONSTRAINT IF EXISTS variant_fk CASCADE;
+ALTER TABLE arm.module_form_answer ADD CONSTRAINT variant_fk FOREIGN KEY (variant_id)
+    REFERENCES anketi.variant (id) MATCH FULL
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 

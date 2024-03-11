@@ -69,6 +69,7 @@ INSERT INTO anketi.variant VALUES (12, 5, 0.00, 'Ничего');
 
 INSERT INTO arm._role VALUES (1, 'ADMIN');
 INSERT INTO arm._role VALUES (2, 'DOCTOR');
+INSERT INTO arm._role VALUES (3, 'PATIENT');
 
 --
 -- TOC entry 3536 (class 0 OID 32508)
@@ -78,6 +79,7 @@ INSERT INTO arm._role VALUES (2, 'DOCTOR');
 
 INSERT INTO arm._user VALUES (1, 'admin', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
 INSERT INTO arm._user VALUES (2, 'user', '$2a$12$Kwjwg2cajJef3S/8uCWPwuTg8PAXTDuJ9TPXZ66LVXpegbgSbvsGW');
+INSERT INTO arm._user VALUES (3, 'patient', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
 
 --
 -- TOC entry 3502 (class 0 OID 32305)
@@ -120,7 +122,7 @@ INSERT INTO arm.patient VALUES (1, 1008, 2, 4, 3, 'Иван', 'Дмитриев�
 INSERT INTO arm.patient VALUES (2, 1009, 2, 5, 2, 'Мария', 'Андреевна', 'Новикова', '5555555', '67890123456', '7890123456789012', 'f', NULL, '1995-04-27', 'ул. Красная, д. 18, кв. 6, Владивосток', NULL, 'Сбербанк');
 INSERT INTO arm.patient VALUES (3, 1006, 2, 2, 2, 'Андрей', 'Валерьевич', 'Сидоров', '5552222', '34567890123', '4567890123456789', 'm', NULL, '1980-12-05', 'пр. Победы, д. 15, кв. 3, Екатеринбург', NULL, 'Транснефть');
 INSERT INTO arm.patient VALUES (4, 1005, 2, 1, 1, 'Елена', 'Петровна', 'Иванова', '5551111', '23456789012', '3456789012345678', 'f', NULL, '1992-03-18', 'ул. Ленина, д. 20, кв. 8, Санкт-Петербург', NULL, 'Газпром');
-INSERT INTO arm.patient VALUES (5, 1007, 2, 3, 1, 'Ольга', 'Сергеевна', 'Кузнецова', '5553333', '45678901234', '5678901234567890', 'f', NULL, '1975-06-30', 'ул. Гагарина, д. 8, кв. 12, Нижний Новгород', NULL, 'РЖД');
+INSERT INTO arm.patient VALUES (5, 1007, 3, 3, 1, 'Ольга', 'Сергеевна', 'Кузнецова', '5553333', '45678901234', '5678901234567890', 'f', NULL, '1975-06-30', 'ул. Гагарина, д. 8, кв. 12, Нижний Новгород', NULL, 'РЖД');
 
 --
 -- TOC entry 3516 (class 0 OID 32375)
@@ -131,6 +133,9 @@ INSERT INTO arm.patient VALUES (5, 1007, 2, 3, 1, 'Ольга', 'Сергеев�
 INSERT INTO arm.block VALUES (1, 'Разминка');
 INSERT INTO arm.block VALUES (2, 'Основной блок');
 INSERT INTO arm.block VALUES (3, 'Заминка');
+
+INSERT INTO arm.type VALUES (1, 'Вводная анкета');
+INSERT INTO arm.type VALUES (2, 'Выходная анкета');
 
 --
 -- TOC entry 3528 (class 0 OID 32454)
@@ -162,3 +167,4 @@ INSERT INTO arm.user_role VALUES (1, 2);
 INSERT INTO arm.user_role VALUES (1, 1);
 INSERT INTO arm.user_role VALUES (2, 1);
 INSERT INTO arm.user_role VALUES (2, 2);
+INSERT INTO arm.user_role VALUES (3, 3);
