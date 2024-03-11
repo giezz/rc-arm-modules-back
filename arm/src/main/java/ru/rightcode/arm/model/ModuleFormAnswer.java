@@ -5,30 +5,23 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "form", schema = "anketi")
-public class Form {
+@Table(name = "module_form_answer", schema = "arm")
+public class ModuleFormAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
-    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
-    private String name;
-
-    @Column(name = "description", length = Integer.MAX_VALUE)
-    private String description;
-
-    public Form(Long id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "module_form_id", nullable = false)
+    private ModuleForm moduleForm;
 
 }

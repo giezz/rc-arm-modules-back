@@ -33,14 +33,6 @@ public class RehabProgram {
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @ManyToOne
-    @JoinColumn(name = "start_form_id")
-    private Form startForm;
-
-    @ManyToOne
-    @JoinColumn(name = "end_form_id")
-    private Form endForm;
-
     @NotNull
     @Column(name = "is_current", nullable = false)
     private Boolean isCurrent = false;
@@ -54,19 +46,20 @@ public class RehabProgram {
     @Column(name = "end_date")
     private Instant endDate;
 
-    @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Module> modules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ProgramForm> forms = new ArrayList<>();
 
     public void addModule(Module module) {
         modules.add(module);
         module.setRehabProgram(this);
     }
 
-    public void addAllModules(List<Module> m) {
-        for (Module module : m) {
-            modules.add(module);
-            module.setRehabProgram(this);
-        }
+    public void addForm(ProgramForm form) {
+        forms.add(form);
+        form.setRehabProgram(this);
     }
 
     public void setDoctorById(Long id) {

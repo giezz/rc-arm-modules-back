@@ -2,33 +2,28 @@ package ru.rightcode.arm.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "form", schema = "anketi")
-public class Form {
+@Table(name = "type", schema = "arm")
+public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Size(max = 255)
     @NotNull
-    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", length = Integer.MAX_VALUE)
-    private String description;
-
-    public Form(Long id) {
+    public Type(Long id) {
         this.id = id;
     }
-
 }

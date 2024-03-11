@@ -49,28 +49,14 @@ public class Module {
         exercise.setModule(null);
     }
 
-    public void addAllExercises(List<ModuleExercise> exercises) {
-        for (ModuleExercise exercise : exercises) {
-            this.exercises.add(exercise);
-            exercise.setModule(this);
-        }
-    }
-
     public void addForm(ModuleForm form) {
         forms.add(form);
         form.setModule(this);
     }
 
-    public void deleteForm(ModuleForm form) {
-        forms.remove(form);
-        form.setModule(null);
-    }
-
-    public void addAllForms(List<ModuleForm> forms) {
-        for (ModuleForm form : forms) {
-            this.forms.add(form);
-            form.setModule(this);
-        }
+    public void deleteForm(ModuleForm programForm) {
+        forms.remove(programForm);
+        programForm.setModule(null);
     }
 
 }

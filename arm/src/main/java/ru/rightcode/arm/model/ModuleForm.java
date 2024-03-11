@@ -5,8 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -22,30 +25,20 @@ public class ModuleForm {
     private Long id;
 
     @NotNull
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "form_id", nullable = false)
-    private Form form;
-
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "module_id", nullable = false)
     private Module module;
 
     @NotNull
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "block_id", nullable = false)
-    private Block block;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "form_id", nullable = false)
+    private Form form;
 
     @Column(name = "finished_at")
     private Instant finishedAt;
 
-    public void setFormById(Long id) {
-        form = new Form(id);
-    }
-
-    public void setBlockById(Long id) {
-        block = new Block(id);
-    }
+    @Column(name = "score", precision = 100, scale = 2)
+    private BigDecimal score;
 
     @Override
     public final boolean equals(Object o) {
@@ -62,5 +55,4 @@ public class ModuleForm {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -13,8 +14,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "form_result", schema = "arm")
-public class FormResult {
+@Table(name = "program_form", schema = "arm")
+public class ProgramForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,20 +23,22 @@ public class FormResult {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rehab_program_id", nullable = false)
-    private RehabProgram rehabProgram;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "form_id", nullable = false)
     private Form form;
 
-    @NotNull
-    @Column(name = "score", nullable = false, precision = 100, scale = 2)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rehab_program_id")
+    private RehabProgram rehabProgram;
+
+    @Nullable
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id")
+    private Type type;
+
+    @Column(name = "score", precision = 100, scale = 2)
     private BigDecimal score;
 
-    @NotNull
-    @Column(name = "creation_date", nullable = false)
-    private Instant creationDate;
+    @Column(name = "finished_at", nullable = false)
+    private Instant finishedAt;
 
 }
