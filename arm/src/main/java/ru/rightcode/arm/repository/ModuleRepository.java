@@ -11,9 +11,14 @@ import java.util.Optional;
 @Repository
 public interface ModuleRepository extends JpaRepository<Module, Long> {
 
-    @Query("select m from Module m left join fetch m.exercises me join fetch me.exercise join fetch me.block where m.id = :id")
+    @Query("select m from Module m " +
+            "left join fetch m.exercises me " +
+            "left join fetch me.exercise " +
+            "left join fetch me.block where m.id = :id")
     Optional<Module> findByIdWithExercises(@Param("id") Long id);
 
-    @Query("select m from Module m left join fetch m.forms f join fetch f.form where m.id = :id")
+    @Query("select m from Module m " +
+            "left join fetch m.forms f " +
+            "left join fetch f.form where m.id = :id")
     Optional<Module> findByIdWithForms(@Param("id") Long id);
 }

@@ -31,8 +31,10 @@ public class ModuleService {
     private final ModuleDetailsResponseMapper moduleDetailsResponseMapper;
 
     public ModuleDetailsResponse getById(Long id) {
-        Module module = moduleRepository.findByIdWithForms(id).orElseThrow(EntityNotFoundException::new);
-        moduleRepository.findByIdWithExercises(id).orElseThrow(EntityNotFoundException::new);
+        Module module = moduleRepository.findByIdWithForms(id)
+                .orElseThrow(() -> new EntityNotFoundException("net 1"));
+        moduleRepository.findByIdWithExercises(id)
+                .orElseThrow(() -> new EntityNotFoundException("net 2"));
 
         return moduleDetailsResponseMapper.map(module);
     }

@@ -34,7 +34,7 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
 
     @Query("select rp from RehabProgram rp " +
             "left join fetch rp.forms f " +
-            "join fetch f.form " +
+            "left join fetch f.form " +
             "where rp.isCurrent = true and rp.patient.id = :id")
     Optional<RehabProgram> findCurrentWithProgramForms(@Param("id") Long id);
 
