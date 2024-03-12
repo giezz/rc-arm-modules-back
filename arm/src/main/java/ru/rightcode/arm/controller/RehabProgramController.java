@@ -23,13 +23,12 @@ public class RehabProgramController {
     private final ModuleFormService moduleFormService;
 
     @GetMapping
-    public ResponseEntity<?> getCurrentPrograms(@RequestParam boolean byCurrentDoctor,
-                                                Principal principal) {
+    public ResponseEntity<?> getProgramsByCurrentDoctor(Principal principal) {
         return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(principal.getName()));
     }
 
-    @GetMapping("/{id}/resultsv2")
-    public ResponseEntity<?> getResultsv2(@PathVariable Long id) {
+    @GetMapping("/{id}/results")
+    public ResponseEntity<?> getResults(@PathVariable Long id) {
         return ResponseEntity.ok(moduleFormService.getResults(id));
     }
 

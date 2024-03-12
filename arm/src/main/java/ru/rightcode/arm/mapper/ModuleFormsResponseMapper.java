@@ -22,6 +22,7 @@ public class ModuleFormsResponseMapper implements Mapper<ModuleForm, ModuleFormR
 
         return new ModuleFormResponse(
                 object.getId(),
+                object.getModule().getName(),
                 form,
                 object.getFinishedAt(),
                 object.getScore()

@@ -12,7 +12,7 @@ import java.util.List;
 public interface ModuleFormRepository extends JpaRepository<ModuleForm, Long> {
 
     @Query("select mf from ModuleForm mf " +
-            "join mf.module m " +
+            "join fetch mf.module m " +
             "join fetch mf.form " +
             "where m.rehabProgram.id = :id and mf.score is not null")
     List<ModuleForm> findFormResultsByRehabProgramId(@Param("id") Long id);

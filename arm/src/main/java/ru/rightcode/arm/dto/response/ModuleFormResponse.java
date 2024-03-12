@@ -6,6 +6,7 @@ import java.time.Instant;
 
 public record ModuleFormResponse(
         Long id,
+        String moduleName,
         FormResponse form,
         Instant finishedAt,
         BigDecimal score
