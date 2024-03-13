@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.AddFormRequest;
 import ru.rightcode.arm.dto.request.AddModuleRequest;
 import ru.rightcode.arm.dto.request.CreateRehabProgramRequest;
+import ru.rightcode.arm.service.FormService;
+import ru.rightcode.arm.service.ModuleFormService;
 import ru.rightcode.arm.service.RehabProgramService;
 
 import java.security.Principal;
@@ -18,10 +20,16 @@ import java.security.Principal;
 public class RehabProgramController {
 
     private final RehabProgramService rehabProgramService;
+    private final ModuleFormService moduleFormService;
 
-    @GetMapping("/patient/{patientId}/current")
-    public ResponseEntity<?> getCurrent(Principal principal, @PathVariable Long patientId) {
-        return ResponseEntity.ok(rehabProgramService.getCurrent(principal.getName(), patientId));
+    @GetMapping
+    public ResponseEntity<?> getProgramsByCurrentDoctor(Principal principal) {
+        return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(principal.getName()));
+    }
+
+    @GetMapping("/{id}/results")
+    public ResponseEntity<?> getResults(@PathVariable Long id) {
+        return ResponseEntity.ok(moduleFormService.getResults(id));
     }
 
     @PostMapping
@@ -31,28 +39,28 @@ public class RehabProgramController {
                 .body(rehabProgramService.create(principal.getName(), request));
     }
 
-    @PutMapping("/{programId}/form")
+    @PutMapping("/{id}/form")
     public ResponseEntity<?> addForm(Principal principal,
                                      @RequestBody AddFormRequest request,
-                                     @PathVariable Long programId) {
+                                     @PathVariable Long id) {
         return ResponseEntity.ok(
                 rehabProgramService.addForm(
                         principal.getName(),
                         request,
-                        programId
+                        id
                 )
         );
     }
 
-    @PutMapping("/{programId}/module")
+    @PutMapping("/{id}/module")
     public ResponseEntity<?> addModule(Principal principal,
                                        @RequestBody AddModuleRequest request,
-                                       @PathVariable Long programId) {
+                                       @PathVariable Long id) {
         return ResponseEntity.ok(
                 rehabProgramService.addModule(
                         principal.getName(),
                         request,
-                        programId
+                        id
                 )
         );
     }

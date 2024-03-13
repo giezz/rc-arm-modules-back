@@ -1,25 +1,32 @@
 package ru.rightcode.arm.model;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "protocol", schema = "doc")
+@Table(name = "protocol", schema = "arm")
 public class Protocol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "rehab_program_id", nullable = false)
+    private RehabProgram rehabProgram;
+
+    @NotNull
+    @Column(name = "creation_date", nullable = false)
+    private Instant creationDate;
 
     @NotNull
     @Column(name = "is_final", nullable = false)
@@ -36,19 +43,5 @@ public class Protocol {
     @NotNull
     @Column(name = "rehab_diagnosis", nullable = false, length = Integer.MAX_VALUE)
     private String rehabDiagnosis;
-
-    @NotNull
-    @Column(name = "creation_date", nullable = false)
-    private LocalDate creationDate;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rehab_program_id", nullable = false)
-    private RehabProgram rehabProgram;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
 
 }

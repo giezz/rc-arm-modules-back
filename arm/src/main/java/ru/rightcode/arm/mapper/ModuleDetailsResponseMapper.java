@@ -3,8 +3,9 @@ package ru.rightcode.arm.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rightcode.arm.dto.ModuleExerciseDto;
-import ru.rightcode.arm.dto.ModuleFormDto;
 import ru.rightcode.arm.dto.response.ModuleDetailsResponse;
+import ru.rightcode.arm.dto.response.ModuleFormResponse;
+import ru.rightcode.arm.dto.response.ProgramFormResponse;
 import ru.rightcode.arm.model.Module;
 
 import java.util.List;
@@ -15,15 +16,15 @@ import java.util.Optional;
 public class ModuleDetailsResponseMapper implements Mapper<Module, ModuleDetailsResponse> {
 
     private final ModuleExerciseDtoMapper moduleExerciseDtoMapper;
+    private final ModuleFormsResponseMapper moduleFormsResponseMapper;
 
-    private final ModuleFormDtoMapper moduleFormDtoMapper;
     @Override
     public ModuleDetailsResponse map(Module object) {
-        List<ModuleExerciseDto> exercises = Optional.ofNullable(object.getExercises())
-                .map(moduleExerciseDtoMapper::mapAll)
+        final List<ModuleExerciseDto> exercises = Optional.ofNullable(object.getExercises())
+                .map(e -> e.stream().map(moduleExerciseDtoMapper::map).toList())
                 .orElse(null);
-        List<ModuleFormDto> forms = Optional.ofNullable(object.getForms())
-                .map(moduleFormDtoMapper::mapAll)
+        final List<ModuleFormResponse> forms = Optional.ofNullable(object.getForms())
+                .map(f -> f.stream().map(moduleFormsResponseMapper::map).toList())
                 .orElse(null);
 
         return new ModuleDetailsResponse(

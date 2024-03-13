@@ -1,42 +1,41 @@
 package ru.rightcode.arm.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@Entity
-@Table(name = "exercise", schema = "doc")
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@Entity
+@Table(name = "exercise", schema = "arm")
 public class Exercise {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exercise_type_id")
+    private ExerciseType exerciseType;
 
+    @Size(max = 2083)
+    @NotNull
     @Column(name = "video_url", nullable = false, length = 2083)
     private String videoUrl;
 
-    @Column(name = "description")
-    private String description;
+    @NotNull
+    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
+    private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "exercise_type_id",
-            referencedColumnName = "id"
-    )
-    @ToString.Exclude
-    private ExerciseType exerciseType;
+    @Column(name = "description", length = Integer.MAX_VALUE)
+    private String description;
 
     public Exercise(Long id) {
         this.id = id;
     }
 
-    public Exercise() {
-    }
 }

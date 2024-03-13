@@ -36,40 +36,6 @@ class RehabProgramServiceTest {
     private RehabProgramService rehabProgramService;
 
     @Test
-    void getCurrent_test_throws_EntityNotFoundException_rehab_program() {
-        String login = "";
-        when(doctorRepository.findByUserUsername(login, DoctorIdInfo.class)).thenReturn(Optional.of(() -> 1L));
-        when(rehabProgramRepository.findByDoctorIdAndPatientIdAndIsCurrentTrue(anyLong(), anyLong()))
-                .thenReturn(Optional.empty());
-
-
-        assertThrows(EntityNotFoundException.class, () -> rehabProgramService.getCurrent(login, 1L));
-    }
-
-    @Test
-    void getCurrent_test_throws_EntityNotFoundException_doctor() {
-        String login = "";
-        when(doctorRepository.findByUserUsername(login, DoctorIdInfo.class)).thenReturn(Optional.empty());
-
-        assertThrows(EntityNotFoundException.class, () -> rehabProgramService.getCurrent(login, 1L));
-    }
-
-    @Test
-    void getCurrent_valid() {
-        String login = "";
-        long doctorId = 1L;
-
-        when(doctorRepository.findByUserUsername(login, DoctorIdInfo.class)).thenReturn(Optional.of(() -> doctorId));
-        when(rehabProgramRepository.findByDoctorIdAndPatientIdAndIsCurrentTrue(doctorId, 1L))
-                .thenReturn(Optional.of(new RehabProgram()));
-
-        rehabProgramService.getCurrent(login, doctorId);
-
-        verify(rehabProgramRepository, times(1))
-                .findByDoctorIdAndPatientIdAndIsCurrentTrue(doctorId, 1L);
-    }
-
-    @Test
     void create_throws_EntityNotFoundException_doctor() {
         when(doctorRepository.findByUserUsername("", DoctorIdInfo.class)).thenReturn(Optional.empty());
         assertThrows(

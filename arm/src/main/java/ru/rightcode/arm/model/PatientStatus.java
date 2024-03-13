@@ -1,21 +1,24 @@
 package ru.rightcode.arm.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "patient_status", schema = "doc")
+@NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "status", schema = "arm")
 public class PatientStatus {
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = -1)
+    @NotNull
+    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
 
 }

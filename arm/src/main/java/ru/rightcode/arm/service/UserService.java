@@ -12,8 +12,8 @@ import ru.rightcode.arm.repository.UserRepository;
 
 import java.util.stream.Collectors;
 
-@Service
 @RequiredArgsConstructor
+@Service
 //@Transactional(readOnly = true)
 public class UserService implements UserDetailsService {
 
