@@ -8,24 +8,16 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
-
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
-@Table(name = "answer", schema = "doc")
+@Table(name = "answer", schema = "arm")
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
@@ -33,12 +25,9 @@ public class Answer {
     private Variant variant;
 
     @NotNull
-    @Column(name = "answered_at", nullable = false)
-    private LocalDate answeredAt;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "form_result_id", nullable = false)
+    private FormResult formResult;
 
-    public Answer(Patient patient, Variant variant) {
-        this.patient = patient;
-        this.variant = variant;
-        this.answeredAt = LocalDate.now();
-    }
 }

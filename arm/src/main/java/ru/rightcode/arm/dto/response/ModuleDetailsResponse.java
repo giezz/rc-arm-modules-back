@@ -1,7 +1,6 @@
 package ru.rightcode.arm.dto.response;
 
 import ru.rightcode.arm.dto.ModuleExerciseDto;
-import ru.rightcode.arm.dto.ModuleFormDto;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -12,6 +11,6 @@ public record ModuleDetailsResponse(
         String name,
         Instant finishedAt,
         List<ModuleExerciseDto> exercises,
-        List<ModuleFormDto> forms
+        List<ModuleFormResponse> forms
 ) implements Serializable {
 }

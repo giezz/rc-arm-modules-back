@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
+import ru.rightcode.arm.dto.RehabProgramInfo;
 import ru.rightcode.arm.model.RehabProgram;
 import ru.rightcode.arm.model.RehabProgram_;
 
@@ -16,20 +17,26 @@ import java.util.Optional;
 @Repository
 public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long> {
 
+
+    List<RehabProgramInfo> findAllByPatientId(Long patientId);
     @Override
-    @EntityGraph(attributePaths = {RehabProgram_.MODULES, RehabProgram_.START_FORM, RehabProgram_.END_FORM})
     @NonNull
-    Optional<RehabProgram> findById(@NonNull Long Long);
+    @EntityGraph(attributePaths = {"forms.form", RehabProgram_.MODULES})
+    Optional<RehabProgram> findById(@NonNull Long id);
 
-    @Deprecated
-    @EntityGraph(attributePaths = {RehabProgram_.MODULES, RehabProgram_.START_FORM, RehabProgram_.END_FORM})
-    Optional<RehabProgram> findByDoctorIdAndPatientIdAndIsCurrentTrue(Long doctorId, Long patientId);
+    @EntityGraph(attributePaths = {RehabProgram_.PATIENT})
+    List<RehabProgramInfo> findAllByDoctorId(Long id);
 
-    @EntityGraph(attributePaths = {RehabProgram_.MODULES, RehabProgram_.START_FORM, RehabProgram_.END_FORM})
-    Optional<RehabProgram> findByPatientIdAndIsCurrentTrue(Long patientId);
+    @Query("select rp from RehabProgram rp " +
+            "left join fetch rp.modules " +
+            "where rp.isCurrent = true and rp.patient.id = :id")
+    Optional<RehabProgram> findCurrentWithModules(@Param("id") Long id);
 
-    @EntityGraph(attributePaths = {RehabProgram_.MODULES, RehabProgram_.START_FORM, RehabProgram_.END_FORM})
-    List<RehabProgram> findAllByPatientId(Long patientId);
+    @Query("select rp from RehabProgram rp " +
+            "left join fetch rp.forms f " +
+            "left join fetch f.form " +
+            "where rp.isCurrent = true and rp.patient.id = :id")
+    Optional<RehabProgram> findCurrentWithProgramForms(@Param("id") Long id);
 
     @Query("select exists(select 1 from RehabProgram rp where rp.doctor.id = :doctorId and rp.patient.id = :patientId and rp.isCurrent = true)")
     boolean checkIfCurrentExists(
@@ -39,12 +46,4 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
 
     @Query("select exists(select 1 from RehabProgram rp where rp.doctor.id = :doctorId and rp.id = :programId)")
     boolean checkIfDoctorCanEdit(@Param("doctorId") Long doctorId, @Param("programId") Long programId);
-
-    @Modifying
-    @Query("update RehabProgram rp set rp.startForm.id = :formId where rp.id = :programId")
-    void addStartForm(@Param("formId") Long formId, @Param("programId") Long programId);
-
-    @Modifying
-    @Query("update RehabProgram rp set rp.endForm.id = :formId where rp.id = :programId")
-    void addEndForm(@Param("formId") Long formId, @Param("programId") Long programId);
 }

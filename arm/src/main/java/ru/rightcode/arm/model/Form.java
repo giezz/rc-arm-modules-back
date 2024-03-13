@@ -1,31 +1,34 @@
 package ru.rightcode.arm.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@Entity
-@Table(name = "form", schema = "doc")
+import java.util.ArrayList;
+import java.util.List;
+
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@Entity
+@Table(name = "form", schema = "anketi")
 public class Form {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @NotNull
+    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
-
-    public Form() {
-    }
 
     public Form(Long id) {
         this.id = id;
     }
+
 }

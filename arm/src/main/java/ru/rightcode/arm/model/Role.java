@@ -1,34 +1,26 @@
 package ru.rightcode.arm.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "_role", schema = "doc")
+@NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "_role", schema = "arm")
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Role role = (Role) o;
-
-        return getId().equals(role.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
-    }
 }

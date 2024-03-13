@@ -1,40 +1,44 @@
 package ru.rightcode.arm.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "_user", schema = "doc")
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@Entity
+@Table(name = "_user", schema = "arm")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "login")
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "login", nullable = false)
     private String username;
 
-    @Column
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "password", nullable = false)
     private String password;
 
     @ManyToMany
     @JoinTable(
-            schema = "doc",
+            schema = "arm",
             name = "user_role",
-            joinColumns = @JoinColumn(name = "_user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "_role_id", referencedColumnName = "id")
-    )
+            joinColumns = @JoinColumn(name = "_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "_role_id"))
     @ToString.Exclude
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new LinkedHashSet<>();
 
 }

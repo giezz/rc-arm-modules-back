@@ -10,8 +10,8 @@ import ru.rightcode.arm.repository.ExerciseRepository;
 
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
+@Service
 @Transactional(readOnly = true)
 public class ExerciseService {
 

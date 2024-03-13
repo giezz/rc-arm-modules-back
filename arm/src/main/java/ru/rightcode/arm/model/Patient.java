@@ -1,19 +1,20 @@
 package ru.rightcode.arm.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "patient", schema = "doc", indexes = {
+@Table(name = "patient", schema = "arm", indexes = {
         @Index(name = "patient_code_uq", columnList = "patient_code", unique = true),
         @Index(name = "passport_uq", columnList = "passport_id", unique = true)
 })
@@ -75,8 +76,8 @@ public class Patient {
     private String polis;
 
     @NotNull
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_status_id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", nullable = false)
     private PatientStatus patientStatus;
 
     @NotNull
@@ -84,17 +85,11 @@ public class Patient {
     @JoinColumn(name = "passport_id", nullable = false)
     private Passport passport;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
-
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<RehabProgram> rehabPrograms;
-
-    public Patient() {
-    }
 
     public Patient(Long id) {
         this.id = id;
     }
+
 }

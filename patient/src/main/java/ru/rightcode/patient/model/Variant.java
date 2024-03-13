@@ -3,16 +3,18 @@ package ru.rightcode.patient.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "variant", schema = "doc")
+@Table(name = "variant", schema = "anketi")
 public class Variant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

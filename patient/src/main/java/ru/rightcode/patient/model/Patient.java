@@ -4,16 +4,18 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "patient", schema = "doc")
+@Table(name = "patient", schema = "arm")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +60,10 @@ public class Patient {
     @NotNull
     @Column(name = "polis", nullable = false, length = 16)
     private String polis;
+
+    @NotNull
+    @Column(name = "gender", nullable = false, length = Integer.MAX_VALUE)
+    private String gender;
 
     @Column(name = "death_date")
     private LocalDate deathDate;

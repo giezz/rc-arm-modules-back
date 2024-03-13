@@ -3,17 +3,19 @@ package ru.rightcode.patient.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "module_form", schema = "doc")
-public class ModuleForm {
+@Table(name = "form_question", schema = "anketi")
+public class FormQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -25,7 +27,7 @@ public class ModuleForm {
     @JoinColumn(name = "form_id", nullable = false)
     private Form form;
 
-    @Column(name = "finished_at")
-    private Instant finishedAt;
+    @Column(name = "created_at")
+    private Instant createdAt;
 
 }

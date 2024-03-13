@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rightcode.arm.dto.response.FormResponse;
 import ru.rightcode.arm.dto.ModuleDto;
+import ru.rightcode.arm.dto.response.ProgramFormResponse;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.model.RehabProgram;
 
@@ -15,19 +16,15 @@ import java.util.Optional;
 public class RehabProgramResponseMapper implements Mapper<RehabProgram, RehabProgramResponse> {
 
     private final ModuleDtoMapper moduleDtoMapper;
-
-    private final FormResponseMapper formResponseMapper;
+    private final ProgramFormResponseMapper programFormResponseMapper;
 
     @Override
     public RehabProgramResponse map(RehabProgram object) {
         final List<ModuleDto> moduleDtos = Optional.ofNullable(object.getModules())
-                .map(moduleDtoMapper::mapAll)
+                .map(modules -> modules.stream().map(moduleDtoMapper::map).toList())
                 .orElse(null);
-        final FormResponse startForm = Optional.ofNullable(object.getStartForm())
-                .map(formResponseMapper::map)
-                .orElse(null);
-        final FormResponse endForm = Optional.ofNullable(object.getEndForm())
-                .map(formResponseMapper::map)
+        final List<ProgramFormResponse> formsResponses = Optional.ofNullable(object.getForms())
+                .map(forms -> forms.stream().map(programFormResponseMapper::map).toList())
                 .orElse(null);
 
         return new RehabProgramResponse(
@@ -35,8 +32,7 @@ public class RehabProgramResponseMapper implements Mapper<RehabProgram, RehabPro
                 object.getIsCurrent(),
                 object.getStartDate(),
                 object.getEndDate(),
-                startForm,
-                endForm,
+                formsResponses,
                 moduleDtos
         );
     }

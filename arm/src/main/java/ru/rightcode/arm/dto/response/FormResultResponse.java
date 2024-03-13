@@ -2,11 +2,12 @@ package ru.rightcode.arm.dto.response;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 
 public record FormResultResponse(
-        FormResponse form,
+        Long id,
         BigDecimal score,
-        LocalDate creationDate
+        Instant creationDate
 ) implements Serializable {
 }

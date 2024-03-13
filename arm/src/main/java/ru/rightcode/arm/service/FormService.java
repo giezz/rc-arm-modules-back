@@ -8,10 +8,9 @@ import ru.rightcode.arm.mapper.FormResponseMapper;
 import ru.rightcode.arm.repository.FormRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
 @RequiredArgsConstructor
+@Service
 @Transactional(readOnly = true)
 public class FormService {
 
@@ -23,7 +22,7 @@ public class FormService {
         return formRepository.findAll()
                 .stream()
                 .map(formResponseMapper::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }
