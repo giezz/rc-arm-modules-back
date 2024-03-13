@@ -1,67 +1,4 @@
 --
--- TOC entry 3526 (class 0 OID 32440)
--- Dependencies: 237
--- Data for Name: scale; Type: TABLE DATA; Schema: anketi; Owner: postgres
---
-
-INSERT INTO anketi.scale VALUES (1, 'Шкала A', 'Описание шкалы A');
-INSERT INTO anketi.scale VALUES (2, 'Шкала B', 'Описание шкалы B');
-INSERT INTO anketi.scale VALUES (3, 'Шкала C', 'Описание шкалы C');
-
---
--- TOC entry 3506 (class 0 OID 32327)
--- Dependencies: 217
--- Data for Name: form; Type: TABLE DATA; Schema: anketi; Owner: postgres
---
-
-INSERT INTO anketi.form VALUES (3, 3, 'Тестовая анкета 3', 'Описание');
-INSERT INTO anketi.form VALUES (1, 1, 'Погода', 'Анкета с двумя вопросами');
-INSERT INTO anketi.form VALUES (2, 2, 'Что Вы ели', 'Анкета с тремя вопросами');
-
---
--- TOC entry 3522 (class 0 OID 32424)
--- Dependencies: 233
--- Data for Name: question; Type: TABLE DATA; Schema: anketi; Owner: postgres
---
-
-INSERT INTO anketi.question VALUES (1, 'Как у Вас дела?');
-INSERT INTO anketi.question VALUES (2, 'Какая сегодня погода?');
-INSERT INTO anketi.question VALUES (3, 'Что Вы ели на завтрак?');
-INSERT INTO anketi.question VALUES (4, 'Что Вы ели на обед?');
-INSERT INTO anketi.question VALUES (5, 'Что Вы ели на ужин');
-
---
--- TOC entry 3545 (class 0 OID 32578)
--- Dependencies: 256
--- Data for Name: form_question; Type: TABLE DATA; Schema: anketi; Owner: postgres
---
-
-INSERT INTO anketi.form_question VALUES (1, 1, 1, '2024-03-04 19:07:15');
-INSERT INTO anketi.form_question VALUES (2, 2, 1, '2024-03-04 19:07:17');
-INSERT INTO anketi.form_question VALUES (3, 3, 2, '2024-03-04 19:07:18');
-INSERT INTO anketi.form_question VALUES (4, 4, 2, '2024-03-04 19:07:19');
-INSERT INTO anketi.form_question VALUES (5, 5, 2, '2024-03-04 19:07:20');
-
---
--- TOC entry 3530 (class 0 OID 32468)
--- Dependencies: 241
--- Data for Name: variant; Type: TABLE DATA; Schema: anketi; Owner: postgres
---
-
-INSERT INTO anketi.variant VALUES (6, 2, 1.50, 'Пасмурно');
-INSERT INTO anketi.variant VALUES (4, 2, 4.00, 'Ясная');
-INSERT INTO anketi.variant VALUES (3, 1, 2.50, 'Не очень');
-INSERT INTO anketi.variant VALUES (5, 2, 2.00, 'Местами облачность');
-INSERT INTO anketi.variant VALUES (2, 1, 3.00, 'Хорошо');
-INSERT INTO anketi.variant VALUES (1, 1, 5.00, 'Отлично');
-INSERT INTO anketi.variant VALUES (7, 3, 1.00, 'Кашу');
-INSERT INTO anketi.variant VALUES (8, 3, 0.00, 'Ничего');
-INSERT INTO anketi.variant VALUES (9, 4, 1.00, 'Суп');
-INSERT INTO anketi.variant VALUES (10, 4, 0.00, 'Ничего');
-INSERT INTO anketi.variant VALUES (11, 5, 1.00, 'Рис');
-INSERT INTO anketi.variant VALUES (12, 5, 0.00, 'Ничего');
-
---
 -- TOC entry 3538 (class 0 OID 32517)
 -- Dependencies: 249
 -- Data for Name: _role; Type: TABLE DATA; Schema: arm; Owner: postgres
@@ -168,3 +105,164 @@ INSERT INTO arm.user_role VALUES (1, 1);
 INSERT INTO arm.user_role VALUES (2, 1);
 INSERT INTO arm.user_role VALUES (2, 2);
 INSERT INTO arm.user_role VALUES (3, 3);
+
+--
+-- TOC entry 3576 (class 0 OID 0)
+-- Dependencies: 246
+-- Name: _role_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm._role_id_seq', 1, false);
+
+
+--
+-- TOC entry 3577 (class 0 OID 0)
+-- Dependencies: 244
+-- Name: _user_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm._user_id_seq', 1, false);
+
+
+--
+-- TOC entry 3578 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: block_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.block_id_seq', 1, false);
+
+
+--
+-- TOC entry 3579 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: doctor_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.doctor_id_seq', 1, false);
+
+
+--
+-- TOC entry 3580 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: exercise_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.exercise_id_seq', 1, false);
+
+
+--
+-- TOC entry 3581 (class 0 OID 0)
+-- Dependencies: 238
+-- Name: exercise_type_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.exercise_type_id_seq', 1, false);
+
+
+--
+-- TOC entry 3582 (class 0 OID 0)
+-- Dependencies: 249
+-- Name: module_exercise_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.module_exercise_id_seq', 1, false);
+
+
+--
+-- TOC entry 3583 (class 0 OID 0)
+-- Dependencies: 259
+-- Name: module_form_answer_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.module_form_answer_id_seq', 1, false);
+
+
+--
+-- TOC entry 3584 (class 0 OID 0)
+-- Dependencies: 257
+-- Name: module_form_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.module_form_id_seq', 1, false);
+
+
+--
+-- TOC entry 3585 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: module_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.module_id_seq', 1, false);
+
+
+--
+-- TOC entry 3586 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: passport_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.passport_id_seq', 1, false);
+
+
+--
+-- TOC entry 3587 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: patient_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.patient_id_seq', 1, false);
+
+
+--
+-- TOC entry 3588 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: program_form_answer_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.program_form_answer_id_seq', 1, false);
+
+
+--
+-- TOC entry 3589 (class 0 OID 0)
+-- Dependencies: 253
+-- Name: program_form_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.program_form_id_seq', 1, false);
+
+
+--
+-- TOC entry 3590 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: protocol_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.protocol_id_seq', 1, false);
+
+
+--
+-- TOC entry 3591 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: rehab_program_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.rehab_program_id_seq', 1, false);
+
+
+--
+-- TOC entry 3592 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: status_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.status_id_seq', 1, false);
+
+
+--
+-- TOC entry 3593 (class 0 OID 0)
+-- Dependencies: 255
+-- Name: type_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+--
+
+SELECT pg_catalog.setval('arm.type_id_seq', 1, false);
