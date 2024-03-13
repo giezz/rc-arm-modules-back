@@ -24,11 +24,11 @@ INSERT INTO anketi.form VALUES (2, 2, 'Что Вы ели', 'Анкета с т�
 -- Data for Name: question; Type: TABLE DATA; Schema: anketi; Owner: postgres
 --
 
-INSERT INTO anketi.question VALUES (1, 'Как у Вас дела?');
-INSERT INTO anketi.question VALUES (2, 'Какая сегодня погода?');
-INSERT INTO anketi.question VALUES (3, 'Что Вы ели на завтрак?');
-INSERT INTO anketi.question VALUES (4, 'Что Вы ели на обед?');
-INSERT INTO anketi.question VALUES (5, 'Что Вы ели на ужин');
+INSERT INTO anketi.question VALUES (1, 'Как у Вас дела?', 'SINGLE_CHOICE');
+INSERT INTO anketi.question VALUES (2, 'Какая сегодня погода?', 'MULTIPLE_CHOICE');
+INSERT INTO anketi.question VALUES (3, 'Что Вы ели на завтрак?', 'SINGLE_CHOICE');
+INSERT INTO anketi.question VALUES (4, 'Что Вы ели на обед?', 'SINGLE_CHOICE');
+INSERT INTO anketi.question VALUES (5, 'Что Вы ели на ужин', 'SINGLE_CHOICE');
 
 --
 -- TOC entry 3545 (class 0 OID 32578)

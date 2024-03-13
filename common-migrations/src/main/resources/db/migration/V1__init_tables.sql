@@ -214,6 +214,7 @@ ALTER TABLE arm.patient ADD CONSTRAINT passport_uq UNIQUE (passport_id);
 CREATE TABLE anketi.question (
                                  id bigserial NOT NULL,
                                  content text NOT NULL,
+                                 type text NOT NULL,
                                  CONSTRAINT question_pk PRIMARY KEY (id)
 );
 -- ddl-end --
