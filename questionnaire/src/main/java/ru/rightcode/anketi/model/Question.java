@@ -10,7 +10,7 @@ import java.util.*;
 @Getter
 @Setter
 @Entity
-@Table(schema = "doc")
+@Table(schema = "anketi")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,6 +23,9 @@ public class Question {
 
     @Column(name = "content", nullable = false)
     private String content;
+
+    @Column(name = "type", nullable = false)
+    private String type;
 
     @OneToMany(mappedBy = "question_id")
     @ToString.Exclude

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rightcode.anketi.model.Answer;
 import ru.rightcode.anketi.repository.AnswerRepository;
 
 import java.util.List;

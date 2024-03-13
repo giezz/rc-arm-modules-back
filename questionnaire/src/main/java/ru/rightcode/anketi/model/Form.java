@@ -4,15 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
 @Builder
 @Entity
-@Table(schema = "doc")
+@Table(schema = "anketi")
 //@ToString(exclude = {"scale", "questions"})
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,12 +29,6 @@ public class Form {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scale_id")
     private Scale scale;
-
-    @OneToMany(mappedBy = "form")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<FormResult> formResults = new LinkedHashSet<>();
-
 
     @OneToMany(mappedBy = "idForm")
     @ToString.Exclude

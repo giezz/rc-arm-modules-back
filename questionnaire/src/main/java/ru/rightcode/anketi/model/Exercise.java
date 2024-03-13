@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(schema = "doc")
+@Table(schema = "arm")
 public class Exercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

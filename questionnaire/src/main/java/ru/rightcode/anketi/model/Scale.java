@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(schema = "doc")
+@Table(schema = "anketi")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

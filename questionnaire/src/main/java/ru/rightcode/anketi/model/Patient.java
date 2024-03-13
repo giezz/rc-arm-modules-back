@@ -13,7 +13,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(schema = "doc")
+@Table(schema = "anketi")
 @Getter
 @Setter
 @NoArgsConstructor

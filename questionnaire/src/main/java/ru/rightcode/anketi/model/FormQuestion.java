@@ -11,7 +11,7 @@ import java.time.Instant;
 @Setter
 @Builder
 @Entity
-@Table(name = "form_question", schema = "doc")
+@Table(name = "form_question", schema = "anketi")
 @NoArgsConstructor
 @AllArgsConstructor
 public class FormQuestion {
