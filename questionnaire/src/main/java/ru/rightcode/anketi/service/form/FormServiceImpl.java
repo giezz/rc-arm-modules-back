@@ -41,7 +41,7 @@ public class FormServiceImpl {
     public List<FormDto> getAllForms() {
         List<Form> forms = formRepository.findAll();
         return forms.stream().map((Form form) -> formMapper.toDto(
-                form, form.getFormQuestions().stream().map(FormQuestion::getIdQuestion).toList()
+                form, form.getFormQuestions().stream().map(FormQuestion::getQuestion).toList()
         )).toList();
     }
 
@@ -49,7 +49,7 @@ public class FormServiceImpl {
     public List<FormDto> getFormByName(String name) {
         List<Form> forms = formRepository.findAllByName(name);
         return forms.stream().map((Form form) -> formMapper.toDto(
-                form, form.getFormQuestions().stream().map(FormQuestion::getIdQuestion).toList()
+                form, form.getFormQuestions().stream().map(FormQuestion::getQuestion).toList()
         )).toList();
     }
 
@@ -60,8 +60,8 @@ public class FormServiceImpl {
         List<FormQuestion> formQuestionList = form.getFormQuestions();
         List<Question> questions = new ArrayList<>();
         for (FormQuestion fq : formQuestionList) {
-            if (fq.getIdForm().getId().equals(form.getId())) {
-                questions.add(fq.getIdQuestion());
+            if (fq.getForm().getId().equals(form.getId())) {
+                questions.add(fq.getQuestion());
             }
         }
         return formMapper.toDto(form, questions);
@@ -134,8 +134,8 @@ public class FormServiceImpl {
 
     private FormQuestion createFormQuestion(Form form, Question question) {
         return FormQuestion.builder()
-                .idForm(form)
-                .idQuestion(question)
+                .form(form)
+                .question(question)
                 .createdAt(Instant.now())
                 .build();
     }
