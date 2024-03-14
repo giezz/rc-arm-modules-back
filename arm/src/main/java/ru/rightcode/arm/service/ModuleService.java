@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rightcode.arm.dto.DoctorIdInfo;
+import ru.rightcode.arm.dto.projection.DoctorIdInfo;
 import ru.rightcode.arm.dto.request.AddModuleExerciseRequest;
 import ru.rightcode.arm.dto.request.AddModuleFormRequest;
 import ru.rightcode.arm.dto.request.RenameModuleRequest;

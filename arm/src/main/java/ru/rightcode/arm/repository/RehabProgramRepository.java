@@ -2,12 +2,11 @@ package ru.rightcode.arm.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
-import ru.rightcode.arm.dto.RehabProgramInfo;
+import ru.rightcode.arm.dto.projection.RehabProgramInfo;
 import ru.rightcode.arm.model.RehabProgram;
 import ru.rightcode.arm.model.RehabProgram_;
 

@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import ru.rightcode.arm.dto.DoctorInfo;
-import ru.rightcode.arm.model.Doctor;
+import ru.rightcode.arm.dto.projection.DoctorInfo;
 
 import java.security.Key;
 import java.time.Duration;
