@@ -21,7 +21,6 @@ public interface FormMapper {
     FormDto toDto(Form form, List<Question> questionList);
 
     @Mapping(target = "scale.id", source = "scaleId")
-    @Mapping(target = "formResults", ignore = true)
     @Mapping(target = "formQuestions", source = "questions")
     Form toEntity(FormDto formDto);
 

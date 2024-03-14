@@ -14,7 +14,6 @@ import java.util.List;
 public interface VariantMapper {
 
     @Mapping(target = "question_id", ignore = true)
-    @Mapping(target = "answers", ignore = true)
     Variant toEntity(VariantDto variantDto);
 
     VariantDto toDto(Variant variant);
