@@ -31,7 +31,7 @@ public class Question {
     @ToString.Exclude
     private Set<Variant> variants = new HashSet<>();
 
-    @OneToMany(mappedBy = "idQuestion")
+    @OneToMany(mappedBy = "question")
     @ToString.Exclude
     private List<FormQuestion> formQuestions = new ArrayList<>();
 

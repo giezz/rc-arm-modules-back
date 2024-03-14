@@ -2,9 +2,11 @@ package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -30,7 +32,7 @@ public class Form {
     @JoinColumn(name = "scale_id")
     private Scale scale;
 
-    @OneToMany(mappedBy = "idForm")
+    @OneToMany(mappedBy = "form")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<FormQuestion> formQuestions = new ArrayList<>();
@@ -40,18 +42,20 @@ public class Form {
         this.description = description;
         this.scale = scale;
     }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Form form = (Form) o;
-
-        return getId().equals(form.getId());
-    }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Form that = (Form) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 }

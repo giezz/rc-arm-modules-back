@@ -2,9 +2,11 @@ package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -25,14 +27,13 @@ public class Scale {
     @Column(name = "description", nullable = false)
     private String description;
 
-//    @OneToMany(mappedBy = "scale")
-//    @ToString.Exclude
-//    @XmlElement(name = "form")
-//    private List<Form> forms = new ArrayList<>();
-
     @OneToMany(mappedBy = "scale")
     @ToString.Exclude
     private List<Interpretation> interpretations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "scale")
+    @ToString.Exclude
+    private List<Form> forms = new ArrayList<>();
 
     public Scale(Long id, String name, String description) {
         this.id = id;
@@ -43,15 +44,16 @@ public class Scale {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Scale scale = (Scale) o;
-
-        return getId().equals(scale.getId());
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Scale that = (Scale) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }

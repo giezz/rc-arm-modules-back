@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -29,12 +27,8 @@ public class Variant {
     private Double score;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", nullable = true)
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question_id;
-
-    @OneToMany(mappedBy = "variant")
-    @ToString.Exclude
-    private Set<Answer> answers = new HashSet<>();
 
     public Variant(Long id, String content, Double score) {
         this.id = id;

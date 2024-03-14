@@ -22,13 +22,13 @@ public class FormQuestion {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "id_question", nullable = false)
-    private Question idQuestion;
+    @JoinColumn(name = "question_id", nullable = false)
+    private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "id_form", nullable = false)
-    private Form idForm;
+    @JoinColumn(name = "form_id", nullable = false)
+    private Form form;
 
     @Column(name = "created_at")
     private Instant createdAt;
