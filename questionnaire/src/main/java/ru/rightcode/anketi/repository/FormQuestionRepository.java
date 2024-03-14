@@ -13,12 +13,12 @@ import java.util.List;
 
 @Repository
 public interface FormQuestionRepository extends JpaRepository<FormQuestion, Long> {
-    List<FormQuestion> findFormQuestionsByIdForm(Form idForm);
+    List<FormQuestion> findFormQuestionsByForm(Form idForm);
 
-    @EntityGraph(attributePaths = {"idQuestion.variants", "idForm.scale"})
-    List<FormQuestion> findByIdForm(Form idForm);
+    @EntityGraph(attributePaths = {"question.variants", "form.scale"})
+    List<FormQuestion> findByForm(Form idForm);
 
-    @Query("SELECT fq.idQuestion FROM FormQuestion fq WHERE fq.idForm = :form")
+    @Query("SELECT fq.question FROM FormQuestion fq WHERE fq.form = :form")
     List<Question> findQuestionsByForm(@Param("form") Form form);
 
 
