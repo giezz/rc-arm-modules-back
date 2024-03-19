@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.rightcode.arm.model.ModuleForm;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ModuleFormRepository extends JpaRepository<ModuleForm, Long> {
@@ -16,4 +17,12 @@ public interface ModuleFormRepository extends JpaRepository<ModuleForm, Long> {
             "join fetch mf.form " +
             "where m.rehabProgram.id = :id and mf.score is not null")
     List<ModuleForm> findFormResultsByRehabProgramId(@Param("id") Long id);
+
+    @Query("select mf from ModuleForm mf " +
+            "join fetch mf.form f " +
+            "join fetch mf.moduleFormAnswers mfa " +
+            "join fetch mfa.variant v " +
+            "join fetch v.question q " +
+            "where mf.id = :id")
+    Optional<ModuleForm> findFormResultsWithAnswers(@Param("id") Long id);
 }

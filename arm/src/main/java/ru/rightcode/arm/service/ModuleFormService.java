@@ -6,7 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.response.ModuleFormResponse;
 import ru.rightcode.arm.mapper.ModuleFormsResponseMapper;
+import ru.rightcode.arm.model.Form;
 import ru.rightcode.arm.model.ModuleForm;
+import ru.rightcode.arm.model.ModuleFormAnswer;
+import ru.rightcode.arm.repository.ModuleFormAnswerRepository;
 import ru.rightcode.arm.repository.ModuleFormRepository;
 
 import java.util.List;
@@ -26,5 +29,10 @@ public class ModuleFormService {
         }
 
         return results.stream().map(moduleFormsResponseMapper::map).toList();
+    }
+
+    public void getFormAndResults(Long moduleFormId) {
+        ModuleForm moduleForm = moduleFormRepository.findFormResultsWithAnswers(moduleFormId).orElseThrow();
+
     }
 }

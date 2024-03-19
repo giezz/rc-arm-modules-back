@@ -5,15 +5,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
+import java.time.Instant;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "module_form_answer", schema = "arm")
-public class ModuleFormAnswer {
+@Table(name = "form_question", schema = "anketi")
+public class FormQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -21,12 +21,15 @@ public class ModuleFormAnswer {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "variant_id", nullable = false)
-    private Variant variant;
+    @JoinColumn(name = "question_id", nullable = false)
+    private Question question;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "module_form_id", nullable = false)
-    private ModuleForm moduleForm;
+    @JoinColumn(name = "form_id", nullable = false)
+    private Form form;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
 
 }

@@ -2,8 +2,8 @@ package ru.rightcode.arm.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.rightcode.arm.model.Form;
+import ru.rightcode.arm.model.ModuleFormAnswer;
 
 @Repository
-public interface FormRepository extends JpaRepository<Form, Long> {
+public interface ModuleFormAnswerRepository extends JpaRepository<ModuleFormAnswer, Long> {
 }
