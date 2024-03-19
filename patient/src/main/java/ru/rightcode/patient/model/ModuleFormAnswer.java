@@ -8,15 +8,12 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "form_result", schema = "arm")
-public class FormResult {
+@Table(name = "module_form_answer", schema = "arm")
+public class ModuleFormAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -25,21 +22,17 @@ public class FormResult {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "rehab_program_id", nullable = false)
-    private RehabProgram rehabProgram;
+    @JoinColumn(name = "variant_id", nullable = false)
+    private Variant variant;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "form_id", nullable = false)
-    private Form form;
+    @JoinColumn(name = "module_form_id", nullable = false)
+    private ModuleForm moduleForm;
 
     @NotNull
-    @Column(name = "score", nullable = false, precision = 100, scale = 2)
-    private BigDecimal score;
-
-    @NotNull
-    @Column(name = "creation_date", nullable = false)
-    private Instant creationDate;
+    @Column(name = "is_marked", nullable = false)
+    private Boolean isMarked = false;
 
 }

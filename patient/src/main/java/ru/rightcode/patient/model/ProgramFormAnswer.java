@@ -12,22 +12,17 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @Setter
 @Entity
-@Table(name = "answer", schema = "arm")
-public class Answer {
+@Table(name = "program_form_answer", schema = "arm")
+public class ProgramFormAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "variant_id")
-    private Variant variant;
-
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "form_result_id", nullable = false)
-    private FormResult formResult;
+    @JoinColumn(name = "program_form_id", nullable = false)
+    private ProgramForm programForm;
 
 }

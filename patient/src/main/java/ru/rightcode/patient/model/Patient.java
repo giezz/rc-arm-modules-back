@@ -32,6 +32,12 @@ public class Patient {
     @JoinColumn(name = "_user_id", nullable = false)
     private User user;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "status_id", nullable = false)
+    private Status status;
+
     @Size(max = 255)
     @NotNull
     @Column(name = "first_name", nullable = false)

@@ -10,17 +10,21 @@ import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class FormServiceTest{
+public class ModuleFormServiceTest {
 
     @Autowired
-    private FormService formService;
+    private ModuleFormService moduleFormService;
 
     @Test
     void completeForm() {
         List<AnswerRequest> request = List.of(
-                new AnswerRequest(2L),
-                new AnswerRequest(5L)
+                new AnswerRequest(1L, false),
+                new AnswerRequest(2L, true),
+                new AnswerRequest(3L, false),
+                new AnswerRequest(4L, false),
+                new AnswerRequest(5L, true),
+                new AnswerRequest(6L, false)
         );
-        formService.submitAnswers(1L, request, "patient");
+        moduleFormService.submitModuleFormAnswer(2L, request, "patient");
     }
 }
