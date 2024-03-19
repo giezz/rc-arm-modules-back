@@ -226,6 +226,7 @@ CREATE TABLE arm.program_form_answer (
                                          id bigserial NOT NULL,
                                          variant_id bigint,
                                          program_form_id bigint NOT NULL,
+                                         is_marked boolean NOT NULL,
                                          CONSTRAINT answer_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -546,8 +547,9 @@ ALTER TABLE arm.program_form_answer ADD CONSTRAINT program_form_fk FOREIGN KEY (
 -- DROP TABLE IF EXISTS arm.module_form_answer CASCADE;
 CREATE TABLE arm.module_form_answer (
                                         id bigserial NOT NULL,
-                                        variant_id bigint NOT NULL,
                                         module_form_id bigint NOT NULL,
+                                        variant_id bigint NOT NULL,
+                                        is_marked boolean NOT NULL,
                                         CONSTRAINT module_form_answer_pk PRIMARY KEY (id)
 );
 -- ddl-end --
