@@ -10,4 +10,11 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
+
+    @Query("select q from Question q " +
+            "join fetch q.variants " +
+            "join q.formQuestions fq " +
+            "join fq.form f " +
+            "where f.id = :id")
+    List<Question> findQuestionsByFormId(@Param("id") Long formId);
 }

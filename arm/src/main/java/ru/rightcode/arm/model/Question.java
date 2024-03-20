@@ -27,6 +27,9 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private List<Variant> variants = new ArrayList<>();
 
+    @OneToMany(mappedBy = "question")
+    private List<FormQuestion> formQuestions = new ArrayList<>();
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

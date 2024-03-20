@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public record VariantResponse(
         Long id,
-        String content,
-        boolean isAnswered
+        String content
 ) implements Serializable {
 }

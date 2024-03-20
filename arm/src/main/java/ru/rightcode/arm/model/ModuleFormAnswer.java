@@ -29,4 +29,8 @@ public class ModuleFormAnswer {
     @JoinColumn(name = "module_form_id", nullable = false)
     private ModuleForm moduleForm;
 
+    @NotNull
+    @Column(name = "is_marked", nullable = false)
+    private Boolean isMarked = false;
+
 }

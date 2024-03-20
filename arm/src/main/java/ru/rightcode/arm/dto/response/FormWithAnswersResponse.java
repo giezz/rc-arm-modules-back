@@ -5,6 +5,7 @@ import java.util.List;
 
 public record FormWithAnswersResponse(
         FormResponse form,
-        List<QuestionResponse> questions
+        List<QuestionResponse> questions,
+        List<VariantResponse> answeredVariants
 ) implements Serializable {
 }

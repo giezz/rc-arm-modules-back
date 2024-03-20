@@ -12,8 +12,7 @@ public class VariantResponseMapper implements Mapper<Variant, VariantResponse> {
     public VariantResponse map(Variant object) {
         return new VariantResponse(
                 object.getId(),
-                object.getContent(),
-                false
+                object.getContent()
         );
     }
 }
