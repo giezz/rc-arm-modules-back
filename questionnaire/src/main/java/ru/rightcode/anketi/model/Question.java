@@ -27,6 +27,9 @@ public class Question {
     @Column(name = "type", nullable = false)
     private String type;
 
+    @Column(name = "required", nullable = false)
+    private Boolean required = false;
+
     @OneToMany(mappedBy = "question_id")
     @ToString.Exclude
     private Set<Variant> variants = new HashSet<>();

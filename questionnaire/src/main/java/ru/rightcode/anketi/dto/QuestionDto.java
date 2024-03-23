@@ -16,6 +16,8 @@ public class QuestionDto{
     private Long id ;
     @Nullable
     private String content;
+
+    private Boolean required = false;
     @Nullable
     private QuestionTypeEnum type = QuestionTypeEnum.SINGLE_CHOICE;
     @Nullable

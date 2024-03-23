@@ -60,3 +60,9 @@ INSERT INTO anketi.variant(question_id, score, content) VALUES (4, 1.00, 'Суп
 INSERT INTO anketi.variant(question_id, score, content) VALUES (4, 0.00, 'Ничего');
 INSERT INTO anketi.variant(question_id, score, content) VALUES (5, 1.00, 'Рис');
 INSERT INTO anketi.variant(question_id, score, content) VALUES (5, 0.00, 'Ничего');
+
+
+INSERT INTO anketi.interpretation(scale_id, min_value, max_value, description) VALUES (1, 1, 5, 'Отлично');
+INSERT INTO anketi.interpretation(scale_id, min_value, max_value, description) VALUES (1, 6, 10, 'Хорошо');
+INSERT INTO anketi.interpretation(scale_id, min_value, max_value, description) VALUES (1, 11, 15, 'Отлично');
+INSERT INTO anketi.interpretation(scale_id, min_value, max_value, description) VALUES (1, 16, 20, 'Кашу');
