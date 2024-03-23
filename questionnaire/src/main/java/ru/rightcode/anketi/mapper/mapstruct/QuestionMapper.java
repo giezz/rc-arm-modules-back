@@ -14,10 +14,12 @@ uses = {VariantMapper.class},
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface QuestionMapper {
     @Mapping(target = "variants", source = "question.variants")
+    @Mapping(target = "type", source = "question.type")
     QuestionDto toDto(Question question);
 
     @Mapping(target = "formQuestions", ignore = true)
     @Mapping(target = "variants", source = "variants")
+    @Mapping(target = "type", source = "type")
     Question toEntity(QuestionDto questionDto);
     List<QuestionDto> toDtoList(List<Question> questions);
     List<Question> toEntityList(List<QuestionDto> questionDtoList);
