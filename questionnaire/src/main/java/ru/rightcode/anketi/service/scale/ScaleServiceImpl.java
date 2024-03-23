@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rightcode.anketi.model.Scale;
+import ru.rightcode.anketi.dto.ScaleDto;
+import ru.rightcode.anketi.mapper.mapstruct.ScaleMapper;
 import ru.rightcode.anketi.repository.ScaleRepository;
 
 import java.util.List;
@@ -17,9 +18,11 @@ public class ScaleServiceImpl {
     @Autowired
     private final ScaleRepository scaleRepository;
 
+    private final ScaleMapper scaleMapper;
 
-    public List<Scale> getScales() {
-        return scaleRepository.findAll();
+
+    public List<ScaleDto> getScales() {
+        return scaleRepository.findAll().stream().map(scaleMapper::toDto).toList();
     }
 
 //    @Override

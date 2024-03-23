@@ -33,7 +33,8 @@ public class FormController {
         return ResponseEntity.ok(formService.getFormByName(name));
     }
 
-    // TODO: обработка анкеты от пользователя
+    // TODO: UPDATE FORM
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         formService.deleteForm(id);

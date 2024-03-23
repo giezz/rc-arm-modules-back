@@ -12,15 +12,15 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
 uses = {QuestionMapper.class,
         VariantMapper.class,
-        FormQuestionMapper.class})
+        FormQuestionMapper.class,
+        ScaleMapper.class,
+})
 public interface FormMapper {
-//    FormMapper INSTANCE = Mappers.getMapper(FormMapper.class);
-
     @Mapping(target = "questions", source = "questionList")
-    @Mapping(source = "form.scale.id", target = "scaleId")
+    @Mapping(source = "form.scale", target = "scaleId")
     FormDto toDto(Form form, List<Question> questionList);
 
-    @Mapping(target = "scale.id", source = "scaleId")
+    @Mapping(target = "scale", source = "scaleId")
     @Mapping(target = "formQuestions", source = "questions")
     Form toEntity(FormDto formDto);
 
