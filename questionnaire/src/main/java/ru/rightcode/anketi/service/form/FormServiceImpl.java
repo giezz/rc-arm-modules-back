@@ -23,7 +23,9 @@ import ru.rightcode.anketi.repository.VariantRepository;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -77,7 +79,7 @@ public class FormServiceImpl {
     }
 
 
-    // При указании id варианта, возвращается указанный id варианта, однако создался новый
+    // Возможность удалять вопросы и варианты
     @Transactional
     public FormDto createForm(FormDto formDTO) {
         // Проверяем, указан ли ID формы
@@ -102,7 +104,7 @@ public class FormServiceImpl {
     }
 
     private List<Question> processQuestionsAndVariants(List<QuestionDto> questionDTOs, Form form) {
-        List<Question> questions = new ArrayList<>();
+        List<Question> newQuestionList = new ArrayList<>();
         // Проходимся по всем вопросам в DTO и обновляем или создаем соответствующие вопросы и варианты
         for (QuestionDto questionDTO : questionDTOs) {
             Question question;
@@ -118,16 +120,17 @@ public class FormServiceImpl {
             } else {
                 // Если ID не указан, создаем новый вопрос
                 question = questionMapper.toEntity(questionDTO);
-                questions.add(question);
+                newQuestionList.add(question);
             }
 
             Question savedQuestion = questionRepository.save(question);
             // Обрабатываем варианты для вопроса
-            if (questionDTO.getVariants() != null){
+            if (questionDTO.getVariants() != null) {
                 processVariants(questionDTO.getVariants(), savedQuestion);
             }
         }
-        return questions;
+
+        return newQuestionList;
     }
 
     private void processVariants(Set<VariantDto> variantDTOs, Question question) {
@@ -165,18 +168,35 @@ public class FormServiceImpl {
     }
 
     private FormDto createSaveFormDto(FormDto formDto, Form form) {
+        List<Question> oldQuestions = form.getFormQuestions()
+                .stream()
+                .map(FormQuestion::getQuestion)
+                .filter(Objects::nonNull)
+                .toList();
+
+        List<Question> newQuestions = questionMapper.toEntityList(formDto.getQuestions());
+
         // Обрабатываем вопросы и варианты
-        List<Question> savedQuestions = processQuestionsAndVariants(formDto.getQuestions(), form);
+        List<Question> savedNewQuestions = processQuestionsAndVariants(formDto.getQuestions(), form);
 
         // Сохраняем форму в базе данных
         Form savedForm = formRepository.save(form);
 
-        for (Question question : savedQuestions) {
-            FormQuestion fq = createFormQuestion(savedForm, question);
-            formQuestionRepository.save(fq);
-        }
+        // Удаляем старые вопросы, которых уже нет в новом списке вопросов
+        List<Question> ostatok = oldQuestions.stream()
+                .filter(question -> !newQuestions.contains(question) && question != null)
+                .toList();
+        ostatok.forEach(question -> {
+            formQuestionRepository.deleteByQuestionId(savedForm.getId(), question.getId());
+            variantRepository.deleteByQuestion_id(question.getId());
+            questionRepository.deleteById(question.getId());
+        });
+        // Создаем связи между формой и вопросами
+        savedNewQuestions.forEach(question -> formQuestionRepository.save(createFormQuestion(savedForm, question)));
 
-        // Возвращаем преобразованный объект DTO сохраненной формы
-        return formMapper.toDto(savedForm, savedQuestions);
+        // Соберем новые вопросы и старые вопросы
+        List<Question> allQuestions = Stream.concat(oldQuestions.stream(), savedNewQuestions.stream())
+                .toList();
+        return formMapper.toDto(savedForm, allQuestions);
     }
 }
