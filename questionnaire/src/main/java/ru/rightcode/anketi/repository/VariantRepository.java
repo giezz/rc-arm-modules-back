@@ -2,6 +2,7 @@ package ru.rightcode.anketi.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,8 @@ public interface VariantRepository extends JpaRepository<Variant, Long> {
     @EntityGraph(attributePaths = {})
     @NonNull
     List<Variant> findAll();
+
+    @Modifying
+    @Query("delete from Variant v where v.question_id.id =?1")
+    void deleteByQuestion_id(Long questionId);
 }
