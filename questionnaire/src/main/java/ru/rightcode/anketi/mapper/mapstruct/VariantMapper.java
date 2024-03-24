@@ -7,7 +7,7 @@ import org.mapstruct.MappingConstants;
 import ru.rightcode.anketi.dto.VariantDto;
 import ru.rightcode.anketi.model.Variant;
 
-import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
@@ -18,7 +18,7 @@ public interface VariantMapper {
 
     VariantDto toDto(Variant variant);
 
-    List<VariantDto> toDtoList(List<Variant> variantList);
+    Set<VariantDto> toDtoSet(Set<Variant> variantSet);
 
-    List<Variant> toEntityList(List<VariantDto> variantDtoList);
+    Set<Variant> toEntitySet(Set<VariantDto> variantDtoSet);
 }
