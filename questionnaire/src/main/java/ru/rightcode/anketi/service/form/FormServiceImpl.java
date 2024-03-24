@@ -83,50 +83,26 @@ public class FormServiceImpl {
         // Проверяем, указан ли ID формы
         if (formDTO.getId() != null) {
             // Если ID указан, значит мы обновляем существующую форму
-            return updateForm(formDTO);
+            // Проверяем, существует ли форма с указанным ID в базе данных
+            Form existingForm = formRepository.findById(formDTO.getId())
+                    .orElseThrow(() -> new NotFoundException("Form not found with id: " + formDTO.getId()));
+
+            // Обновляем поля существующей формы
+            existingForm.setName(formDTO.getName());
+            existingForm.setDescription(formDTO.getDescription());
+            existingForm.setScale(scaleMapper.toEntity(formDTO.getScaleId()));
+
+            return createSaveFormDto(formDTO, existingForm);
         } else {
-            // Если ID не указан, создаем новую форму
-            return saveNewForm(formDTO);
+            // Создаем новую форму
+            Form form = formMapper.toEntity(formDTO);
+
+            return createSaveFormDto(formDTO, form);
         }
     }
 
-    private FormDto saveNewForm(FormDto formDTO) {
-        // Создаем новую форму
-        Form form = formMapper.toEntity(formDTO);
-
-        // Обрабатываем вопросы и варианты
-        processQuestionsAndVariants(formDTO.getQuestions(), form);
-
-        // Сохраняем форму в базе данных
-        Form savedForm = formRepository.save(form);
-
-        // Возвращаем преобразованный объект DTO сохраненной формы
-        return formMapper.toDto(savedForm,
-                form.getFormQuestions().stream().map(FormQuestion::getQuestion).toList());
-    }
-
-    private FormDto updateForm(FormDto formDTO) {
-        // Проверяем, существует ли форма с указанным ID в базе данных
-        Form existingForm = formRepository.findById(formDTO.getId())
-                .orElseThrow(() -> new NotFoundException("Form not found with id: " + formDTO.getId()));
-
-        // Обновляем поля существующей формы
-        existingForm.setName(formDTO.getName());
-        existingForm.setDescription(formDTO.getDescription());
-        existingForm.setScale(scaleMapper.toEntity(formDTO.getScaleId()));
-
-        // Обрабатываем вопросы и варианты
-        processQuestionsAndVariants(formDTO.getQuestions(), existingForm);
-
-        // Сохраняем обновленную форму в базе данных
-        Form savedForm = formRepository.save(existingForm);
-
-        // Возвращаем преобразованный объект DTO сохраненной формы
-        return formMapper.toDto(savedForm,
-                savedForm.getFormQuestions().stream().map(FormQuestion::getQuestion).toList());
-    }
-
-    private void processQuestionsAndVariants(List<QuestionDto> questionDTOs, Form form) {
+    private List<Question> processQuestionsAndVariants(List<QuestionDto> questionDTOs, Form form) {
+        List<Question> questions = new ArrayList<>();
         // Проходимся по всем вопросам в DTO и обновляем или создаем соответствующие вопросы и варианты
         for (QuestionDto questionDTO : questionDTOs) {
             Question question;
@@ -142,15 +118,16 @@ public class FormServiceImpl {
             } else {
                 // Если ID не указан, создаем новый вопрос
                 question = questionMapper.toEntity(questionDTO);
-                FormQuestion formQuestion = createFormQuestion(form, question);
-                formQuestionRepository.save(formQuestion);
+                questions.add(question);
             }
-            // Сохраняем или обновляем вопрос в базе данных
-            Question savedQuestion = questionRepository.save(question);
 
+            Question savedQuestion = questionRepository.save(question);
             // Обрабатываем варианты для вопроса
-            processVariants(questionDTO.getVariants(), savedQuestion);
+            if (questionDTO.getVariants() != null){
+                processVariants(questionDTO.getVariants(), savedQuestion);
+            }
         }
+        return questions;
     }
 
     private void processVariants(Set<VariantDto> variantDTOs, Question question) {
@@ -187,4 +164,19 @@ public class FormServiceImpl {
                 .build();
     }
 
+    private FormDto createSaveFormDto(FormDto formDto, Form form) {
+        // Обрабатываем вопросы и варианты
+        List<Question> savedQuestions = processQuestionsAndVariants(formDto.getQuestions(), form);
+
+        // Сохраняем форму в базе данных
+        Form savedForm = formRepository.save(form);
+
+        for (Question question : savedQuestions) {
+            FormQuestion fq = createFormQuestion(savedForm, question);
+            formQuestionRepository.save(fq);
+        }
+
+        // Возвращаем преобразованный объект DTO сохраненной формы
+        return formMapper.toDto(savedForm, savedQuestions);
+    }
 }
