@@ -38,8 +38,11 @@ public class Variant {
     @Column(name = "content", nullable = false, length = Integer.MAX_VALUE)
     private String content;
 
-    @OneToMany(mappedBy = "variant")
+    @OneToMany(mappedBy = "variant", fetch = FetchType.LAZY)
     private List<ModuleFormAnswer> moduleFormAnswers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "variant", fetch = FetchType.LAZY)
+    private List<ProgramFormAnswer> programFormAnswers = new ArrayList<>();
 
     @Override
     public final boolean equals(Object o) {

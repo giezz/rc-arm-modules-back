@@ -20,6 +20,11 @@ public class Interpretation {
     private Long id;
 
     @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "scale_id", nullable = false)
+    private Scale scale;
+
+    @NotNull
     @Column(name = "min_value", nullable = false, precision = 100, scale = 2)
     private BigDecimal minValue;
 
@@ -30,5 +35,7 @@ public class Interpretation {
     @NotNull
     @Column(name = "description", nullable = false, length = Integer.MAX_VALUE)
     private String description;
+
+
 
 }

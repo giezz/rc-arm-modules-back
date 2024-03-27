@@ -9,6 +9,7 @@ import java.io.Serializable;
 public record FormResponse(
         Long id,
         String name,
-        String description
+        String description,
+        String scale
 ) implements Serializable {
 }

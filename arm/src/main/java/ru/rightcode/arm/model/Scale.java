@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -23,5 +26,8 @@ public class Scale {
 
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
+
+    @OneToMany(mappedBy = "scale")
+    private List<Interpretation> interpretations = new ArrayList<>();
 
 }

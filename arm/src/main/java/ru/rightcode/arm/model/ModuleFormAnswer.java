@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @NoArgsConstructor
 @Getter
@@ -28,9 +26,5 @@ public class ModuleFormAnswer {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "module_form_id", nullable = false)
     private ModuleForm moduleForm;
-
-    @NotNull
-    @Column(name = "is_marked", nullable = false)
-    private Boolean isMarked = false;
 
 }

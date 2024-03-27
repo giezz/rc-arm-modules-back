@@ -6,11 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.AddFormRequest;
 import ru.rightcode.arm.dto.request.AddModuleRequest;
+import ru.rightcode.arm.dto.request.CreateProtocolRequest;
 import ru.rightcode.arm.dto.request.CreateRehabProgramRequest;
 import ru.rightcode.arm.service.ModuleFormService;
+import ru.rightcode.arm.service.ProgramFormService;
+import ru.rightcode.arm.service.ProtocolService;
 import ru.rightcode.arm.service.RehabProgramService;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/rehabs")
@@ -20,15 +24,30 @@ public class RehabProgramController {
 
     private final RehabProgramService rehabProgramService;
     private final ModuleFormService moduleFormService;
+    private final ProgramFormService programFormService;
+    private final ProtocolService protocolService;
 
     @GetMapping
     public ResponseEntity<?> getProgramsByCurrentDoctor(Principal principal) {
         return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(principal.getName()));
     }
 
-    @GetMapping("/{id}/results")
-    public ResponseEntity<?> getResults(@PathVariable Long id) {
-        return ResponseEntity.ok(moduleFormService.getResults(id));
+    @GetMapping("/{id}/modules-forms-results")
+    public ResponseEntity<?> getModulesResults(@PathVariable Long id,
+                                               @RequestParam(required = false) List<Long> excludeIds) {
+        if (excludeIds == null) {
+            excludeIds = List.of(-1L);
+        }
+        return ResponseEntity.ok(moduleFormService.getAllResults(id, excludeIds));
+    }
+
+    @GetMapping("/{id}/program-forms-results")
+    public ResponseEntity<?> getFormResults(@PathVariable Long id,
+                                            @RequestParam(required = false) List<Long> excludeIds) {
+        if (excludeIds == null) {
+            excludeIds = List.of(-1L);
+        }
+        return ResponseEntity.ok(programFormService.getAllResults(id, excludeIds));
     }
 
     @PostMapping
@@ -36,6 +55,15 @@ public class RehabProgramController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(rehabProgramService.create(principal.getName(), request));
+    }
+
+    @PostMapping("/{id}/protocol")
+    public ResponseEntity<?> createProtocol(@RequestBody CreateProtocolRequest request,
+                                            @PathVariable Long id) {
+        protocolService.create(id, request);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(null);
     }
 
     @PutMapping("/{id}/form")

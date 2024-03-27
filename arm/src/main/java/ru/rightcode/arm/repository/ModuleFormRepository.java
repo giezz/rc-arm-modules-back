@@ -14,15 +14,15 @@ public interface ModuleFormRepository extends JpaRepository<ModuleForm, Long> {
 
     @Query("select mf from ModuleForm mf " +
             "join fetch mf.module m " +
-            "join fetch mf.form " +
-            "where m.rehabProgram.id = :id and mf.score is not null")
-    List<ModuleForm> findFormResultsByRehabProgramId(@Param("id") Long id);
-
-    @Query("select mf from ModuleForm mf " +
             "join fetch mf.form f " +
-            "join fetch mf.moduleFormAnswers mfa " +
-            "join fetch mfa.variant v " +
-            "join fetch v.question q " +
-            "where mf.id = :id")
-    Optional<ModuleForm> findFormResultsWithAnswers(@Param("id") Long id);
+            "left join fetch f.scale s " +
+            "left join fetch s.interpretations i " +
+            "where m.rehabProgram.id = :id and mf.score is not null " +
+            "and mf.score between i.minValue and i.maxValue " +
+            "and mf.id not in (:ids)")
+    List<ModuleForm> findFormResultsByRehabProgramId(
+            @Param("id") Long id,
+            @Param("ids") List<Long> excludeIds
+    );
+
 }

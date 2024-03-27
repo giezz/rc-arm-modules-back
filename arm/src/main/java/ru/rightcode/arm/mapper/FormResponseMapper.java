@@ -11,7 +11,8 @@ public class FormResponseMapper implements Mapper<Form, FormResponse> {
         return new FormResponse(
                 object.getId(),
                 object.getName(),
-                object.getDescription()
+                object.getDescription(),
+                object.getScale().getName()
         );
     }
 }
