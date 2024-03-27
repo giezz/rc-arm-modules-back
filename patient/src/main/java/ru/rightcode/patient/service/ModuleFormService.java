@@ -39,11 +39,8 @@ public class ModuleFormService {
             ModuleFormAnswer moduleFormAnswer = new ModuleFormAnswer();
             moduleFormAnswer.setModuleForm(moduleForm);
             moduleFormAnswer.setVariant(variant);
-            moduleFormAnswer.setIsMarked(answerRequest.isMarked());
             moduleFormAnswerRepository.save(moduleFormAnswer);
-            if (answerRequest.isMarked()) {
-                sum = sum.add(variant.getScore());
-            }
+            sum = sum.add(variant.getScore());
         }
 
         moduleForm.setFinishedAt(Instant.now());

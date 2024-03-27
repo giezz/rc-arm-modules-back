@@ -22,6 +22,12 @@ public class ProgramFormAnswer {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "variant_id", nullable = false)
+    private Variant variant;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "program_form_id", nullable = false)
     private ProgramForm programForm;
 
