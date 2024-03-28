@@ -8,7 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.rightcode.arm.dto.DoctorIdInfo;
+import ru.rightcode.arm.dto.projection.DoctorIdInfo;
 import ru.rightcode.arm.dto.request.CreateRehabProgramRequest;
 import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
 import ru.rightcode.arm.model.RehabProgram;
