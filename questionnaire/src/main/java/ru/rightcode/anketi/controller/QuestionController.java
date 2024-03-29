@@ -3,7 +3,7 @@ package ru.rightcode.anketi.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.rightcode.anketi.service.question.QuestionServiceImpl;
+import ru.rightcode.anketi.service.QuestionServiceImpl;
 
 @RestController
 @RequestMapping("/question")

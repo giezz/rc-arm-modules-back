@@ -1,4 +1,4 @@
-package ru.rightcode.anketi.service.question;
+package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

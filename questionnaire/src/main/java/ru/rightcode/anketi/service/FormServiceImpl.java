@@ -1,4 +1,4 @@
-package ru.rightcode.anketi.service.form;
+package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,6 @@ import ru.rightcode.anketi.model.FormQuestion;
 import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.repository.FormQuestionRepository;
 import ru.rightcode.anketi.repository.FormRepository;
-import ru.rightcode.anketi.service.question.QuestionServiceImpl;
-import ru.rightcode.anketi.service.variant.VariantServiceImpl;
 
 import java.time.Instant;
 import java.util.ArrayList;

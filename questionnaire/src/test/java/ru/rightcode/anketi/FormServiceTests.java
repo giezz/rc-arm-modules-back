@@ -16,7 +16,7 @@ import ru.rightcode.anketi.model.Question;
 import ru.rightcode.anketi.model.Scale;
 import ru.rightcode.anketi.repository.FormRepository;
 import ru.rightcode.anketi.repository.ScaleRepository;
-import ru.rightcode.anketi.service.form.FormServiceImpl;
+import ru.rightcode.anketi.service.FormServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;

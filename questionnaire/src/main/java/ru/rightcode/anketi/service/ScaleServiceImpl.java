@@ -1,4 +1,4 @@
-package ru.rightcode.anketi.service.scale;
+package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.anketi.dto.FormDto;
-import ru.rightcode.anketi.service.form.FormServiceImpl;
+import ru.rightcode.anketi.service.FormServiceImpl;
 
 @RestController
 @RequestMapping("/form")
