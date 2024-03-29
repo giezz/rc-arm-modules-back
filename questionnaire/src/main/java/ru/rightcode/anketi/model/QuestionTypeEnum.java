@@ -2,7 +2,7 @@ package ru.rightcode.anketi.model;
 
 public enum QuestionTypeEnum {
     SINGLE_CHOICE ("SINGLE_CHOICE"),
-    MULTIPLE_CHOICE("MULTI_CHOICE"),
+    MULTIPLE_CHOICE("MULTIPLE_CHOICE"),
     SCALE ("SCALE"),
     ;
 
