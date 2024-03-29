@@ -14,6 +14,8 @@ public interface ScaleMapper {
 
     ScaleDto toDto(Scale scale);
 
+    @Mapping(target = "interpretations", ignore = true)
+    @Mapping(target = "forms", ignore = true)
     @Mapping(target = "id", source = "id")
     Scale toEntity(ScaleDto scaleDto);
 }
