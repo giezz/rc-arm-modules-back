@@ -13,9 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface VariantRepository extends JpaRepository<Variant, Long> {
-    @Query("select v from Variant v where v.question_id.id = ?1")
-    List<Variant> findAllByQuestion_id(Long questionId);
-
     @Override
     @EntityGraph(attributePaths = {"question_id"})
     @NonNull
