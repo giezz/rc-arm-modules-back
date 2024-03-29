@@ -5,15 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.FormQuestion;
 
 import java.util.List;
 
 @Repository
 public interface FormQuestionRepository extends JpaRepository<FormQuestion, Long> {
-    List<FormQuestion> findFormQuestionsByForm(Form idForm);
-
     @EntityGraph(attributePaths = {"question.variants", "form.scale"})
     List<FormQuestion> findByFormId(Long idForm);
 
