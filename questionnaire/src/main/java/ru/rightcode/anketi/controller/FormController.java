@@ -1,6 +1,7 @@
 package ru.rightcode.anketi.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.anketi.dto.FormDto;
@@ -15,25 +16,23 @@ public class FormController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
-        return ResponseEntity.ok(formService.getFormById(id));
+        return ResponseEntity.ok(formService.getFormDtoById(id));
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> getAll(){
-        return ResponseEntity.ok(formService.getAllForms());
+        return ResponseEntity.ok(formService.getAllFormDto());
     }
 
     @PostMapping("/create")
     public ResponseEntity<?> createForm(@RequestBody FormDto formDto){
-        return ResponseEntity.ok(formService.createForm(formDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(formService.createForm(formDto));
     }
 
     @GetMapping("/")
     public ResponseEntity<?> getByName(@RequestParam String name){
-        return ResponseEntity.ok(formService.getFormByName(name));
+        return ResponseEntity.ok(formService.getListFormDtoByName(name));
     }
-
-    // TODO: UPDATE FORM
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
