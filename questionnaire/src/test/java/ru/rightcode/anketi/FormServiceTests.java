@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.dto.QuestionDto;
+import ru.rightcode.anketi.dto.ScaleDto;
 import ru.rightcode.anketi.dto.VariantDto;
 import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.mapper.mapstruct.FormMapper;
@@ -45,10 +46,12 @@ public class FormServiceTests {
     // Создание анкеты без вопросов
     @Test
     public void testCreateFormOutQuestions() {
+        ScaleDto scaleDto = ScaleDto.builder().id(1L).description("ggg").name("fff").build();
+
         // Создаем тестовые данные
         FormDto formDto = FormDto.builder().name("Test Form")
                 .description("Test Description")
-                .scaleId(1L)
+                .scaleId(scaleDto)
                 .questions(new ArrayList<>())
                 .build();
         Scale scale = Scale.builder().id(1L).description("ggg").name("fff")
@@ -61,7 +64,7 @@ public class FormServiceTests {
         toEntity.setId(formDto.getId());
         toEntity.setName(formDto.getName());
         toEntity.setDescription(formDto.getDescription());
-        toEntity.setScale(scaleRepository.findById(formDto.getScaleId()).orElse(null));
+        toEntity.setScale(scaleRepository.findById(formDto.getScaleId().getId()).orElse(null));
 
         when(formDtoMapper.toEntity(formDto)).thenReturn(toEntity);
         when(formRepository.findById(anyLong())).thenReturn(Optional.ofNullable(any(Form.class)));
@@ -94,7 +97,7 @@ public class FormServiceTests {
         when(formDtoMapper.toDto(any(Form.class), anyList())).thenReturn(new FormDto());
 
         // Вызываем тестируемый метод
-        List<FormDto> result = formService.getFormByName(name);
+        List<FormDto> result = formService.getListFormDtoByName(name);
 
         // Проверяем, что результат не равен null и содержит две формы
         assertNotNull(result);
@@ -123,7 +126,7 @@ public class FormServiceTests {
         when(formDtoMapper.toDto(form, questionList)).thenReturn(formDto);
 
         // Вызываем тестируемый метод
-        FormDto result = formService.getFormById(id);
+        FormDto result = formService.getFormDtoById(id);
 
         // Проверяем, что результат не равен null и содержит правильный ID
         assertNotNull(result);
@@ -143,7 +146,7 @@ public class FormServiceTests {
         // Вызываем тестируемый метод
         formService.deleteForm(id);
 
-        assertThrows(NotFoundException.class, () -> formService.getFormById(id));
+        assertThrows(NotFoundException.class, () -> formService.getFormDtoById(id));
 
         // Проверяем, что был вызван метод deleteById у formRepository один раз с правильным ID
         verify(formRepository, times(1)).deleteById(id);

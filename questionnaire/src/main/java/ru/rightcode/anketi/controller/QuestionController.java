@@ -14,7 +14,7 @@ public class QuestionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
-        return ResponseEntity.ok(questionService.getById(id));
+        return ResponseEntity.ok(questionService.getDtoById(id));
     }
 
     @GetMapping("/all")
