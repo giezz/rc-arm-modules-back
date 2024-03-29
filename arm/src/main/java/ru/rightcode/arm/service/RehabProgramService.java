@@ -54,6 +54,12 @@ public class RehabProgramService {
         return rehabProgramResponseMapper.map(rehabProgramRepository.save(rehabProgram));
     }
 
+//    @Transactional
+//    public RehabProgramResponse complete(String doctorLogin, Long rehabProgramId) {
+//        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
+//
+//    }
+
     @Transactional
     public RehabProgramResponse addForm(String doctorLogin, AddFormRequest request, Long programId) {
         DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);

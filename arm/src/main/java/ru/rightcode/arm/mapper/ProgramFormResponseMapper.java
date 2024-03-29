@@ -6,7 +6,6 @@ import ru.rightcode.arm.dto.response.FormResponse;
 import ru.rightcode.arm.dto.response.ProgramFormResponse;
 import ru.rightcode.arm.model.ProgramForm;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 @Component
@@ -21,21 +20,11 @@ public class ProgramFormResponseMapper implements Mapper<ProgramForm, ProgramFor
                 .map(formResponseMapper::map)
                 .orElse(null);
 
-        Long type = null;
-        BigDecimal score = null;
-        if (object.getType() != null) {
-            type = object.getType().getId();
-        }
-        if (object.getScore() != null) {
-            score = object.getScore();
-        }
-
         return new ProgramFormResponse(
                 object.getId(),
                 formResponse,
-                type,
-                object.getFinishedAt(),
-                score
+                object.getType().getId(),
+                object.getFinishedAt()
         );
     }
 }

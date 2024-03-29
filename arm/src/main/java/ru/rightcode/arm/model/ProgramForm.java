@@ -30,7 +30,6 @@ public class ProgramForm {
     @JoinColumn(name = "rehab_program_id")
     private RehabProgram rehabProgram;
 
-    @Nullable
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
     private Type type;

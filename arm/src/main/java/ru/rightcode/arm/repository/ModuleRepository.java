@@ -14,11 +14,14 @@ public interface ModuleRepository extends JpaRepository<Module, Long> {
     @Query("select m from Module m " +
             "left join fetch m.exercises me " +
             "left join fetch me.exercise " +
-            "left join fetch me.block where m.id = :id")
+            "left join fetch me.block " +
+            "where m.id = :id")
     Optional<Module> findByIdWithExercises(@Param("id") Long id);
 
     @Query("select m from Module m " +
-            "left join fetch m.forms f " +
-            "left join fetch f.form where m.id = :id")
+            "left join fetch m.forms mf " +
+            "left join fetch mf.form f " +
+            "left join fetch f.scale " +
+            "where m.id = :id")
     Optional<Module> findByIdWithForms(@Param("id") Long id);
 }

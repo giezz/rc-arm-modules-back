@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import ru.rightcode.arm.dto.ModuleExerciseDto;
 import ru.rightcode.arm.dto.response.ModuleDetailsResponse;
 import ru.rightcode.arm.dto.response.ModuleFormResponse;
-import ru.rightcode.arm.dto.response.ProgramFormResponse;
 import ru.rightcode.arm.model.Module;
 
 import java.util.List;

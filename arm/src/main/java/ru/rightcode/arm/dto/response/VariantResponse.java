@@ -2,7 +2,8 @@ package ru.rightcode.arm.dto.response;
 
 import java.io.Serializable;
 
-public record RehabProgramResultsResponse(
-
+public record VariantResponse(
+        Long id,
+        String content
 ) implements Serializable {
 }

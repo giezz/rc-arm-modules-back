@@ -1,12 +1,10 @@
 package ru.rightcode.arm.dto.response;
 
-import ru.rightcode.arm.model.Doctor;
 import ru.rightcode.arm.model.Passport;
 import ru.rightcode.arm.model.PatientStatus;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 public record PatientResponse(
         Long id,

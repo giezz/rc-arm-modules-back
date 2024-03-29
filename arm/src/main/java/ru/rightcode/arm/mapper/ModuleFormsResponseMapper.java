@@ -24,8 +24,7 @@ public class ModuleFormsResponseMapper implements Mapper<ModuleForm, ModuleFormR
                 object.getId(),
                 object.getModule().getName(),
                 form,
-                object.getFinishedAt(),
-                object.getScore()
+                object.getFinishedAt()
         );
     }
 }

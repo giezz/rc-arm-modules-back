@@ -1,24 +1,28 @@
 package ru.rightcode.patient.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.Instant;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "question", schema = "anketi")
-public class Question {
+@Table(name = "module_form", schema = "arm")
+public class ModuleForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotNull
-    @Column(name = "content", nullable = false, length = Integer.MAX_VALUE)
-    private String content;
+    @Column(name = "finished_at")
+    private Instant finishedAt;
+
+    @Column(name = "score", precision = 100, scale = 2)
+    private BigDecimal score;
 
 }

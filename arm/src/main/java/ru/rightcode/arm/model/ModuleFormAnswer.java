@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @NoArgsConstructor
 @Getter
@@ -18,6 +16,11 @@ public class ModuleFormAnswer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "variant_id", nullable = false)
+    private Variant variant;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

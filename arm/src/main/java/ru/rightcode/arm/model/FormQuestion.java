@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "program_form_answer", schema = "arm")
-public class ProgramFormAnswer {
+@Table(name = "form_question", schema = "anketi")
+public class FormQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -19,12 +21,15 @@ public class ProgramFormAnswer {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "variant_id", nullable = false)
-    private Variant variant;
+    @JoinColumn(name = "question_id", nullable = false)
+    private Question question;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "program_form_id", nullable = false)
-    private ProgramForm programForm;
+    @JoinColumn(name = "form_id", nullable = false)
+    private Form form;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
 
 }

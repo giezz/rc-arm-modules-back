@@ -1,11 +1,10 @@
 package ru.rightcode.arm.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rightcode.arm.dto.response.ModuleFormResponse;
-import ru.rightcode.arm.mapper.ModuleFormsResponseMapper;
+import ru.rightcode.arm.dto.response.ModuleFormResultResponse;
+import ru.rightcode.arm.mapper.ModuleFormResultResponseMapper;
 import ru.rightcode.arm.model.ModuleForm;
 import ru.rightcode.arm.repository.ModuleFormRepository;
 
@@ -17,14 +16,15 @@ import java.util.List;
 public class ModuleFormService {
 
     private final ModuleFormRepository moduleFormRepository;
-    private final ModuleFormsResponseMapper moduleFormsResponseMapper;
+    private final ModuleFormResultResponseMapper moduleFormResultResponseMapper;
 
-    public List<ModuleFormResponse> getResults(Long programId) {
-        List<ModuleForm> results = moduleFormRepository.findFormResultsByRehabProgramId(programId);
-        if (results.isEmpty()) {
-            throw new EntityNotFoundException("No results");
-        }
 
-        return results.stream().map(moduleFormsResponseMapper::map).toList();
+    public List<ModuleFormResultResponse> getAllResults(Long programId, List<Long> excludeIds) {
+        List<ModuleForm> results = moduleFormRepository.findFormResultsByRehabProgramId(programId, excludeIds);
+
+        return results.stream()
+                .map(moduleFormResultResponseMapper::map)
+                .toList();
     }
+
 }

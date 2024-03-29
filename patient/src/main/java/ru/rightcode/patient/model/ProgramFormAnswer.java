@@ -8,14 +8,12 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.Instant;
-
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "form_question", schema = "anketi")
-public class FormQuestion {
+@Table(name = "program_form_answer", schema = "arm")
+public class ProgramFormAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -24,10 +22,13 @@ public class FormQuestion {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "form_id", nullable = false)
-    private Form form;
+    @JoinColumn(name = "variant_id", nullable = false)
+    private Variant variant;
 
-    @Column(name = "created_at")
-    private Instant createdAt;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "program_form_id", nullable = false)
+    private ProgramForm programForm;
 
 }

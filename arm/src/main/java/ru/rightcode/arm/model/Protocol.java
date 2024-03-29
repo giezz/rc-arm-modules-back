@@ -33,6 +33,10 @@ public class Protocol {
     private Boolean isFinal = false;
 
     @NotNull
+    @Column(name = "scales_result", nullable = false, length = Integer.MAX_VALUE)
+    private String scalesResult;
+
+    @NotNull
     @Column(name = "rehab_result", nullable = false, length = Integer.MAX_VALUE)
     private String rehabResult;
 

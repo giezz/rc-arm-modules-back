@@ -9,30 +9,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "rehab_program", schema = "arm")
-public class RehabProgram {
+@Table(name = "status", schema = "arm")
+public class Status {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
-    @Column(name = "is_current", nullable = false)
-    private Boolean isCurrent = false;
-
-    @NotNull
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @Column(name = "start_date")
-    private Instant startDate;
-
-    @Column(name = "end_date")
-    private Instant endDate;
+    @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
+    private String name;
 
 }

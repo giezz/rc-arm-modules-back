@@ -3,9 +3,15 @@ package ru.rightcode.arm.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.rightcode.arm.dto.response.FormDetailsResponse;
 import ru.rightcode.arm.dto.response.FormResponse;
+import ru.rightcode.arm.dto.response.QuestionResponse;
 import ru.rightcode.arm.mapper.FormResponseMapper;
+import ru.rightcode.arm.mapper.QuestionResponseMapper;
+import ru.rightcode.arm.model.Form;
+import ru.rightcode.arm.model.Question;
 import ru.rightcode.arm.repository.FormRepository;
+import ru.rightcode.arm.repository.QuestionRepository;
 
 import java.util.List;
 
@@ -15,14 +21,30 @@ import java.util.List;
 public class FormService {
 
     private final FormRepository formRepository;
+    private final QuestionRepository questionRepository;
 
     private final FormResponseMapper formResponseMapper;
+    private final QuestionResponseMapper questionResponseMapper;
 
     public List<FormResponse> getAll() {
         return formRepository.findAll()
                 .stream()
                 .map(formResponseMapper::map)
                 .toList();
+    }
+
+    public FormDetailsResponse getFormDetails(Long formId) {
+        Form form = formRepository.findWithQuestions(formId).orElseThrow();
+        List<Question> questions = questionRepository.findQuestionsByFormId(form.getId());
+        FormResponse formResponse = formResponseMapper.map(form);
+        List<QuestionResponse> questionResponses = questions.stream()
+                .map(questionResponseMapper::map)
+                .toList();
+
+        return new FormDetailsResponse(
+                formResponse,
+                questionResponses
+        );
     }
 
 }

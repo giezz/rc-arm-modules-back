@@ -1,12 +1,10 @@
 package ru.rightcode.arm.dto.response;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.List;
 
-public record ProgramFormResponse(
-        Long id,
+public record FormDetailsResponse(
         FormResponse form,
-        Long typeId,
-        Instant finishedAt
+        List<QuestionResponse> questions
 ) implements Serializable {
 }

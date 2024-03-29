@@ -167,6 +167,7 @@ CREATE TABLE arm.protocol (
                               rehab_program_id bigint NOT NULL,
                               creation_date timestamp NOT NULL,
                               is_final boolean NOT NULL,
+                              scales_result text NOT NULL,
                               rehab_result text NOT NULL,
                               recommendations text NOT NULL,
                               rehab_diagnosis text NOT NULL,
@@ -468,7 +469,7 @@ CREATE TABLE arm.program_form (
                                   id bigserial NOT NULL,
                                   rehab_program_id bigint NOT NULL,
                                   form_id bigint NOT NULL,
-                                  type_id bigint,
+                                  type_id bigint NOT NULL,
                                   finished_at timestamp,
                                   score numeric(100,2),
                                   CONSTRAINT program_form_pk PRIMARY KEY (id)
@@ -548,8 +549,8 @@ ALTER TABLE arm.program_form_answer ADD CONSTRAINT program_form_fk FOREIGN KEY (
 -- DROP TABLE IF EXISTS arm.module_form_answer CASCADE;
 CREATE TABLE arm.module_form_answer (
                                         id bigserial NOT NULL,
-                                        variant_id bigint NOT NULL,
                                         module_form_id bigint NOT NULL,
+                                        variant_id bigint NOT NULL,
                                         CONSTRAINT module_form_answer_pk PRIMARY KEY (id)
 );
 -- ddl-end --

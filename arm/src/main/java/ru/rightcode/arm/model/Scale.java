@@ -13,8 +13,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "form", schema = "anketi")
-public class Form {
+@Table(name = "scale", schema = "anketi")
+public class Scale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -27,16 +27,7 @@ public class Form {
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "scale_id")
-    private Scale scale;
-
-    @OneToMany(mappedBy = "form")
-    private List<FormQuestion> formQuestions = new ArrayList<>();
-
-
-    public Form(Long id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "scale")
+    private List<Interpretation> interpretations = new ArrayList<>();
 
 }

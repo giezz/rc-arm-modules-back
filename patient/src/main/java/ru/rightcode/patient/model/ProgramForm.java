@@ -15,8 +15,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "form_result", schema = "arm")
-public class FormResult {
+@Table(name = "program_form", schema = "arm")
+public class ProgramForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,18 +28,15 @@ public class FormResult {
     @JoinColumn(name = "rehab_program_id", nullable = false)
     private RehabProgram rehabProgram;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "form_id", nullable = false)
-    private Form form;
+    @JoinColumn(name = "type_id")
+    private Type type;
 
-    @NotNull
-    @Column(name = "score", nullable = false, precision = 100, scale = 2)
+    @Column(name = "finished_at")
+    private Instant finishedAt;
+
+    @Column(name = "score", precision = 100, scale = 2)
     private BigDecimal score;
-
-    @NotNull
-    @Column(name = "creation_date", nullable = false)
-    private Instant creationDate;
 
 }

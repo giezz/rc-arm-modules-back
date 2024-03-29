@@ -3,10 +3,9 @@ package ru.rightcode.arm.dto.response;
 import java.io.Serializable;
 import java.util.List;
 
-public record FormWithResultsResponse(
+public record QuestionResponse(
         Long id,
-        String name,
-        String description,
-        List<FormResultResponse> formResults
+        String content,
+        List<VariantResponse> variants
 ) implements Serializable {
 }
