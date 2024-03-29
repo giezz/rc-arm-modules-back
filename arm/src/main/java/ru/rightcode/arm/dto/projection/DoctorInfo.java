@@ -1,4 +1,4 @@
-package ru.rightcode.arm.dto;
+package ru.rightcode.arm.dto.projection;
 
 /**
  * Projection for {@link ru.rightcode.arm.model.Doctor}
