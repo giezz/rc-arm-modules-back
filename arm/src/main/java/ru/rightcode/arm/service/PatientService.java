@@ -19,10 +19,7 @@ import ru.rightcode.arm.repository.RehabProgramRepository;
 import ru.rightcode.arm.repository.specification.PatientSpecification;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -36,12 +33,12 @@ public class PatientService {
     private final RehabProgramResponseMapper rehabProgramResponseMapper;
 
     public List<PatientResponse> getAll(PatientRequest patientRequest) {
-        Optional<Specification<Patient>> spec = specificationBuilder(patientRequest);
+        Optional<Specification<Patient>> spec = PatientSpecification.specificationBuilder(patientRequest);
 
         return spec.map(patientRepository::findAll)
                 .orElseGet(patientRepository::findAll)
                 .stream()
-                .map(patientResponseMapper::map)
+                .map(patientResponseMapper::mapDetails)
                 .toList();
     }
 
@@ -49,7 +46,7 @@ public class PatientService {
         final Patient patient = patientRepository.findByPatientCode(code)
                 .orElseThrow(() -> new PatientNotFoundException(code));
 
-        return patientResponseMapper.mapWithAllData(patient);
+        return patientResponseMapper.mapDetails(patient);
     }
 
     public RehabProgramResponse getCurrentRehabProgram(Long code) {
@@ -62,7 +59,7 @@ public class PatientService {
                 .findCurrentWithProgramForms(patient.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Нет 2"));
 
-        return rehabProgramResponseMapper.map(rehabProgram);
+        return rehabProgramResponseMapper.mapDetails(rehabProgram);
     }
 
     public List<RehabProgramInfo> getAllRehabPrograms(Long code) {
@@ -73,28 +70,4 @@ public class PatientService {
         return rehabProgramRepository.findAllByPatientId(patient.getId());
     }
 
-    private Optional<Specification<Patient>> specificationBuilder(PatientRequest patientRequest) {
-        List<Specification<Patient>> specificationList = Stream.of(
-                        PatientSpecification.firstNameLike(patientRequest.firstName()),
-                        PatientSpecification.middleNameLike(patientRequest.middleName()),
-                        PatientSpecification.lastNameLike(patientRequest.lastName()),
-                        PatientSpecification.hasPatientStatus(patientRequest.status()),
-                        PatientSpecification.hasBirthDate(patientRequest.birthDate())
-                )
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        if (patientRequest.isDead() != null && patientRequest.isDead()) {
-            specificationList.add(PatientSpecification.isDead());
-        }
-        if (specificationList.isEmpty()) {
-            return Optional.empty();
-        }
-        Specification<Patient> specification = Specification.where(specificationList.get(0));
-        for (int i = 1; i < specificationList.size(); i++) {
-            Specification<Patient> patientSpecification = specificationList.get(i);
-            specification = specification.and(patientSpecification);
-        }
-
-        return Optional.of(specification);
-    }
 }
