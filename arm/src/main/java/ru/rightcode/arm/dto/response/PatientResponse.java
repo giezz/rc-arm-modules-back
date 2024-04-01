@@ -12,6 +12,7 @@ public record PatientResponse(
         String firstName,
         String middleName,
         String lastName,
+        String gender,
         LocalDate birthDate,
         LocalDate deathDate,
         String address,
@@ -19,7 +20,6 @@ public record PatientResponse(
         String workPlaceData,
         String snils,
         String polis,
-
         PatientStatus patientStatus,
         Passport passport
 ) implements Serializable {
