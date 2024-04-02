@@ -8,9 +8,7 @@ import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @NoArgsConstructor
 @Getter
@@ -52,6 +50,9 @@ public class RehabProgram {
     @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProgramForm> forms = new ArrayList<>();
 
+    @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Protocol> protocols = new ArrayList<>();
+
     public void addModule(Module module) {
         modules.add(module);
         module.setRehabProgram(this);
@@ -60,6 +61,11 @@ public class RehabProgram {
     public void addForm(ProgramForm form) {
         forms.add(form);
         form.setRehabProgram(this);
+    }
+
+    public void addProtocol(Protocol protocol) {
+        protocols.add(protocol);
+        protocol.setRehabProgram(this);
     }
 
     public void setDoctorById(Long id) {

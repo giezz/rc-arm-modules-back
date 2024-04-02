@@ -15,12 +15,12 @@ import java.util.Optional;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient> {
 
-    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS})
+    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS, Patient_.PASSPORT})
     @NonNull
     @Override
     List<Patient> findAll();
 
-    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS})
+    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS, Patient_.PASSPORT})
     @NonNull
     @Override
     List<Patient> findAll(@Nullable Specification<Patient> specification);

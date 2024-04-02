@@ -1,20 +1,16 @@
 package ru.rightcode.arm.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.PatientRequest;
 import ru.rightcode.arm.service.PatientService;
 
-import java.security.Principal;
 import java.time.LocalDate;
 
 @RestController
 @RequestMapping("api/v1/patients")
 @CrossOrigin(origins = "*")
-//@PreAuthorize("hasRole('DOCTOR')") // для теста
 @RequiredArgsConstructor
 public class PatientController {
 
