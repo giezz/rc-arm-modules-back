@@ -37,7 +37,7 @@ public class Interpretation {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "scale_id", nullable = false)
     private Scale scale;
 
