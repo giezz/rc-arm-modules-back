@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @OpenAPIDefinition(
         servers = @Server(url = "http://localhost:8080"),
@@ -20,6 +19,5 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         bearerFormat = "JWT",
         in = SecuritySchemeIn.HEADER
 )
-@EnableWebMvc
 public class SwaggerConfig {
 }
