@@ -3,80 +3,14 @@
 !theme plain
 top to bottom direction
 skinparam linetype ortho
+left to right direction
 
-class AuthController {
-  - authenticationService: AuthenticationService
-  + createAuthToken(UserJwtRequest): ResponseEntity<?>
-}
-class AuthenticationService {
-  - jwtUtils: JwtUtils
-  - doctorRepository: DoctorRepository
-  - authenticationManager: AuthenticationManager
-  + authenticate(UserJwtRequest): UserJwtResponse
-}
-class Doctor {
-  - doctorCode: Long
-  - user: User
-  - middleName: String
-  - 2
-  - phoneNumber: String
-  - email: String
-  - lastName: String
-  - firstName: String
-}
-interface DoctorRepository << interface >> {
-  + findByUserUsername(String, Class<T>): Optional<T>
-}
-class Form {
-  - scale: Scale
-  - description: String
-  - id: Long
-  - formQuestions: List<FormQuestion>
-  - name: String
-}
 class FormController {
-  - formService: FormService
   + getById(Long): ResponseEntity<?>
   + createForm(FormDto): ResponseEntity<?>
   + getAll(): ResponseEntity<?>
   + getByName(String): ResponseEntity<?>
   + deleteById(Long): ResponseEntity<?>
-}
-class FormDto {
-  - name: String
-  - id: Long
-  - description: String
-  - questions: List<QuestionDto>
-  - scaleId: ScaleDto
-}
-class FormMapperImpl {
-  - questionMapper: QuestionMapper
-  - scaleMapper: ScaleMapper
-  + toEntity(FormDto): Form
-  # questionDtoListToFormQuestionList(List<QuestionDto>): List<FormQuestion>
-  # questionDtoToFormQuestion(QuestionDto): FormQuestion
-  + toDto(Form, List<Question>): FormDto
-}
-class FormQuestion {
-  - question: Question
-  - createdAt: Instant
-  - id: Long
-  - form: Form
-}
-class FormQuestionDto {
-  - formDto: FormDto
-  - id: Long
-  - createdAt: Instant
-  - questionDto: QuestionDto
-}
-class FormQuestionMapperImpl {
-  - formMapper: FormMapper
-  - questionMapper: QuestionMapper
-  + toDtoList(List<FormQuestion>): List<FormQuestionDto>
-  + toDto(FormQuestion): FormQuestionDto
-  + toEntity(FormQuestionDto): FormQuestion
-  + toEntityList(List<FormQuestionDto>): List<FormQuestion>
-  # formToFormDto(Form): FormDto
 }
 interface FormQuestionRepository << interface >> {
   + findByFormId(Long): List<FormQuestion>
@@ -90,12 +24,6 @@ interface FormRepository << interface >> {
   + findAllByName(String): List<Form>
 }
 class FormService {
-  - formQuestionRepository: FormQuestionRepository
-  - questionService: QuestionService
-  - formRepository: FormRepository
-  - variantService: VariantService
-  - scaleMapper: ScaleMapper
-  - formMapper: FormMapper
   - createSaveFormDto(FormDto, Form): FormDto
   - processQuestionsAndVariants(List<QuestionDto>): List<Question>
   + getFormDtoById(Long): FormDto
@@ -107,15 +35,7 @@ class FormService {
   + getFormById(Long): Form
   + getAllFormDto(): List<FormDto>
 }
-class Interpretation {
-  - id: Long
-  - maxValue: BigDecimal
-  - description: String
-  - scale: Scale
-  - minValue: BigDecimal
-}
 class InterpretationController {
-  - interpretationService: InterpretationService
   + getById(Long): ResponseEntity<?>
   + getAll(): ResponseEntity<?>
 }
@@ -124,65 +44,18 @@ interface InterpretationRepository << interface >> {
   + findAll(): List<Interpretation>
 }
 class InterpretationService {
-  - interpretationRepository: InterpretationRepository
   + getById(Long): Interpretation
   + getAll(): List<Interpretation>
 }
-class JwtRequestFilter {
-  - userService: UserService
-  - log: Logger
-  - jwtUtils: JwtUtils
-  - developMode: boolean
-  - setAuthentication(String): void
-  # doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain): void
-}
-class JwtUtils {
-  - lifeTimeOfDays: long
-  - secret: String
-  + extractExpiration(String): Date
-  - extractAllClaims(String): Claims
-  + extractUsername(String): String
-  - getSignKey(): Key
-  + generateToken(UserDetails, DoctorInfo): String
-  + extractRoles(String): List<String>
-  - isTokenExpired(String): Boolean
-  + extractClaim(String, Function<Claims, T>): T
-  + validateToken(String, UserDetails): Boolean
-}
-class Question {
-  - variants: Set<Variant>
-  - required: Boolean
-  - content: String
-  - type: String
-  - id: Long
-  - formQuestions: List<FormQuestion>
-}
 class QuestionController {
-  - questionService: QuestionService
   + getById(Long): ResponseEntity<?>
   + getAll(): ResponseEntity<?>
-}
-class QuestionDto {
-  - variants: Set<VariantDto>?
-  - id: Long?
-  - content: String?
-  - required: Boolean
-  - type: QuestionTypeEnum?
-}
-class QuestionMapperImpl {
-  - variantMapper: VariantMapper
-  + toEntity(QuestionDto): Question
-  + toEntityList(List<QuestionDto>): List<Question>
-  + toDto(Question): QuestionDto
-  + toDtoList(List<Question>): List<QuestionDto>
 }
 interface QuestionRepository << interface >> {
   + findById(Long): Optional<Question>
   + findAll(): List<Question>
 }
 class QuestionService {
-  - questionRepository: QuestionRepository
-  - questionMapper: QuestionMapper
   + toEntity(QuestionDto): Question
   + save(Question): Question
   + deleteById(Long): void
@@ -193,87 +66,16 @@ class QuestionService {
   + getDtoById(Long): QuestionDto
   + delete(Question): void
 }
-enum QuestionTypeEnum << enumeration >> {
-  + MULTIPLE_CHOICE: 
-  + SINGLE_CHOICE: 
-  + SCALE:
-}
-class Role {
-  - name: String
-  - id: Long
-}
-class Scale {
-  - id: Long
-  - description: String
-  - name: String
-  - interpretations: List<Interpretation>
-  - forms: List<Form>
-}
 class ScaleController {
-  - scaleService: ScaleService
   + addScale(ScaleDto): ResponseEntity<?>
   + getAll(): ResponseEntity<?>
   + deleteScale(Long): ResponseEntity<?>
 }
-class ScaleDto {
-  - name: String
-  - description: String
-  - id: Long
-}
-class ScaleMapperImpl {
-  + toDto(Scale): ScaleDto
-  + toEntity(ScaleDto): Scale
-}
 interface ScaleRepository << interface >>
 class ScaleService {
-  - scaleRepository: ScaleRepository
-  - scaleMapper: ScaleMapper
   + addScale(ScaleDto): ScaleDto
   + deleteScale(Long): void
   + getScales(): List<ScaleDto>
-}
-class SecurityConfig {
-  - jwtRequestFilter: JwtRequestFilter
-  ~ mvc(HandlerMappingIntrospector): Builder
-  + passwordEncoder(): PasswordEncoder
-  + authenticationManager(AuthenticationConfiguration): AuthenticationManager
-  + securityFilterChain(HttpSecurity, Builder): SecurityFilterChain
-}
-class User {
-  - username: String
-  - roles: Set<Role>
-  - id: Long
-  - password: String
-}
-class UserJwtResponse {
-  - token: String
-  - roles: List<String>
-}
-interface UserRepository << interface >> {
-  + findAll(): List<User>
-  + findByUsername(String): Optional<User>
-}
-class UserService {
-  - userRepository: UserRepository
-  + loadUserByUsername(String): UserDetails
-  + findByUsername(String): User
-}
-class Variant {
-  - question_id: Question
-  - id: Long
-  - score: Double
-  - content: String
-}
-class VariantDto {
-  - id: Long?
-  - content: String?
-  - score: Double?
-}
-class VariantMapperImpl {
-  + toDto(Variant): VariantDto
-  + toDtoSet(Set<Variant>): Set<VariantDto>
-  + toEntitySet(Set<VariantDto>): Set<Variant>
-  + toEntity(VariantDto): Variant
 }
 interface VariantRepository << interface >> {
   + findById(Long): Optional<Variant>
@@ -281,76 +83,31 @@ interface VariantRepository << interface >> {
   + deleteByQuestion_id(Long): void
 }
 class VariantService {
-  - variantRepository: VariantRepository
-  - variantMapper: VariantMapper
   + deleteByQuestionId(Long): void
   + processVariants(Set<VariantDto>, Question): void
   + getVariantById(Long): Variant
 }
+class FormQuestionService{
+    + save(FormQuestion): void
+    + findByFormId(Long): List<FormQuestion>
+    + deleteByFormId(Long): void
+    + deleteByQuestionId(Long): void
+    + deleteByQuestionFormId(Long, Long): void
+}
 
-FormMapperImpl           -[#595959,dashed]->  FormService
-FormService           -[#595959,dashed]-> FormController
-ScaleService            -[#595959,dashed]-> ScaleController
-QuestionService         -[#595959,dashed]-> QuestionController
-AuthController           "1" *-[#595959,plain]-> "authenticationService\n1" AuthenticationService    
-AuthenticationService    "1" *-[#595959,plain]-> "doctorRepository\n1" DoctorRepository         
-AuthenticationService    "1" *-[#595959,plain]-> "jwtUtils\n1" JwtUtils                 
-AuthenticationService     -[#595959,dashed]->  UserJwtResponse          
-Doctor                   "1" *-[#595959,plain]-> "user\n1" User                     
-Form                     "1" *-[#595959,plain]-> "formQuestions\n*" FormQuestion             
-Form                     "1" *-[#595959,plain]-> "scale\n1" Scale                    
-FormDto                  "1" *-[#595959,plain]-> "questions\n*" QuestionDto              
-FormDto                  "1" *-[#595959,plain]-> "scaleId\n1" ScaleDto
-FormQuestion             "1" *-[#595959,plain]-> "form\n1" Form                     
-FormQuestion             "1" *-[#595959,plain]-> "question\n1" Question                 
-FormQuestionDto          "1" *-[#595959,plain]-> "formDto\n1" FormDto                  
-FormQuestionDto          "1" *-[#595959,plain]-> "questionDto\n1" QuestionDto
-FormQuestionMapperImpl    -[#595959,dashed]->  Form                     
-FormQuestionMapperImpl    -[#595959,dashed]->  FormDto
-FormQuestionMapperImpl    -[#595959,dashed]->  FormQuestion             
-FormQuestionMapperImpl    -[#595959,dashed]->  FormQuestionDto
-FormQuestionRepository    -[#595959,dashed]->  FormQuestion             
-FormRepository            -[#595959,dashed]->  Form
-FormService              "1" *-[#595959,plain]-> "formMapper\n1" FormMapperImpl
-FormService              "1" *-[#595959,plain]-> "formQuestionRepository\n1" FormQuestionRepository   
-FormService              "1" *-[#595959,plain]-> "formRepository\n1" FormRepository
-FormService              "1" *-[#595959,plain]-> "questionService\n1" QuestionService
-FormService              "1" *-[#595959,plain]-> "variantService\n1" VariantService
-Interpretation           "1" *-[#595959,plain]-> "scale\n1" Scale                    
-InterpretationController "1" *-[#595959,plain]-> "interpretationService\n1" InterpretationService    
-InterpretationRepository  -[#595959,dashed]->  Interpretation           
-InterpretationService     -[#595959,dashed]->  Interpretation           
-InterpretationService    "1" *-[#595959,plain]-> "interpretationRepository\n1" InterpretationRepository 
-JwtRequestFilter         "1" *-[#595959,plain]-> "jwtUtils\n1" JwtUtils                 
-JwtRequestFilter         "1" *-[#595959,plain]-> "userService\n1" UserService              
-Question                 "1" *-[#595959,plain]-> "formQuestions\n*" FormQuestion             
-Question                 "1" *-[#595959,plain]-> "variants\n*" Variant                  
-QuestionDto              "1" *-[#595959,plain]-> "type\n1" QuestionTypeEnum         
-QuestionDto              "1" *-[#595959,plain]-> "variants\n*" VariantDto
-QuestionMapperImpl        -[#595959,dashed]->  Question                 
-QuestionMapperImpl        -[#595959,dashed]->  QuestionDto
-QuestionRepository        -[#595959,dashed]->  Question                 
-QuestionService           -[#595959,dashed]->  Question                 
-QuestionService           -[#595959,dashed]->  QuestionDto
-QuestionService          "1" *-[#595959,plain]-> "questionRepository\n1" QuestionRepository
-Scale                    "1" *-[#595959,plain]-> "forms\n*" Form                     
-Scale                    "1" *-[#595959,plain]-> "interpretations\n*" Interpretation
-ScaleMapperImpl           -[#595959,dashed]->  Scale                    
-ScaleMapperImpl           -[#595959,dashed]->  ScaleDto
-ScaleService              -[#595959,dashed]->  Scale                    
-ScaleService              -[#595959,dashed]->  ScaleDto
-ScaleService             "1" *-[#595959,plain]-> "scaleRepository\n1" ScaleRepository
-SecurityConfig           "1" *-[#595959,plain]-> "jwtRequestFilter\n1" JwtRequestFilter         
-User                     "1" *-[#595959,plain]-> "roles\n*" Role
-UserRepository            -[#595959,dashed]->  User                     
-UserService               -[#595959,dashed]->  User                     
-UserService              "1" *-[#595959,plain]-> "userRepository\n1" UserRepository           
-Variant                  "1" *-[#595959,plain]-> "question_id\n1" Question
-VariantMapperImpl         -[#595959,dashed]->  Variant                  
-VariantMapperImpl         -[#595959,dashed]->  VariantDto
-VariantRepository         -[#595959,dashed]->  Variant                  
-VariantService            -[#595959,dashed]->  Question                 
-VariantService            -[#595959,dashed]->  Variant                  
-VariantService            -[#595959,dashed]->  VariantDto
-VariantService           "1" *-[#595959,plain]-> "variantRepository\n1" VariantRepository
+
+FormQuestionService      "1" *-[#595959,plain]--> FormQuestionRepository
+FormService              "1" *-[#595959,plain]--> FormQuestionService
+FormService              "1" *-[#595959,plain]----> FormRepository
+FormService              "1" *-[#595959,plain]--> QuestionService
+FormService              "1" *-[#595959,plain]--> VariantService
+FormService              "1" *-[#595959,plain]--> ScaleService
+FormController           "1" *-[#595959,plain]-> FormService
+InterpretationController "1" *-[#595959,plain]--> InterpretationService
+InterpretationService    "1" *-[#595959,plain]---> InterpretationRepository
+QuestionService          "1" *-[#595959,plain]--> QuestionRepository
+QuestionController       "1" *-[#595959,plain]---> QuestionService
+ScaleController          "1" *-[#595959,plain]---> ScaleService
+ScaleService             "1" *-[#595959,plain]--> ScaleRepository
+VariantService           "1" *-[#595959,plain]--> VariantRepository
 @enduml
