@@ -15,14 +15,12 @@ import java.util.List;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface FormQuestionMapper {
 
-    @Mapping(target = "questionDto", source = "formQuestion.question")
-    @Mapping(target = "formDto", source = "formQuestion.form")
+    @Mapping(target = "questionDto", source = "question")
+    @Mapping(target = "formDto", source = "form")
     FormQuestionDto toDto(FormQuestion formQuestion);
 
-    @Mapping(target = "question", source = "formQuestionDto.questionDto")
-    @Mapping(target = "form", source = "formQuestionDto.formDto")
+    @Mapping(target = "question", source = "questionDto")
+    @Mapping(target = "form", source = "formDto")
     FormQuestion toEntity(FormQuestionDto formQuestionDto);
 
-    List<FormQuestionDto> toDtoList(List<FormQuestion> formQuestionList);
-    List<FormQuestion> toEntityList(List<FormQuestionDto> formQuestionDtoList);
 }
