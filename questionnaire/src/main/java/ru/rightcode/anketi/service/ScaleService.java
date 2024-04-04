@@ -33,13 +33,8 @@ public class ScaleService {
         scaleRepository.deleteById(id);
     }
 
-//    @Override
-//    public List<Scale> getScaleById(Long id) {
-//        return scaleRepository.findAllById(id);
-//    }
-//
-//    @Override
-//    public List<Scale> getScaleByName(String name) {
-//        return scaleRepository.findAllByName(name);
-//    }
+    // toEntity
+    public Scale toEntity(ScaleDto scaleDto){
+        return scaleMapper.toEntity(scaleDto);
+    }
 }

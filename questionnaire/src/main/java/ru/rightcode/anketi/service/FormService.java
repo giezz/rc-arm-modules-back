@@ -7,11 +7,9 @@ import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.dto.QuestionDto;
 import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.mapper.mapstruct.FormMapper;
-import ru.rightcode.anketi.mapper.mapstruct.ScaleMapper;
 import ru.rightcode.anketi.model.Form;
 import ru.rightcode.anketi.model.FormQuestion;
 import ru.rightcode.anketi.model.Question;
-import ru.rightcode.anketi.repository.FormQuestionRepository;
 import ru.rightcode.anketi.repository.FormRepository;
 
 import java.time.Instant;
@@ -26,13 +24,12 @@ import java.util.stream.Stream;
 public class FormService {
 
     private final FormRepository formRepository;
-    private final FormQuestionRepository formQuestionRepository;
+    private final FormMapper formMapper;
 
+    private final FormQuestionService formQuestionService;
     private final VariantService variantService;
     private final QuestionService questionService;
-
-    private final FormMapper formMapper;
-    private final ScaleMapper scaleMapper;
+    private final ScaleService scaleService;
 
 
     public Form getFormById(Long id) {
@@ -71,12 +68,12 @@ public class FormService {
 
     @Transactional
     public void deleteForm(Long id) {
-        List<FormQuestion> formQuestionList = formQuestionRepository.findByFormId(id);
+        List<FormQuestion> formQuestionList = formQuestionService.findByFormId(id);
         List<Question> questions = formQuestionList.stream().map(FormQuestion::getQuestion).toList();
 
-        formQuestionRepository.deleteByFormId(id);
+        formQuestionService.deleteByFormId(id);
         questions.forEach(question -> {
-            formQuestionRepository.deleteByQuestionId(question.getId());
+            formQuestionService.deleteByQuestionId(question.getId());
             variantService.deleteByQuestionId(question.getId());
             questionService.delete(question);
         });
@@ -95,7 +92,7 @@ public class FormService {
             // Обновляем поля существующей формы
             existingForm.setName(formDTO.getName());
             existingForm.setDescription(formDTO.getDescription());
-            existingForm.setScale(scaleMapper.toEntity(formDTO.getScaleId()));
+            existingForm.setScale(scaleService.toEntity(formDTO.getScaleId()));
 
             return createSaveFormDto(formDTO, existingForm);
         } else {
@@ -131,7 +128,7 @@ public class FormService {
         // Удаляем старые вопросы, которых уже нет в новом списке вопросов
         deleteOldQuestions(newQuestions, oldQuestions, savedForm.getId());
         // Создаем связи между формой и вопросами
-        savedNewQuestions.forEach(question -> formQuestionRepository.save(createFormQuestion(savedForm, question)));
+        savedNewQuestions.forEach(question -> formQuestionService.save(createFormQuestion(savedForm, question)));
 
         // Соберем новые вопросы и старые вопросы
         List<Question> allQuestions = Stream.concat(oldQuestions.stream(), savedNewQuestions.stream())
@@ -173,7 +170,7 @@ public class FormService {
                 .filter(question -> !newQuestionList.contains(question) && question != null)
                 .toList();
         ostatok.forEach(question -> {
-            formQuestionRepository.deleteByQuestionFormId(savedFormId, question.getId());
+            formQuestionService.deleteByQuestionFormId(savedFormId, question.getId());
             variantService.deleteByQuestionId(question.getId());
             questionService.deleteById(question.getId());
         });
