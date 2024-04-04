@@ -16,7 +16,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class VariantServiceImpl  {
+public class VariantService {
 
     @Autowired
     private final VariantRepository variantRepository;

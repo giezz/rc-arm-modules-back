@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ScaleServiceImpl {
+public class ScaleService {
 
     private final ScaleRepository scaleRepository;
     private final ScaleMapper scaleMapper;

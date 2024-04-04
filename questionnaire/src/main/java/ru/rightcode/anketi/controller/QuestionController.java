@@ -3,14 +3,14 @@ package ru.rightcode.anketi.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.rightcode.anketi.service.QuestionServiceImpl;
+import ru.rightcode.anketi.service.QuestionService;
 
 @RestController
 @RequestMapping("/question")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class QuestionController {
-    private final QuestionServiceImpl questionService;
+    private final QuestionService questionService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){

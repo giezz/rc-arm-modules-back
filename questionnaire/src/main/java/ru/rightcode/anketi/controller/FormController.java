@@ -5,14 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.anketi.dto.FormDto;
-import ru.rightcode.anketi.service.FormServiceImpl;
+import ru.rightcode.anketi.service.FormService;
 
 @RestController
 @RequestMapping("/form")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class FormController {
-    private final FormServiceImpl formService;
+    private final FormService formService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){

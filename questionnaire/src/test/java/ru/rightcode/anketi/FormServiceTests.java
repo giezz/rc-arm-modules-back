@@ -17,9 +17,9 @@ import ru.rightcode.anketi.model.*;
 import ru.rightcode.anketi.repository.FormQuestionRepository;
 import ru.rightcode.anketi.repository.FormRepository;
 import ru.rightcode.anketi.repository.ScaleRepository;
-import ru.rightcode.anketi.service.FormServiceImpl;
-import ru.rightcode.anketi.service.QuestionServiceImpl;
-import ru.rightcode.anketi.service.VariantServiceImpl;
+import ru.rightcode.anketi.service.FormService;
+import ru.rightcode.anketi.service.QuestionService;
+import ru.rightcode.anketi.service.VariantService;
 
 import java.util.*;
 
@@ -32,10 +32,10 @@ import static org.mockito.Mockito.*;
 public class FormServiceTests {
 
     @InjectMocks
-    private FormServiceImpl formService;
+    private FormService formService;
 
     @Mock
-    private QuestionServiceImpl questionService;
+    private QuestionService questionService;
 
     @Mock
     private FormRepository formRepository;
@@ -43,7 +43,7 @@ public class FormServiceTests {
     @Mock
     private FormQuestionRepository formQuestionRepository;
     @Mock
-    private VariantServiceImpl variantService;
+    private VariantService variantService;
 
     @Mock
     private ScaleMapper scaleMapper;

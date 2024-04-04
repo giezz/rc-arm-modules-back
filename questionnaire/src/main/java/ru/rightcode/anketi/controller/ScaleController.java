@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.anketi.dto.ScaleDto;
-import ru.rightcode.anketi.service.ScaleServiceImpl;
+import ru.rightcode.anketi.service.ScaleService;
 
 @RestController
 @RequestMapping("/scale")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ScaleController {
-    private final ScaleServiceImpl scaleService;
+    private final ScaleService scaleService;
 
     @GetMapping(path = "/all")
     public ResponseEntity<?> getAll() {

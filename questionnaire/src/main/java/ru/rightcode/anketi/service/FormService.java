@@ -23,13 +23,13 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class FormServiceImpl {
+public class FormService {
 
     private final FormRepository formRepository;
     private final FormQuestionRepository formQuestionRepository;
 
-    private final VariantServiceImpl variantService;
-    private final QuestionServiceImpl questionService;
+    private final VariantService variantService;
+    private final QuestionService questionService;
 
     private final FormMapper formMapper;
     private final ScaleMapper scaleMapper;
