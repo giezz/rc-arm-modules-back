@@ -17,7 +17,7 @@ uses = {QuestionMapper.class,
 })
 public interface FormMapper {
     @Mapping(target = "questions", source = "questionList")
-    @Mapping(source = "form.scale", target = "scaleId")
+    @Mapping(source = "scale", target = "scaleId")
     FormDto toDto(Form form, List<Question> questionList);
 
     @Mapping(target = "scale", source = "scaleId")

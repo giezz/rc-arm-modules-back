@@ -13,8 +13,8 @@ import java.util.List;
 uses = {VariantMapper.class},
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface QuestionMapper {
-    @Mapping(target = "variants", source = "question.variants")
-    @Mapping(target = "type", source = "question.type")
+    @Mapping(target = "variants", source = "variants")
+    @Mapping(target = "type", source = "type")
     QuestionDto toDto(Question question);
 
     @Mapping(target = "formQuestions", ignore = true)
