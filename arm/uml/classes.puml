@@ -1,7 +1,7 @@
 @startuml
 
-left to right direction
 skinparam linetype ortho
+left to right direction
 
 class AuthController {
   + createAuthToken(JwtRequest): ResponseEntity<?>
@@ -17,71 +17,78 @@ class ExerciseController {
   + getAll(): ResponseEntity<?>
 }
 class ExerciseService {
-  + getById(Long): ExerciseResponse
   + getAll(): List<ExerciseResponse>
+  + getById(Long): ExerciseResponse
 }
 class FormController {
-  + getProgramFormResults(Long): ResponseEntity<?>
-  + getModuleFormResults(Long): ResponseEntity<?>
-  + getDetails(Long): ResponseEntity<?>
   + getAll(): ResponseEntity<?>
+  + getModuleFormResults(Long): ResponseEntity<?>
+  + getProgramFormResults(Long): ResponseEntity<?>
+  + getDetails(Long): ResponseEntity<?>
 }
 class FormService {
   + getFormDetails(Long): FormDetailsResponse
   + getAll(): List<FormResponse>
 }
 class ModuleController {
-  + rename(Long, RenameModuleRequest, Principal): ResponseEntity<?>
-  + deleteForm(Long, Long, Principal): ResponseEntity<?>
-  + addForm(Long, AddModuleFormRequest, Principal): ResponseEntity<?>
   + addExercise(Long, AddModuleExerciseRequest, Principal): ResponseEntity<?>
-  + getById(Long): ResponseEntity<?>
   + deleteExercise(Long, Long, Principal): ResponseEntity<?>
+  + getById(Long): ResponseEntity<?>
+  + addForm(Long, AddModuleFormRequest, Principal): ResponseEntity<?>
+  + deleteForm(Long, Long, Principal): ResponseEntity<?>
+  + rename(Long, RenameModuleRequest, Principal): ResponseEntity<?>
 }
 class ModuleFormService {
   + getAllResults(Long, List<Long>): List<ModuleFormResultResponse>
 }
 class ModuleService {
-  + getById(Long): ModuleDetailsResponse
-  + renameModule(String, RenameModuleRequest, Long): ModuleDetailsResponse
   + deleteExercise(String, Long, Long): ModuleDetailsResponse
   + addForm(String, AddModuleFormRequest, Long): ModuleDetailsResponse
-  + deleteForm(String, Long, Long): ModuleDetailsResponse
   + addExercise(String, AddModuleExerciseRequest, Long): ModuleDetailsResponse
   - getModuleIfDoctorCanEditModule(String, Long): Module
+  + getById(Long): ModuleDetailsResponse
+  + deleteForm(String, Long, Long): ModuleDetailsResponse
+  + renameModule(String, RenameModuleRequest, Long): ModuleDetailsResponse
 }
 class PatientController {
-  + getAll(String, String, String, String, LocalDate, Boolean): ResponseEntity<?>
   + getByCode(Long): ResponseEntity<?>
-  + getRehabPrograms(Long, boolean): ResponseEntity<?>
+  + getAll(String, String, String, String, LocalDate, Boolean): ResponseEntity<?>
+  + getCurrentRehabProgram(Long): ResponseEntity<?>
+  + getRehabPrograms(Long, Long): ResponseEntity<?>
 }
 class PatientService {
-  + getAll(PatientRequest): List<PatientResponse>
+  - getRehabProgramByPatientId(Long, Long): RehabProgram
+  + getCurrentRehabProgram(Long): RehabProgramResponse
+  - getPatientByCode(Long): Patient
   + getAllRehabPrograms(Long): List<RehabProgramInfo>
   + getByCode(Long): PatientResponse
-  + getCurrentRehabProgram(Long): RehabProgramResponse
-  - specificationBuilder(PatientRequest): Optional<Specification<Patient>>
+  + getRehabProgram(Long, Long): RehabProgramResponse
+  + getAll(PatientRequest): List<PatientResponse>
 }
 class ProgramFormService {
-  + getAllResults(Long, List<Long>): List<ProgramFormResponse>
+  + getAllResults(Long, List<Long>): List<ProgramFormResultResponse>
 }
 class ProtocolService {
-  + create(Long, CreateProtocolRequest): void
+  - transformFormsResults(String, String): String
+  + createProtocol(CreateProtocolRequest): Protocol
 }
 class RehabProgramController {
-  + addForm(Principal, AddFormRequest, Long): ResponseEntity<?>
-  + create(Principal, CreateRehabProgramRequest): ResponseEntity<?>
-  + createProtocol(CreateProtocolRequest, Long): ResponseEntity<?>
-  + addModule(Principal, AddModuleRequest, Long): ResponseEntity<?>
-  + getFormResults(Long, List<Long>): ResponseEntity<?>
-  + getProgramsByCurrentDoctor(Principal): ResponseEntity<?>
   + getModulesResults(Long, List<Long>): ResponseEntity<?>
+  + createProtocol(Principal, Long, CreateProtocolRequest): ResponseEntity<?>
+  + addForm(Principal, AddFormRequest, Long): ResponseEntity<?>
+  + getProgramsByCurrentDoctor(Principal, RehabProgramRequest): ResponseEntity<?>
+  + create(Principal, CreateRehabProgramRequest): ResponseEntity<?>
+  + getFormResults(Long, List<Long>): ResponseEntity<?>
+  + addModule(Principal, AddModuleRequest, Long): ResponseEntity<?>
 }
 class RehabProgramService {
-  + addForm(String, AddFormRequest, Long): RehabProgramResponse
-  + getProgramsByCurrentDoctor(String): List<RehabProgramInfo>
-  + create(String, CreateRehabProgramRequest): RehabProgramResponse
   + addModule(String, AddModuleRequest, Long): RehabProgramResponse
+  + createProtocol(String, Long, CreateProtocolRequest): RehabProgramResponse
+  + getProgramsByCurrentDoctor(String, RehabProgramRequest): List<RehabProgramResponse>
+  - completeRehabProgram(RehabProgram): void
+  + create(String, CreateRehabProgramRequest): RehabProgramResponse
+  - createCurrentProgram(Long, Patient): RehabProgram
+  + addForm(String, AddFormRequest, Long): RehabProgramResponse
 }
 class RestrictionsService {
   + canDoctorEditRehabProgram(Long, Long): boolean
@@ -90,19 +97,29 @@ class VariantService {
   + getModuleFormAnsweredVariants(Long): List<VariantResponse>
   + getProgramFormAnsweredVariants(Long): List<VariantResponse>
 }
+together {
+    class FormController
+    class ModuleController
+    class PatientController
+    class RehabProgramController
+}
+together {
+    class DoctorService
+    class ModuleService
+    class ModuleFormService
+}
 
-AuthController         "1" *-[#595959,plain]-> "authenticationService\n1" AuthenticationService
-ExerciseController     "1" *-[#595959,plain]-> "exerciseService\n1" ExerciseService
-FormController         "1" *-[#595959,plain]-> "formService\n1" FormService
-FormController         "1" *-[#595959,plain]-> "variantService\n1" VariantService
-ModuleController       "1" *-[#595959,plain]-> "moduleService\n1" ModuleService
-ModuleService          "1" *-[#595959,plain]-> "doctorService\n1" DoctorService
-ModuleService          "1" *-[#595959,plain]-> "restrictionsService\n1" RestrictionsService
-PatientController      "1" *-[#595959,plain]-> "patientService\n1" PatientService
-ProtocolService        "1" *-[#595959,plain]-> "rehabProgramService\n1" RehabProgramService
-RehabProgramController "1" *-[#595959,plain]-> "moduleFormService\n1" ModuleFormService
-RehabProgramController "1" *-[#595959,plain]-> "programFormService\n1" ProgramFormService
-RehabProgramController "1" *-[#595959,plain]-> "protocolService\n1" ProtocolService
-RehabProgramController "1" *-[#595959,plain]-> "rehabProgramService\n1" RehabProgramService
-RehabProgramService    "1" *-[#595959,plain]-> "doctorService\n1" DoctorService
+AuthController         "1" *-> AuthenticationService
+ExerciseController     "1" *--> ExerciseService
+FormController         "1" *--> FormService
+FormController         "1" *--> VariantService
+ModuleController       "1" *--> ModuleService
+ModuleService          "1" *--> DoctorService
+ModuleService          "1" *--> RestrictionsService
+PatientController      "1" *--> PatientService
+RehabProgramController "1" *--> ModuleFormService
+RehabProgramController "1" *--> ProgramFormService
+RehabProgramController "1" *--> RehabProgramService
+RehabProgramService    "1" *--> DoctorService
+RehabProgramService    "1" *--> ProtocolService
 @enduml

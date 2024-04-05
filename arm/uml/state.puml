@@ -1,0 +1,20 @@
+@startuml
+
+[*] --> form_edit : Cоздана\nпрограмма реабилитации
+state "Добавление входных/выходных анкет" as form_edit
+state "Редактирование модулей" as module_edit {
+    state "Добавление/удаление упражней" as module_exercise_edit
+    state "Добавление/удаление анкет" as module_form_edit
+    [*] --> module_exercise_edit
+    module_exercise_edit --> module_form_edit
+}
+form_edit --> module_edit
+state "Направить пациенту" as to_patient
+module_edit --> to_patient
+state c <<choice>>
+to_patient --> c
+c --> module_edit : Нужны изменения
+c --> f
+
+
+@enduml
