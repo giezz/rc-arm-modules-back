@@ -2,10 +2,7 @@ package ru.rightcode.anketi.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,6 +14,7 @@ import java.math.BigDecimal;
 @Table(name = "interpretation", schema = "anketi")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Interpretation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

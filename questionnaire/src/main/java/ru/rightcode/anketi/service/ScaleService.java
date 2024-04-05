@@ -37,4 +37,7 @@ public class ScaleService {
     public Scale toEntity(ScaleDto scaleDto){
         return scaleMapper.toEntity(scaleDto);
     }
+    public ScaleDto toDto(Scale scale) {
+        return scaleMapper.toDto(scale);
+    }
 }
