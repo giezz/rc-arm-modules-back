@@ -3,14 +3,21 @@ package ru.rightcode.anketi.dto;
 import jakarta.annotation.Nullable;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
-public class ScaleDto {
+public class InterpretationDto {
     @Nullable
     private Long id;
-    private String name;
+    @Nullable
     private String description;
+    private BigDecimal minValue;
+    private BigDecimal maxValue;
+    @Nullable
+    private ScaleDto scale;
+
 }
