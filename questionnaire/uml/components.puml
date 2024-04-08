@@ -6,9 +6,9 @@ package "Веб-интерфейс" {
 }
 
 package "Сервер" {
-    [Контроллеры]
-    [Сервисы]
-    [Сервис авторизации SpringSec]
+    [Контроллеры (SpringWeb)]
+    [Сервисы (Spring)]
+    [Сервис авторизации (SpringSecurity)]
     [Репозитории (JPA)]
 }
 
@@ -17,11 +17,12 @@ package "База данных" {
 }
 
 [Веб-интерфейс] -down- HTTP
-HTTP -down- [Контроллеры]
-[Контроллеры] -down-> [Сервисы] : Использует
-[Контроллеры] -down-> [Сервис авторизации SpringSec]: Использует
+HTTP -down- [Контроллеры (SpringWeb)]
+[Контроллеры (SpringWeb)] -down-> [Сервисы (Spring)]
+[Контроллеры (SpringWeb)] -down-> [Сервис авторизации (SpringSecurity)]
 [Репозитории (JPA)] -down- JDBC
 JDBC - [PostgreSQL]
-[Сервисы] -down-> [Репозитории (JPA)] : Использует
-[Сервис авторизации SpringSec] -down-> [Репозитории (JPA)]
+[Сервисы (Spring)] -down-> [Репозитории (JPA)] : Использует
+[Сервис авторизации (SpringSecurity)] -down-> [Репозитории (JPA)]
+
 @enduml
