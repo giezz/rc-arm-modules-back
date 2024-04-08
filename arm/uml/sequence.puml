@@ -10,13 +10,13 @@ database Database as db
 
 vrach -> ui: Получить список пациентов
 activate ui
-ui -> s: getPatientsRequest(null)
+ui -> s: getPatientsRequest()
 activate s
-s -> db: getPatients(null)
+s -> db: getPatients()
 activate db
-db --> s: return
+db --> s: patients
 deactivate db
-s --> ui: return
+s --> ui: patientsResponse
 deactivate s
 ui --> vrach: Список пациентов
 deactivate ui
@@ -26,33 +26,33 @@ ui -> s: getPatientsRequest(filter)
 activate s
 s -> db: getPatients(filter)
 activate db
-db --> s: return
+db --> s: filteredPatients
 deactivate db
-s --> ui: return
+s --> ui: filteredPatientsResponse
 deactivate s
 ui --> vrach: Пациент соответсвующий фильтрам
 deactivate ui
 vrach -> ui: Получить информацию о пациенте
 activate ui
-ui -> s: getPatientDetailsRequest(patientId)
+ui -> s: getPatientDetailsRequest(id)
 activate s
-s -> db: getPatient(patientId)
+s -> db: getPatient(id)
 activate db
-db --> s: return
+db --> s: patient
 deactivate db
-s --> ui: return
+s --> ui: patientDetailsResponse
 deactivate s
 ui --> vrach: Информация о пациенте
 deactivate ui
 vrach -> ui: Перейти на страницу программы реабилитации
 activate ui
-ui -> s: getCurrentRehabProgramRequest(programId)
+ui -> s: getCurrentRehabProgramRequest(id)
 activate s
-s -> db: getCurrentRehabProgram(programId)
+s -> db: getCurrentRehabProgram(id)
 activate db
-db --> s: return
+db --> s: rehabProgram
 deactivate db
-s --> ui: return
+s --> ui: rehabProgramResponse
 deactivate s
 ui --> vrach: Программа реабилитации пациента
 deactivate ui
