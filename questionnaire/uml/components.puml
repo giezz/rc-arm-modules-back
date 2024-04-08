@@ -1,0 +1,27 @@
+@startuml
+skinparam linetype ortho
+
+package "Веб-интерфейс" {
+    [Angular]
+}
+
+package "Сервер" {
+    [Контроллеры]
+    [Сервисы]
+    [Сервис авторизации SpringSec]
+    [Репозитории (JPA)]
+}
+
+package "База данных" {
+    [PostgreSQL]
+}
+
+[Веб-интерфейс] -down- HTTP
+HTTP -down- [Контроллеры]
+[Контроллеры] -down-> [Сервисы] : Использует
+[Контроллеры] -down-> [Сервис авторизации SpringSec]: Использует
+[Репозитории (JPA)] -down- JDBC
+JDBC - [PostgreSQL]
+[Сервисы] -down-> [Репозитории (JPA)] : Использует
+[Сервис авторизации SpringSec] -down-> [Репозитории (JPA)]
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+start
+:Click-Анкета;
+:Получить данные от сервера;
+if (Пришли данные?) then (true)
+    :Конвертация данных в FormGroup;
+else (false)
+    :Ожидание (Loading..);
+endif
+:Рендер();
+if (Изменились данные?) then (true)
+    if (Валидация данных) then (true)
+        :Отправить на сервер;
+    else (false)
+        :Уведомление об ошибке;
+    endif
+else (false)
+endif
+stop
+
+
+start
+:Click-Создать-Анкета();
+:Добавить default данных;
+:Конвертация данных в FormGroup;
+:Рендер();
+if (Изменились данные?) then (true)
+    if (Валидация данных) then (true)
+        :Отправить на сервер;
+    else (false)
+        :Уведомление об ошибке;
+    endif
+else (false)
+endif
+stop
+@enduml
