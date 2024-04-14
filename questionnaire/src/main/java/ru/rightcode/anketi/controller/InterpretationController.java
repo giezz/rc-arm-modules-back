@@ -23,6 +23,11 @@ public class InterpretationController {
         return ResponseEntity.ok(interpretationService.getAll());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String text) {
+        return ResponseEntity.ok(interpretationService.search(text));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody InterpretationDto interpretation) {
         return ResponseEntity.ok(interpretationService.create(interpretation));

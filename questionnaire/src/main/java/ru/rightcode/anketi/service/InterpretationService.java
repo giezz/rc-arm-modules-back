@@ -23,6 +23,11 @@ public class InterpretationService {
         return toDto(interpretation);
     }
 
+    public List<InterpretationDto> search(String description) {
+        List<Interpretation> interpretations = interpretationRepository.findAllByScaleName(description);
+        return interpretations.stream().map(this::toDto).toList();
+    }
+
     public List<InterpretationDto> getAll() {
         List<Interpretation> interpretations = interpretationRepository.findAll();
         return interpretations.stream().map(this::toDto).toList();
