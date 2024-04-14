@@ -64,8 +64,6 @@ public class FormService {
         return formMapper.toDto(form, questions);
     }
 
-    // TODO: Добавить логику обработки анкеты
-
     @Transactional
     public void deleteForm(Long id) {
         List<FormQuestion> formQuestionList = formQuestionService.findByFormId(id);
@@ -84,25 +82,22 @@ public class FormService {
     // Возможность удалять вопросы и варианты
     @Transactional
     public FormDto createForm(FormDto formDTO) {
-        // Проверяем, указан ли ID формы
-        if (formDTO.getId() != null) {
-            // Если ID указан, значит мы обновляем существующую форму
-            // Проверяем, существует ли форма с указанным ID в базе данных
-            Form existingForm = getFormById(formDTO.getId());
-            // Обновляем поля существующей формы
-            existingForm.setName(formDTO.getName());
-            existingForm.setDescription(formDTO.getDescription());
-            existingForm.setScale(scaleService.toEntity(formDTO.getScaleId()));
+        // Создаем новую форму
+        Form form = formMapper.toEntity(formDTO);
 
-            return createSaveFormDto(formDTO, existingForm);
-        } else {
-            // Создаем новую форму
-            Form form = formMapper.toEntity(formDTO);
-
-            return createSaveFormDto(formDTO, form);
-        }
+        return createSaveFormDto(formDTO, form);
     }
 
+    @Transactional
+    public FormDto updateForm( Long id, FormDto formDTO) {
+        Form existingForm = getFormById(formDTO.getId());
+        // Обновляем поля существующей формы
+        existingForm.setName(formDTO.getName());
+        existingForm.setDescription(formDTO.getDescription());
+        existingForm.setScale(scaleService.toEntity(formDTO.getScaleId()));
+
+        return createSaveFormDto(formDTO, existingForm);
+    }
 
     private FormQuestion createFormQuestion(Form form, Question question) {
         return FormQuestion.builder()

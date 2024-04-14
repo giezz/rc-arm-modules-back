@@ -12,6 +12,7 @@ import ru.rightcode.anketi.service.FormService;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class FormController {
+
     private final FormService formService;
 
     @GetMapping("/{id}")
@@ -27,6 +28,11 @@ public class FormController {
     @PostMapping("/create")
     public ResponseEntity<?> createForm(@RequestBody FormDto formDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(formService.createForm(formDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody FormDto formDto){
+        return ResponseEntity.ok(formService.updateForm(id, formDto));
     }
 
     @GetMapping("/")
