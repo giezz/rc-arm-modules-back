@@ -17,7 +17,6 @@ public class InterpretationDto {
     private String description;
     private BigDecimal minValue;
     private BigDecimal maxValue;
-    @Nullable
     private ScaleDto scale;
 
 }

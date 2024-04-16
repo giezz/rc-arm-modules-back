@@ -35,6 +35,10 @@ public class InterpretationService {
 
     @Transactional
     public InterpretationDto create(InterpretationDto interpretationDto) {
+        if (interpretationDto.getId() != null || interpretationDto.getScale().getId() != null) {
+            interpretationDto.setId(null);
+            interpretationDto.getScale().setId(null);
+        }
         interpretationDto.setScale(scaleService.addScale(interpretationDto.getScale()));
         return toDto(interpretationRepository.save(toEntity(interpretationDto)));
     }
