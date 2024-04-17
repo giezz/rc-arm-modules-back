@@ -8,7 +8,7 @@ import ru.rightcode.anketi.dto.FormDto;
 import ru.rightcode.anketi.service.FormService;
 
 @RestController
-@RequestMapping("/form")
+@RequestMapping("api/v1/questionnaire/form")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class FormController {

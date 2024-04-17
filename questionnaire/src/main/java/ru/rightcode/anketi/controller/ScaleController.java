@@ -7,7 +7,7 @@ import ru.rightcode.anketi.dto.ScaleDto;
 import ru.rightcode.anketi.service.ScaleService;
 
 @RestController
-@RequestMapping("/scale")
+@RequestMapping("api/v1/questionnaire/scale")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ScaleController {

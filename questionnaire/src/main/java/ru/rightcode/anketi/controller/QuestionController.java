@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.rightcode.anketi.service.QuestionService;
 
 @RestController
-@RequestMapping("/question")
+@RequestMapping("api/v1/questionnaire/question")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class QuestionController {

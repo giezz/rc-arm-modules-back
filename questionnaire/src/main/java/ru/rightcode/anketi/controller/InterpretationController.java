@@ -7,7 +7,7 @@ import ru.rightcode.anketi.dto.InterpretationDto;
 import ru.rightcode.anketi.service.InterpretationService;
 
 @RestController
-@RequestMapping("/interpretation")
+@RequestMapping("api/v1/questionnaire/interpretation")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class InterpretationController {
