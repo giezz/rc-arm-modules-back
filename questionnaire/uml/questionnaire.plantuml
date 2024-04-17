@@ -1,6 +1,6 @@
 @startuml
 
-!theme plain
+!theme mars
 top to bottom direction
 skinparam linetype ortho
 left to right direction
@@ -25,12 +25,10 @@ interface FormRepository << interface >> {
 }
 class FormService {
   - createSaveFormDto(FormDto, Form): FormDto
-  - processQuestionsAndVariants(List<QuestionDto>): List<Question>
   + getFormDtoById(Long): FormDto
-  - deleteOldQuestions(List<Question>, List<Question>, Long): void
   + createForm(FormDto): FormDto
+  + updateForm(Long, FormDto): FormDto
   + getListFormDtoByName(String): List<FormDto>
-  - createFormQuestion(Form, Question): FormQuestion
   + deleteForm(Long): void
   + getFormById(Long): Form
   + getAllFormDto(): List<FormDto>
@@ -47,10 +45,6 @@ class InterpretationService {
   + getById(Long): Interpretation
   + getAll(): List<Interpretation>
 }
-class QuestionController {
-  + getById(Long): ResponseEntity<?>
-  + getAll(): ResponseEntity<?>
-}
 interface QuestionRepository << interface >> {
   + findById(Long): Optional<Question>
   + findAll(): List<Question>
@@ -65,11 +59,6 @@ class QuestionService {
   + getQuestions(): List<QuestionDto>
   + getDtoById(Long): QuestionDto
   + delete(Question): void
-}
-class ScaleController {
-  + addScale(ScaleDto): ResponseEntity<?>
-  + getAll(): ResponseEntity<?>
-  + deleteScale(Long): ResponseEntity<?>
 }
 interface ScaleRepository << interface >>
 class ScaleService {
@@ -93,21 +82,70 @@ class FormQuestionService{
     + deleteByFormId(Long): void
     + deleteByQuestionId(Long): void
     + deleteByQuestionFormId(Long, Long): void
+    + deleteOldQuestions(List<Question>, List<Question>, Long): void
+    + processQuestionsAndVariants(List<QuestionDto>): List<Question>
+}
+entity Form{
+ + id: Long
+ + name: String
+ + description: String
+ + scale: Scale
+ - formQuestions: List<FormQuestion>
+}
+entity FormQuestion{
+    + id: Long
+    + question: Question
+    + form: Form
+    + createdAt: Instant
+}
+entity Interpretation{
+    + id: Long
+    + description: String
+    + minValue: BigDecimal
+    + maxValue: BigDecimal
+    + scale: Scale
+}
+entity Scale{
+    + id: Long
+    + name: String
+    + description: String
+    - interpretations: List<Interpretation>
+    - forms: List<Form>
+}
+entity Question{
+    + id: Long
+    + content: String
+    + type: String
+    + required: Boolean
+    - variants: Set<Variant>
+    - formQuestions: List<FormQuestion>
+}
+entity Variant{
+    + id: Long
+    + content: String
+    + score: Double
+    + question: Question
 }
 
 
-FormQuestionService      "1" *-[#595959,plain]--> FormQuestionRepository
-FormService              "1" *-[#595959,plain]--> FormQuestionService
-FormService              "1" *-[#595959,plain]----> FormRepository
-FormService              "1" *-[#595959,plain]--> QuestionService
-FormService              "1" *-[#595959,plain]--> VariantService
-FormService              "1" *-[#595959,plain]--> ScaleService
-FormController           "1" *-[#595959,plain]-> FormService
-InterpretationController "1" *-[#595959,plain]--> InterpretationService
-InterpretationService    "1" *-[#595959,plain]---> InterpretationRepository
-QuestionService          "1" *-[#595959,plain]--> QuestionRepository
-QuestionController       "1" *-[#595959,plain]---> QuestionService
-ScaleController          "1" *-[#595959,plain]---> ScaleService
-ScaleService             "1" *-[#595959,plain]--> ScaleRepository
-VariantService           "1" *-[#595959,plain]--> VariantRepository
+FormQuestionService       *-[#595959,plain]-> FormQuestionRepository
+FormQuestionService              *-[#595959,plain]> QuestionService
+FormQuestionService              *-[#595959,plain]> VariantService
+FormService              *-[#595959,plain]> FormQuestionService
+FormService              *-[#595959,plain]-> FormRepository
+FormService              *-[#595959,plain]> ScaleService
+FormController           *-[#595959,plain]-> FormService
+InterpretationController *-[#595959,plain]-> InterpretationService
+InterpretationService    *-[#595959,plain]-> InterpretationRepository
+InterpretationService    *-[#595959,plain]> ScaleService
+QuestionService          *-[#595959,plain]-> QuestionRepository
+ScaleService             *-[#595959,plain]-> ScaleRepository
+VariantService           *-[#595959,plain]-> VariantRepository
+FormRepository              *-[#595959,plain]-> Form
+FormQuestionRepository              *-[#595959,plain]-> FormQuestion
+InterpretationRepository              *-[#595959,plain]-> Interpretation
+ScaleRepository              *-[#595959,plain]-> Scale
+QuestionRepository              *-[#595959,plain]-> Question
+VariantRepository              *-[#595959,plain]-> Variant
+
 @enduml

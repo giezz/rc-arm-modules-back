@@ -13,7 +13,7 @@ import java.util.Set;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface VariantMapper {
 
-    @Mapping(target = "question_id", ignore = true)
+    @Mapping(target = "question", ignore = true)
     Variant toEntity(VariantDto variantDto);
 
     VariantDto toDto(Variant variant);

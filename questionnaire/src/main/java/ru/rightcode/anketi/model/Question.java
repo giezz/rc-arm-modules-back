@@ -30,7 +30,7 @@ public class Question {
     @Column(name = "required", nullable = false)
     private Boolean required = false;
 
-    @OneToMany(mappedBy = "question_id")
+    @OneToMany(mappedBy = "question")
     @ToString.Exclude
     private Set<Variant> variants = new HashSet<>();
 

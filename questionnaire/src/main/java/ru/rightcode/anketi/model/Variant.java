@@ -28,7 +28,7 @@ public class Variant {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
-    private Question question_id;
+    private Question question;
 
     public Variant(Long id, String content, Double score) {
         this.id = id;

@@ -47,7 +47,7 @@ public class VariantService {
             } else {
                 // Если ID не указан, создаем новый вариант
                 variant = variantMapper.toEntity(variantDTO);
-                variant.setQuestion_id(question);
+                variant.setQuestion(question);
             }
             // Сохраняем или обновляем вариант в базе данных
             variantRepository.save(variant);
