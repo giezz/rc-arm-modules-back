@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                mvc.pattern("/auth"),
+                                mvc.pattern("/api/v1/questionnaire/auth/auth"),
                                 mvc.pattern("/v3/api-docs/**"),
                                 mvc.pattern("/swagger-ui/**")
                         ).permitAll()

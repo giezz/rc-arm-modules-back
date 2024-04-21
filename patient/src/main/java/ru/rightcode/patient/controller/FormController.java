@@ -12,7 +12,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/forms")
+@RequestMapping("api/v1/patient/forms")
 @RequiredArgsConstructor
 public class FormController {
 
