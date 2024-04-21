@@ -24,6 +24,6 @@ public interface VariantRepository extends JpaRepository<Variant, Long> {
     List<Variant> findAll();
 
     @Modifying
-    @Query("delete from Variant v where v.question_id.id =?1")
+    @Query("delete from Variant v where v.question.id =?1")
     void deleteByQuestion_id(Long questionId);
 }
