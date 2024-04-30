@@ -33,7 +33,7 @@ public class AuthenticationService {
         ).getPrincipal();
 
         PatientInfo patient = patientRepository
-                .findByUserLogin(userDetails.getUsername(), PatientInfo.class)
+                .findByUserUsername(userDetails.getUsername(), PatientInfo.class)
                 .orElseThrow(EntityNotFoundException::new);
 
         return JwtResponse.builder()

@@ -73,7 +73,7 @@ public class JwtUtils {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         claims.put("roles", roles);
-        claims.put("doctorFullName",
+        claims.put("patientFullName",
                 String.format(
                         "%s %s %s",
                         patientInfo.getLastName(),
@@ -81,7 +81,7 @@ public class JwtUtils {
                         patientInfo.getMiddleName()
                 )
         );
-        claims.put("doctorId", patientInfo.getId());
+        claims.put("patientId", patientInfo.getId());
 
         long now = System.currentTimeMillis();
         Date iat = new Date(now);
@@ -95,8 +95,6 @@ public class JwtUtils {
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
-
 
     private Key getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
