@@ -36,7 +36,7 @@ public class Patient {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "status_id", nullable = false)
-    private Status status;
+    private PatientStatus status;
 
     @Size(max = 255)
     @NotNull
@@ -88,5 +88,11 @@ public class Patient {
     @NotNull
     @Column(name = "work_place_data", nullable = false, length = Integer.MAX_VALUE)
     private String workPlaceData;
+
+    @NotNull
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "passport_id", nullable = false)
+    private Passport passport;
 
 }
