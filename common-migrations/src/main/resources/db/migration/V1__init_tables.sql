@@ -9,7 +9,7 @@
 --
 -- object: rc_doc | type: DATABASE --
 -- DROP DATABASE IF EXISTS rc_doc;
--- CREATE DATABASE rc_doc
+-- CREATE DATABASE rc_doc_test
 --     TEMPLATE = template0
 --     ENCODING = 'UTF8'
 --     LC_COLLATE = 'ru_RU'

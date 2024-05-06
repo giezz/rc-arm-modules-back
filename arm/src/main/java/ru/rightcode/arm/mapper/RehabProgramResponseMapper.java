@@ -2,11 +2,8 @@ package ru.rightcode.arm.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.rightcode.arm.dto.response.FormResponse;
+import ru.rightcode.arm.dto.response.*;
 import ru.rightcode.arm.dto.ModuleDto;
-import ru.rightcode.arm.dto.response.PatientResponse;
-import ru.rightcode.arm.dto.response.ProgramFormResponse;
-import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.model.RehabProgram;
 
 import java.util.List;
@@ -19,14 +16,17 @@ public class RehabProgramResponseMapper implements Mapper<RehabProgram, RehabPro
     private final ModuleDtoMapper moduleDtoMapper;
     private final ProgramFormResponseMapper programFormResponseMapper;
     private final PatientResponseMapper patientResponseMapper;
+    private final DoctorResponseMapper doctorResponseMapper;
 
     @Override
     public RehabProgramResponse map(RehabProgram object) {
         PatientResponse patientResponse = patientResponseMapper.map(object.getPatient());
+        DoctorResponse doctorResponse = doctorResponseMapper.map(object.getDoctor());
 
         return new RehabProgramResponse(
                 object.getId(),
                 patientResponse,
+                doctorResponse,
                 object.getIsCurrent(),
                 object.getStartDate(),
                 object.getEndDate(),
@@ -34,7 +34,10 @@ public class RehabProgramResponseMapper implements Mapper<RehabProgram, RehabPro
                 null
         );
     }
-    public RehabProgramResponse mapDetails(RehabProgram object) {
+
+    public RehabProgramResponse mapFull(RehabProgram object) {
+        PatientResponse patientResponse = patientResponseMapper.map(object.getPatient());
+        DoctorResponse doctorResponse = doctorResponseMapper.map(object.getDoctor());
         final List<ModuleDto> moduleDtos = Optional.ofNullable(object.getModules())
                 .map(modules -> modules.stream().map(moduleDtoMapper::map).toList())
                 .orElse(null);
@@ -44,7 +47,8 @@ public class RehabProgramResponseMapper implements Mapper<RehabProgram, RehabPro
 
         return new RehabProgramResponse(
                 object.getId(),
-                null,
+                patientResponse,
+                doctorResponse,
                 object.getIsCurrent(),
                 object.getStartDate(),
                 object.getEndDate(),

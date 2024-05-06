@@ -62,6 +62,13 @@ public class RehabProgramController {
                 .body(rehabProgramService.createProtocol(principal.getName(), id, request));
     }
 
+    @GetMapping("/{id}/protocol")
+    public ResponseEntity<?> getProtocol(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(null);
+    }
+
     @PutMapping("/{id}/form")
     public ResponseEntity<?> addForm(Principal principal,
                                      @RequestBody AddFormRequest request,

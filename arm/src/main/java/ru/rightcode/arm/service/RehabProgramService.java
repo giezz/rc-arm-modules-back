@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.projection.DoctorIdInfo;
-import ru.rightcode.arm.dto.projection.RehabProgramInfo;
 import ru.rightcode.arm.dto.request.*;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.exceptions.NoPermissionException;
@@ -18,12 +17,10 @@ import ru.rightcode.arm.model.*;
 import ru.rightcode.arm.repository.PatientRepository;
 import ru.rightcode.arm.repository.PatientStatusRepository;
 import ru.rightcode.arm.repository.RehabProgramRepository;
-import ru.rightcode.arm.repository.specification.RehabProgramSpecification;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static ru.rightcode.arm.repository.specification.RehabProgramSpecification.*;
 
@@ -65,7 +62,7 @@ public class RehabProgramService {
                         .orElseThrow(EntityNotFoundException::new);
         patient.setPatientStatus(patientStatus);
 
-        return rehabProgramResponseMapper.mapDetails(rehabProgramRepository.save(rehabProgram));
+        return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
     }
 
     @Transactional
@@ -77,7 +74,11 @@ public class RehabProgramService {
         Protocol protocol = protocolService.createProtocol(request);
         rehabProgram.addProtocol(protocol);
 
-        return rehabProgramResponseMapper.mapDetails(rehabProgramRepository.save(rehabProgram));
+        return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
+    }
+
+    public void getProtocol() {
+
     }
 
     @Transactional
@@ -94,7 +95,7 @@ public class RehabProgramService {
         programForm.setType(new Type(request.formType().getCode()));
         rehabProgram.addForm(programForm);
 
-        return rehabProgramResponseMapper.mapDetails(rehabProgramRepository.save(rehabProgram));
+        return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
     }
 
     @Transactional
@@ -110,7 +111,7 @@ public class RehabProgramService {
         module.setName(request.name());
         rehabProgram.addModule(module);
 
-        return rehabProgramResponseMapper.mapDetails(rehabProgramRepository.save(rehabProgram));
+        return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
     }
 
     private RehabProgram createCurrentProgram(Long doctorId, Patient patient) {

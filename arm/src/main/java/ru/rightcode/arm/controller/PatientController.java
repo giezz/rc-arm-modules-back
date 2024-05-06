@@ -17,7 +17,9 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping
-    public ResponseEntity<?> getAll(@RequestParam(required = false) String firstName,
+    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", required = false) int pageNumber,
+                                    @RequestParam(defaultValue = "10", required = false) int pageSize,
+                                    @RequestParam(required = false) String firstName,
                                     @RequestParam(required = false) String middleName,
                                     @RequestParam(required = false) String lastName,
                                     @RequestParam(required = false) String status,
@@ -25,6 +27,8 @@ public class PatientController {
                                     @RequestParam(required = false) Boolean isDead) {
         return ResponseEntity.ok(
                 patientService.getAll(
+                        pageNumber,
+                        pageSize,
                         new PatientRequest(
                                 firstName,
                                 middleName,
@@ -42,13 +46,18 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getByCode(code));
     }
 
-    @GetMapping("/{code}/rehab-programs")
-    public ResponseEntity<?> getRehabPrograms(@PathVariable Long code,
-                                              @RequestParam(required = false) boolean current) {
-        if (current) {
-            return ResponseEntity.ok(patientService.getCurrentRehabProgram(code));
+    @GetMapping("/{patientCode}/rehab-programs")
+    public ResponseEntity<?> getRehabPrograms(@PathVariable Long patientCode,
+                                              @RequestParam(required = false) Long id) {
+        if (id == null) {
+            return ResponseEntity.ok(patientService.getAllRehabPrograms(patientCode));
         }
-        return ResponseEntity.ok(patientService.getAllRehabPrograms(code));
+        return ResponseEntity.ok(patientService.getRehabProgram(patientCode, id));
+    }
+
+    @GetMapping("/{patientCode}/rehab-programs/current")
+    public ResponseEntity<?> getCurrentRehabProgram(@PathVariable Long patientCode) {
+        return ResponseEntity.ok(patientService.getCurrentRehabProgram(patientCode));
     }
 
 }
