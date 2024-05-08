@@ -6,7 +6,8 @@ public record RehabProgramRequest(
         String patientFirstName,
         String patientMiddleName,
         String patientLastName,
-        LocalDate startDate,
-        LocalDate endDate
+        LocalDate startDateFrom,
+        LocalDate startDateTo,
+        Boolean isCurrent
 ) {
 }
