@@ -7,6 +7,7 @@ import ru.rightcode.arm.dto.request.PatientRequest;
 import ru.rightcode.arm.service.PatientService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/patients")
@@ -22,9 +23,9 @@ public class PatientController {
                                     @RequestParam(required = false) String firstName,
                                     @RequestParam(required = false) String middleName,
                                     @RequestParam(required = false) String lastName,
-                                    @RequestParam(required = false) String status,
+                                    @RequestParam(required = false) List<Integer> status,
                                     @RequestParam(required = false) LocalDate birthDate,
-                                    @RequestParam(required = false) Boolean isDead) {
+                                    @RequestParam(required = false) String gender) {
         return ResponseEntity.ok(
                 patientService.getAll(
                         pageNumber,
@@ -35,7 +36,7 @@ public class PatientController {
                                 lastName,
                                 status,
                                 birthDate,
-                                isDead
+                                gender
                         )
                 )
         );

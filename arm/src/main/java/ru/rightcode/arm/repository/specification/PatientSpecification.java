@@ -15,10 +15,6 @@ import java.util.stream.Stream;
 
 public class PatientSpecification {
 
-    public static Specification<Patient> isDead() {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.isNotNull(root.get(Patient_.DEATH_DATE));
-    }
-
     public static Specification<Patient> firstNameLike(String name) {
         if (name == null || name.isEmpty()) {
             return null;
@@ -49,13 +45,22 @@ public class PatientSpecification {
         );
     }
 
-    public static Specification<Patient> hasPatientStatus(String status) {
-        if (status == null) {
+    public static Specification<Patient> hasGenderEqual(String gender) {
+        if (gender == null || gender.isEmpty()) {
             return null;
         }
-        // FIXME add join
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(Patient_.PATIENT_STATUS)
-                .get(PatientStatus_.ID), status);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(
+                root.get(Patient_.GENDER),
+                gender
+        );
+    }
+
+    public static Specification<Patient> hasPatientStatus(List<Integer> statuses) {
+        if (statuses == null || statuses.isEmpty()) {
+            return null;
+        }
+
+        return (root, query, criteriaBuilder) -> root.get(Patient_.PATIENT_STATUS).get(PatientStatus_.ID).in(statuses);
     }
 
     public static Specification<Patient> hasBirthDate(LocalDate birthDate) {
@@ -71,15 +76,13 @@ public class PatientSpecification {
                                 firstNameLike(request.firstName()),
                                 middleNameLike(request.middleName()),
                                 lastNameLike(request.lastName()),
-                                hasPatientStatus(request.status()),
-                                hasBirthDate(request.birthDate())
+                                hasPatientStatus(request.statuses()),
+                                hasBirthDate(request.birthDate()),
+                                hasGenderEqual(request.gender())
                         )
                         .filter(Objects::nonNull)
                         .toList()
         );
-        if (request.isDead() != null && request.isDead()) {
-            specificationList.add(isDead());
-        }
         if (specificationList.isEmpty()) {
             return Optional.empty();
         }
