@@ -1,10 +1,16 @@
 package ru.rightcode.arm.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.response.FormDetailsResponse;
 import ru.rightcode.arm.dto.response.FormResponse;
+import ru.rightcode.arm.dto.response.PageableResponse;
 import ru.rightcode.arm.dto.response.QuestionResponse;
 import ru.rightcode.arm.mapper.FormResponseMapper;
 import ru.rightcode.arm.mapper.QuestionResponseMapper;
@@ -26,11 +32,21 @@ public class FormService {
     private final FormResponseMapper formResponseMapper;
     private final QuestionResponseMapper questionResponseMapper;
 
-    public List<FormResponse> getAll() {
-        return formRepository.findAll()
-                .stream()
-                .map(formResponseMapper::map)
-                .toList();
+    public PageableResponse<List<FormResponse>> getAll(int pageNumber, int pageSize, String name) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Form> page;
+        if (name == null || name.isEmpty()) {
+            page = formRepository.findAll(pageable);
+        } else {
+            page = formRepository.findAllByNameContainsIgnoreCase(name, pageable);
+        }
+
+        return new PageableResponse<>(
+                page.get().map(formResponseMapper::map).toList(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements()
+        );
     }
 
     public FormDetailsResponse getFormDetails(Long formId) {
