@@ -1,11 +1,16 @@
 package ru.rightcode.arm.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.response.ExerciseResponse;
+import ru.rightcode.arm.dto.response.PageableResponse;
 import ru.rightcode.arm.mapper.ExerciseResponseMapper;
+import ru.rightcode.arm.model.Exercise;
 import ru.rightcode.arm.repository.ExerciseRepository;
 
 import java.util.List;
@@ -18,14 +23,20 @@ public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final ExerciseResponseMapper exerciseResponseMapper;
 
-    public ExerciseResponse getById(Long id) {
-        return exerciseResponseMapper.map(exerciseRepository.findById(id).orElseThrow(EntityNotFoundException::new));
-    }
+    public PageableResponse<List<ExerciseResponse>> getAll(int pageNumber, int pageSize, String name) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Exercise> page;
+        if (name == null || name.isEmpty()) {
+            page = exerciseRepository.findAll(pageable);
+        } else {
+            page = exerciseRepository.findAllByNameContainsIgnoreCase(name, pageable);
+        }
 
-    public List<ExerciseResponse> getAll() {
-        return exerciseRepository.findAll()
-                .stream()
-                .map(exerciseResponseMapper::map)
-                .toList();
+        return new PageableResponse<>(
+                page.get().map(exerciseResponseMapper::map).toList(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements()
+        );
     }
 }
