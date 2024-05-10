@@ -1,5 +1,7 @@
 package ru.rightcode.arm.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +20,6 @@ import java.util.Optional;
 @Repository
 public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long>, JpaSpecificationExecutor<RehabProgram> {
 
-
     @Override
     @NonNull
     @EntityGraph(attributePaths = {"forms.form", RehabProgram_.MODULES})
@@ -26,7 +27,7 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
 
     @Override
     @NonNull
-    List<RehabProgram> findAll(@NonNull Specification<RehabProgram> specification);
+    Page<RehabProgram> findAll(@NonNull Specification<RehabProgram> specification, @NonNull Pageable pageable);
 
     List<RehabProgramInfo> findAllByPatientId(Long patientId);
 

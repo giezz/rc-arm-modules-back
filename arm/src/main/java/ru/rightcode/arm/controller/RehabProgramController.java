@@ -23,9 +23,16 @@ public class RehabProgramController {
     private final ProgramFormService programFormService;
 
     @GetMapping
-    public ResponseEntity<?> getProgramsByCurrentDoctor(Principal principal,
+    public ResponseEntity<?> getProgramsByCurrentDoctor(@RequestParam(defaultValue = "0", required = false) int pageNumber,
+                                                        @RequestParam(defaultValue = "10", required = false) int pageSize,
+                                                        Principal principal,
                                                         RehabProgramRequest request) {
-        return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(principal.getName(), request));
+        return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(
+                pageNumber,
+                pageSize,
+                principal.getName(),
+                request
+        ));
     }
 
     @GetMapping("/{id}/modules-forms-results")

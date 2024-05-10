@@ -3,11 +3,16 @@ package ru.rightcode.arm.service;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.projection.DoctorIdInfo;
 import ru.rightcode.arm.dto.request.*;
+import ru.rightcode.arm.dto.response.PageableResponse;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.exceptions.NoPermissionException;
 import ru.rightcode.arm.exceptions.PatientNotFoundException;
@@ -38,15 +43,22 @@ public class RehabProgramService {
     private final DoctorService doctorService;
     private final ProtocolService protocolService;
 
-    public List<RehabProgramResponse> getProgramsByCurrentDoctor(String doctorLogin, RehabProgramRequest request) {
+    public PageableResponse<List<RehabProgramResponse>> getProgramsByCurrentDoctor(int pageNumber,
+                                                                                   int pageSize,
+                                                                                   String doctorLogin,
+                                                                                   RehabProgramRequest request) {
         DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
         Specification<RehabProgram> specification = params(request);
         specification = specification.and(hasDoctorIdEqual(doctor.getId()));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<RehabProgram> page = rehabProgramRepository.findAll(specification, pageable);
 
-        return rehabProgramRepository.findAll(specification)
-                .stream()
-                .map(rehabProgramResponseMapper::map)
-                .toList();
+        return new PageableResponse<>(
+                page.get().map(rehabProgramResponseMapper::map).toList(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements()
+        );
     }
 
     @Transactional
@@ -59,7 +71,7 @@ public class RehabProgramService {
                 .orElseThrow(() -> new PatientNotFoundException(request.patientId()));
         RehabProgram rehabProgram = createCurrentProgram(doctor.getId(), patient);
         PatientStatus patientStatus = patientStatusRepository.findByName("Проходит реабилитацию")
-                        .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
         patient.setPatientStatus(patientStatus);
 
         return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
