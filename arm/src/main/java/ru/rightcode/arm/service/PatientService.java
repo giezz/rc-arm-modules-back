@@ -37,13 +37,13 @@ public class PatientService {
     private final PatientResponseMapper patientResponseMapper;
     private final RehabProgramResponseMapper rehabProgramResponseMapper;
 
-    public Object getAll(int pageNumber, int pageSize, PatientRequest patientRequest) {
+    public PageableResponse<List<PatientResponse>> getAll(int pageNumber, int pageSize, PatientRequest patientRequest) {
         Optional<Specification<Patient>> spec = PatientSpecification.specificationBuilder(patientRequest);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Patient> page;
-        page = spec
+        Page<Patient> page = spec
                 .map(specification -> patientRepository.findAll(specification, pageable))
                 .orElseGet(() -> patientRepository.findAll(pageable));
+
         return new PageableResponse<>(
                 page.get().map(patientResponseMapper::mapDetails).toList(),
                 page.getNumber(),
