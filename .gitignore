@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/questionnaire/uml
+questionnaire/uml/Graph.puml
+questionnaire/uml/Graph.puml

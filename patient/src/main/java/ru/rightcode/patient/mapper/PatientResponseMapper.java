@@ -12,12 +12,10 @@ import ru.rightcode.patient.model.PatientStatus;
         })
 public interface PatientResponseMapper{
 
-    @Mapping(source = "id", target = "id")
     @Mapping(source = "passport", target = "passport")
     @Mapping(source = "status", target = "patientStatus")
     PatientResponse toResponse(Patient patient);
 
-    @Mapping(source = "id", target = "id")
     @Mapping(source = "passport", target = "passport")
     @Mapping(target = "status", source = "patientStatus")
     Patient toEntity(PatientResponse patientResponse);

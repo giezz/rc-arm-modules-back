@@ -7,8 +7,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public record PatientResponse(
-        Long id,
-        Long patientCode,
         String firstName,
         String middleName,
         String lastName,
@@ -19,7 +17,7 @@ public record PatientResponse(
         String snils,
         String polis,
 
-        PatientStatus patientStatus,
-        Passport passport
+        PatientStatus patientStatus, // TODO: сделать ResponseEntity
+        Passport passport // TODO: сделать ResponseEntity
 ) implements Serializable {
 }

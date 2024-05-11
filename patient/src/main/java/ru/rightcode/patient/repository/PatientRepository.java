@@ -14,7 +14,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     // auth
     // attributePaths = {"user", "status"}
     // Could not write JSON: could not initialize proxy [ru.rightcode.patient.model.Passport#3] - no Session]
-    @EntityGraph(attributePaths = {"user", "status"})
+    @EntityGraph(attributePaths = {"user", "status", "passport"})
     <T> Optional<T> findByUserUsername(@Param("login") String login, Class<T> projection);
 
     @Override
