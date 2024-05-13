@@ -71,9 +71,7 @@ public class RehabProgramController {
 
     @GetMapping("/{id}/protocol")
     public ResponseEntity<?> getProtocol(@PathVariable Long id) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(null);
+        return ResponseEntity.ok(rehabProgramService.getProtocol(id));
     }
 
     @PutMapping("/{id}/form")
@@ -89,6 +87,19 @@ public class RehabProgramController {
         );
     }
 
+    @DeleteMapping("/{programId}/form/{formId}")
+    public ResponseEntity<?> deleteForm(Principal principal,
+                                        @PathVariable Long programId,
+                                        @PathVariable Long formId) {
+        return ResponseEntity.ok(
+                rehabProgramService.deleteForm(
+                        principal.getName(),
+                        formId,
+                        programId
+                )
+        );
+    }
+
     @PutMapping("/{id}/module")
     public ResponseEntity<?> addModule(Principal principal,
                                        @RequestBody AddModuleRequest request,
@@ -98,6 +109,19 @@ public class RehabProgramController {
                         principal.getName(),
                         request,
                         id
+                )
+        );
+    }
+
+    @DeleteMapping("/{programId}/module/{moduleId}")
+    public ResponseEntity<?> deleteModule(Principal principal,
+                                          @PathVariable Long programId,
+                                          @PathVariable Long moduleId) {
+        return ResponseEntity.ok(
+                rehabProgramService.deleteModule(
+                        principal.getName(),
+                        moduleId,
+                        programId
                 )
         );
     }
