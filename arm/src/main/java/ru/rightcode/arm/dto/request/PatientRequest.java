@@ -2,14 +2,15 @@ package ru.rightcode.arm.dto.request;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 
 public record PatientRequest(
         String firstName,
         String middleName,
         String lastName,
-        String status,
+        List<Integer> statuses,
         LocalDate birthDate,
-        Boolean isDead
+        String gender
 ) implements Serializable {
 }

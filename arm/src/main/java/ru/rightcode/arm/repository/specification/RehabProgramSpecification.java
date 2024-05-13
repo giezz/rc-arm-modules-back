@@ -28,36 +28,42 @@ public class RehabProgramSpecification {
         String firstName = request.patientFirstName();
         String middleName = request.patientMiddleName();
         String lastName = request.patientLastName();
-        LocalDate startDate = request.startDate();
-        LocalDate endDate = request.endDate();
+        LocalDate startDateFrom = request.startDateFrom();
+        LocalDate startDateTo = request.startDateTo();
+        Boolean isCurrent = request.isCurrent();
 
-        return (root, query, criteriaBuilder) -> {
+        return (root, query, cb) -> {
             root.fetch(RehabProgram_.PATIENT).fetch(Patient_.PATIENT_STATUS);
             List<Predicate> predicates = new ArrayList<>();
             if (firstName != null) {
-                predicates.add(criteriaBuilder.like(
-                        criteriaBuilder.upper(root.get(RehabProgram_.PATIENT).get(Patient_.FIRST_NAME)),
+                predicates.add(cb.like(
+                        cb.upper(root.get(RehabProgram_.PATIENT).get(Patient_.FIRST_NAME)),
                         "%" + firstName.toUpperCase() + "%"
                 ));
             }
             if (middleName != null) {
-                predicates.add(criteriaBuilder.like(
-                        criteriaBuilder.upper(root.get(RehabProgram_.PATIENT).get(Patient_.MIDDLE_NAME)),
+                predicates.add(cb.like(
+                        cb.upper(root.get(RehabProgram_.PATIENT).get(Patient_.MIDDLE_NAME)),
                         "%" + middleName.toUpperCase() + "%"
                 ));
             }
             if (lastName != null) {
-                predicates.add(criteriaBuilder.like(
-                        criteriaBuilder.upper(root.get(RehabProgram_.PATIENT).get(Patient_.LAST_NAME)),
+                predicates.add(cb.like(
+                        cb.upper(root.get(RehabProgram_.PATIENT).get(Patient_.LAST_NAME)),
                         "%" + lastName.toUpperCase() + "%"
                 ));
             }
-            if (startDate != null && endDate != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(RehabProgram_.START_DATE), startDate));
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(RehabProgram_.END_DATE), endDate));
+            if (startDateFrom != null && startDateTo != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get(RehabProgram_.START_DATE), startDateFrom));
+                predicates.add(cb.lessThanOrEqualTo(root.get(RehabProgram_.START_DATE), startDateTo));
+            }
+            if (isCurrent != null) {
+                predicates.add(isCurrent ?
+                        cb.equal(root.get(RehabProgram_.IS_CURRENT), true) :
+                        cb.equal(root.get(RehabProgram_.IS_CURRENT), false));
             }
 
-            return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
+            return cb.and(predicates.toArray(Predicate[]::new));
         };
     }
 

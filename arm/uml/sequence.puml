@@ -1,0 +1,59 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+'autonumber
+
+actor "Врач-реабилитолог" as vrach
+participant UI as ui
+participant Server as s
+database Database as db
+
+vrach -> ui: Получить список пациентов
+activate ui
+ui -> s: getPatientsRequest()
+activate s
+s -> db: getPatients()
+activate db
+db --> s: patients
+deactivate db
+s --> ui: patientsResponse
+deactivate s
+ui --> vrach: Список пациентов
+deactivate ui
+vrach -> ui: Найти пациента по фильтрам
+activate ui
+ui -> s: getPatientsRequest(filter)
+activate s
+s -> db: getPatients(filter)
+activate db
+db --> s: filteredPatients
+deactivate db
+s --> ui: filteredPatientsResponse
+deactivate s
+ui --> vrach: Пациент соответсвующий фильтрам
+deactivate ui
+vrach -> ui: Получить информацию о пациенте
+activate ui
+ui -> s: getPatientDetailsRequest(id)
+activate s
+s -> db: getPatient(id)
+activate db
+db --> s: patient
+deactivate db
+s --> ui: patientDetailsResponse
+deactivate s
+ui --> vrach: Информация о пациенте
+deactivate ui
+vrach -> ui: Перейти на страницу программы реабилитации
+activate ui
+ui -> s: getCurrentRehabProgramRequest(id)
+activate s
+s -> db: getCurrentRehabProgram(id)
+activate db
+db --> s: rehabProgram
+deactivate db
+s --> ui: rehabProgramResponse
+deactivate s
+ui --> vrach: Программа реабилитации пациента
+deactivate ui
+@enduml

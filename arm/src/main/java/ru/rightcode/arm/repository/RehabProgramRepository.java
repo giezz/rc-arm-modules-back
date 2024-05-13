@@ -1,5 +1,7 @@
 package ru.rightcode.arm.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +20,6 @@ import java.util.Optional;
 @Repository
 public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long>, JpaSpecificationExecutor<RehabProgram> {
 
-
     @Override
     @NonNull
     @EntityGraph(attributePaths = {"forms.form", RehabProgram_.MODULES})
@@ -26,14 +27,12 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
 
     @Override
     @NonNull
-    List<RehabProgram> findAll(@NonNull Specification<RehabProgram> specification);
+    Page<RehabProgram> findAll(@NonNull Specification<RehabProgram> specification, @NonNull Pageable pageable);
 
     List<RehabProgramInfo> findAllByPatientId(Long patientId);
 
-    @EntityGraph(attributePaths = {RehabProgram_.PATIENT})
-    List<RehabProgram> findAllByDoctorId(Long id);
-
     @Query("select rp from RehabProgram rp " +
+            "join fetch rp.doctor " +
             "left join fetch rp.modules " +
             "where rp.isCurrent = true and rp.patient.id = :id")
     Optional<RehabProgram> findCurrentWithModules(@Param("id") Long id);
@@ -44,6 +43,25 @@ public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long
             "left join fetch f.scale s " +
             "where rp.isCurrent = true and rp.patient.id = :id")
     Optional<RehabProgram> findCurrentWithProgramForms(@Param("id") Long id);
+
+    @Query("select rp from RehabProgram rp " +
+            "join fetch rp.doctor " +
+            "left join fetch rp.modules " +
+            "where rp.id = :programId and rp.patient.id = :patientId")
+    Optional<RehabProgram> findByPatientIdWithModules(
+            @Param("programId") Long programId,
+            @Param("patientId") Long patientId
+    );
+
+    @Query("select rp from RehabProgram rp " +
+            "left join fetch rp.forms pf " +
+            "left join fetch pf.form f " +
+            "left join fetch f.scale s " +
+            "where rp.id = :programId and rp.patient.id = :patientId")
+    Optional<RehabProgram> findByPatientIdWithProgramForms(
+            @Param("programId") Long programId,
+            @Param("patientId") Long patientId
+    );
 
     @Query("select exists(select 1 from RehabProgram rp where rp.doctor.id = :doctorId and rp.patient.id = :patientId and rp.isCurrent = true)")
     boolean checkIfCurrentExists(

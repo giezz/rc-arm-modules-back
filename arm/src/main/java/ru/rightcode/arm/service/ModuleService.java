@@ -39,6 +39,13 @@ public class ModuleService {
         return moduleDetailsResponseMapper.map(module);
     }
 
+    public Module create(String name) {
+        Module module = new Module();
+        module.setName(name);
+
+        return module;
+    }
+
     @Transactional
     public ModuleDetailsResponse renameModule(String doctorLogin, RenameModuleRequest request, Long moduleId) {
         Module module = getModuleIfDoctorCanEditModule(doctorLogin, moduleId);

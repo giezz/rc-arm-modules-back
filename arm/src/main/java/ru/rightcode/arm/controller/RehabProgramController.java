@@ -23,9 +23,16 @@ public class RehabProgramController {
     private final ProgramFormService programFormService;
 
     @GetMapping
-    public ResponseEntity<?> getProgramsByCurrentDoctor(Principal principal,
+    public ResponseEntity<?> getProgramsByCurrentDoctor(@RequestParam(defaultValue = "0", required = false) int pageNumber,
+                                                        @RequestParam(defaultValue = "10", required = false) int pageSize,
+                                                        Principal principal,
                                                         RehabProgramRequest request) {
-        return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(principal.getName(), request));
+        return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(
+                pageNumber,
+                pageSize,
+                principal.getName(),
+                request
+        ));
     }
 
     @GetMapping("/{id}/modules-forms-results")
@@ -62,6 +69,11 @@ public class RehabProgramController {
                 .body(rehabProgramService.createProtocol(principal.getName(), id, request));
     }
 
+    @GetMapping("/{id}/protocol")
+    public ResponseEntity<?> getProtocol(@PathVariable Long id) {
+        return ResponseEntity.ok(rehabProgramService.getProtocol(id));
+    }
+
     @PutMapping("/{id}/form")
     public ResponseEntity<?> addForm(Principal principal,
                                      @RequestBody AddFormRequest request,
@@ -75,6 +87,19 @@ public class RehabProgramController {
         );
     }
 
+    @DeleteMapping("/{programId}/form/{formId}")
+    public ResponseEntity<?> deleteForm(Principal principal,
+                                        @PathVariable Long programId,
+                                        @PathVariable Long formId) {
+        return ResponseEntity.ok(
+                rehabProgramService.deleteForm(
+                        principal.getName(),
+                        formId,
+                        programId
+                )
+        );
+    }
+
     @PutMapping("/{id}/module")
     public ResponseEntity<?> addModule(Principal principal,
                                        @RequestBody AddModuleRequest request,
@@ -84,6 +109,19 @@ public class RehabProgramController {
                         principal.getName(),
                         request,
                         id
+                )
+        );
+    }
+
+    @DeleteMapping("/{programId}/module/{moduleId}")
+    public ResponseEntity<?> deleteModule(Principal principal,
+                                          @PathVariable Long programId,
+                                          @PathVariable Long moduleId) {
+        return ResponseEntity.ok(
+                rehabProgramService.deleteModule(
+                        principal.getName(),
+                        moduleId,
+                        programId
                 )
         );
     }

@@ -3,25 +3,39 @@ package ru.rightcode.arm.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.rightcode.arm.dto.request.CreateProtocolRequest;
+import ru.rightcode.arm.dto.response.ProtocolResponse;
+import ru.rightcode.arm.mapper.ProtocolResponseMapper;
 import ru.rightcode.arm.model.Protocol;
+import ru.rightcode.arm.repository.ProtocolRepository;
 
 import java.time.Instant;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class ProtocolService {
 
+    private final ProtocolRepository protocolRepository;
+    private final ProtocolResponseMapper protocolResponseMapper;
+
     public Protocol createProtocol(CreateProtocolRequest request) {
         String results = transformFormsResults(request.modulesFormsResults(), request.programFormsResults());
         Protocol protocol = new Protocol();
         protocol.setCreationDate(Instant.now());
-        protocol.setIsFinal(false);
+        protocol.setIsFinal(true);
         protocol.setScalesResult(results);
         protocol.setRecommendations(request.recommendations());
         protocol.setRehabResult(request.result());
         protocol.setRehabDiagnosis(request.diagnosis());
 
         return protocol;
+    }
+
+    public List<ProtocolResponse> getProtocolByProgramId(Long id) {
+        return protocolRepository.findByRehabProgramId(id).
+                stream()
+                .map(protocolResponseMapper::map)
+                .toList();
     }
 
     private String transformFormsResults(String modulesFormsResults, String programFormsResults) {
