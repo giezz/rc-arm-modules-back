@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.response.FormDetailsResponse;
@@ -18,6 +17,7 @@ import ru.rightcode.arm.model.Form;
 import ru.rightcode.arm.model.Question;
 import ru.rightcode.arm.repository.FormRepository;
 import ru.rightcode.arm.repository.QuestionRepository;
+import ru.rightcode.arm.utils.PageableUtils;
 
 import java.util.List;
 
@@ -32,14 +32,15 @@ public class FormService {
     private final FormResponseMapper formResponseMapper;
     private final QuestionResponseMapper questionResponseMapper;
 
+    private final PageableUtils pageableUtils;
+
     public PageableResponse<List<FormResponse>> getAll(int pageNumber, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Form> page;
-        if (name == null || name.isEmpty()) {
-            page = formRepository.findAll(pageable);
-        } else {
-            page = formRepository.findAllByNameContainsIgnoreCase(name, pageable);
-        }
+        Page<Form> page = pageableUtils.getPageableResult(
+                name,
+                () -> formRepository.findAll(pageable),
+                () -> formRepository.findAllByNameContainsIgnoreCase(name, pageable)
+        );
 
         return new PageableResponse<>(
                 page.get().map(formResponseMapper::map).toList(),

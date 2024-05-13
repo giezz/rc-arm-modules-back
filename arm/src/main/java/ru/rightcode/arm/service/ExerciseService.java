@@ -12,6 +12,7 @@ import ru.rightcode.arm.dto.response.PageableResponse;
 import ru.rightcode.arm.mapper.ExerciseResponseMapper;
 import ru.rightcode.arm.model.Exercise;
 import ru.rightcode.arm.repository.ExerciseRepository;
+import ru.rightcode.arm.utils.PageableUtils;
 
 import java.util.List;
 
@@ -23,14 +24,15 @@ public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final ExerciseResponseMapper exerciseResponseMapper;
 
+    private final PageableUtils pageableUtils;
+
     public PageableResponse<List<ExerciseResponse>> getAll(int pageNumber, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Exercise> page;
-        if (name == null || name.isEmpty()) {
-            page = exerciseRepository.findAll(pageable);
-        } else {
-            page = exerciseRepository.findAllByNameContainsIgnoreCase(name, pageable);
-        }
+        Page<Exercise> page = pageableUtils.getPageableResult(
+                name,
+                () -> exerciseRepository.findAll(pageable),
+                () -> exerciseRepository.findAllByNameContainsIgnoreCase(name, pageable)
+        );
 
         return new PageableResponse<>(
                 page.get().map(exerciseResponseMapper::map).toList(),
