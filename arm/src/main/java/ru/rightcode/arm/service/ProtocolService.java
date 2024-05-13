@@ -1,6 +1,5 @@
 package ru.rightcode.arm.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.rightcode.arm.dto.request.CreateProtocolRequest;
@@ -10,6 +9,7 @@ import ru.rightcode.arm.model.Protocol;
 import ru.rightcode.arm.repository.ProtocolRepository;
 
 import java.time.Instant;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +22,7 @@ public class ProtocolService {
         String results = transformFormsResults(request.modulesFormsResults(), request.programFormsResults());
         Protocol protocol = new Protocol();
         protocol.setCreationDate(Instant.now());
-        protocol.setIsFinal(false);
+        protocol.setIsFinal(true);
         protocol.setScalesResult(results);
         protocol.setRecommendations(request.recommendations());
         protocol.setRehabResult(request.result());
@@ -31,9 +31,11 @@ public class ProtocolService {
         return protocol;
     }
 
-    public ProtocolResponse getProtocol(Long id) {
-        return protocolResponseMapper.map(protocolRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new));
+    public List<ProtocolResponse> getProtocolByProgramId(Long id) {
+        return protocolRepository.findByRehabProgramId(id).
+                stream()
+                .map(protocolResponseMapper::map)
+                .toList();
     }
 
     private String transformFormsResults(String modulesFormsResults, String programFormsResults) {
