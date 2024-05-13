@@ -19,7 +19,6 @@ import ru.rightcode.arm.exceptions.NoPermissionException;
 import ru.rightcode.arm.exceptions.PatientNotFoundException;
 import ru.rightcode.arm.mapper.ProtocolResponseMapper;
 import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
-import ru.rightcode.arm.model.Module;
 import ru.rightcode.arm.model.*;
 import ru.rightcode.arm.repository.*;
 
@@ -84,15 +83,8 @@ public class RehabProgramService {
     }
 
     @Transactional
-    public ProtocolResponse createProtocol(String doctorLogin, Long rehabProgramId, CreateProtocolRequest request) {
-        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
-        RehabProgram rehabProgram = rehabProgramRepository.findById(rehabProgramId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        if (!Objects.equals(rehabProgram.getDoctor().getId(), doctor.getId()) || !rehabProgram.getIsCurrent()) {
-            throw new NoPermissionException("Нет прав на редактирование программы реабилитации");
-        }
-
+    public ProtocolResponse createProtocol(String doctorLogin, Long programId, CreateProtocolRequest request) {
+        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
         completeRehabProgram(rehabProgram);
         Protocol protocol = protocolService.createProtocol(request);
         rehabProgram.addProtocol(protocol);
@@ -108,13 +100,7 @@ public class RehabProgramService {
 
     @Transactional
     public RehabProgramResponse addForm(String doctorLogin, AddFormRequest request, Long programId) {
-        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
-        RehabProgram rehabProgram = rehabProgramRepository.findById(programId).orElseThrow(EntityNotFoundException::new);
-
-        if (!Objects.equals(rehabProgram.getDoctor().getId(), doctor.getId()) || !rehabProgram.getIsCurrent()) {
-            throw new NoPermissionException("Нет прав на редактирование программы реабилитации");
-        }
-
+        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
         rehabProgram.addForm(
                 programFormService.create(new Form(request.formId()), new Type(request.formType().getCode()))
         );
@@ -124,13 +110,7 @@ public class RehabProgramService {
 
     @Transactional
     public RehabProgramResponse deleteForm(String doctorLogin, Long programFormId, Long programId) {
-        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
-        RehabProgram rehabProgram = rehabProgramRepository.findById(programId).orElseThrow(EntityNotFoundException::new);
-
-        if (!Objects.equals(rehabProgram.getDoctor().getId(), doctor.getId()) || !rehabProgram.getIsCurrent()) {
-            throw new NoPermissionException("Нет прав на редактирование программы реабилитации");
-        }
-
+        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
         rehabProgram.deleteFom(programFormRepository.findById(programFormId).orElseThrow());
 
         return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
@@ -138,13 +118,7 @@ public class RehabProgramService {
 
     @Transactional
     public RehabProgramResponse addModule(String doctorLogin, AddModuleRequest request, Long programId) {
-        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
-        RehabProgram rehabProgram = rehabProgramRepository.findById(programId).orElseThrow(EntityNotFoundException::new);
-
-        if (!Objects.equals(rehabProgram.getDoctor().getId(), doctor.getId()) || !rehabProgram.getIsCurrent()) {
-            throw new NoPermissionException("Нет прав на редактирование программы реабилитации");
-        }
-
+        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
         rehabProgram.addModule(moduleService.create(request.name()));
 
         return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
@@ -152,12 +126,7 @@ public class RehabProgramService {
 
     @Transactional
     public RehabProgramResponse deleteModule(String doctorLogin, Long moduleId, Long programId) {
-        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
-        RehabProgram rehabProgram = rehabProgramRepository.findById(programId).orElseThrow(EntityNotFoundException::new);
-
-        if (!Objects.equals(rehabProgram.getDoctor().getId(), doctor.getId()) || !rehabProgram.getIsCurrent()) {
-            throw new NoPermissionException("Нет прав на редактирование программы реабилитации");
-        }
+        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
 
         rehabProgram.deleteModule(moduleRepository.findById(moduleId).orElseThrow());
 
@@ -181,6 +150,18 @@ public class RehabProgramService {
         PatientStatus patientStatus = patientStatusRepository.findByName("Проходил реабилитацию ранее")
                 .orElseThrow(EntityNotFoundException::new);
         patient.setPatientStatus(patientStatus);
+    }
+
+    private RehabProgram getProgramIfDoctorCanEdit(String doctorLogin, Long programId) {
+        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
+        RehabProgram rehabProgram = rehabProgramRepository.findById(programId).orElseThrow(
+                () -> new EntityNotFoundException("Программа реабилитации не найдена")
+        );
+        if (!Objects.equals(rehabProgram.getDoctor().getId(), doctor.getId()) || !rehabProgram.getIsCurrent()) {
+            throw new NoPermissionException("Нет прав на редактирование программы реабилитации");
+        }
+
+        return rehabProgram;
     }
 
 }
