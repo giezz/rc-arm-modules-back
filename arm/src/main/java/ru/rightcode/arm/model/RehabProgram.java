@@ -58,9 +58,19 @@ public class RehabProgram {
         module.setRehabProgram(this);
     }
 
+    public void deleteModule(Module module) {
+        modules.remove(module);
+        module.setRehabProgram(null);
+    }
+
     public void addForm(ProgramForm form) {
         forms.add(form);
         form.setRehabProgram(this);
+    }
+
+    public void deleteFom(ProgramForm form) {
+        forms.remove(form);
+        form.setRehabProgram(null);
     }
 
     public void addProtocol(Protocol protocol) {
