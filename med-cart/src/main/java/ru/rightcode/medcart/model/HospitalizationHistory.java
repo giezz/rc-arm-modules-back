@@ -1,5 +1,6 @@
 package ru.rightcode.medcart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.Getter;
@@ -55,5 +56,6 @@ public class HospitalizationHistory {
             referencedColumnName = "id"
     )
     @XmlTransient
+    @JsonIgnore
     private Patient patient;
 }

@@ -1,5 +1,6 @@
 package ru.rightcode.medcart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.Getter;
@@ -20,8 +21,6 @@ import java.time.LocalDate;
         name = "EpicrisisResponse",
         propOrder = {
                 "id",
-                "muCode",
-                "doctorCode",
                 "diagnosisCode",
                 "epicrisisiData",
                 "creationDate"
@@ -33,12 +32,6 @@ public class Epicrisis {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "mu_code", nullable = false)
-    private Long muCode;
-
-    @Column(name = "doctor_code", nullable = false)
-    private Long doctorCode;
-
     @Column(name = "diagnosis_code", nullable = false)
     private Long diagnosisCode;
 
@@ -49,11 +42,12 @@ public class Epicrisis {
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate creationDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "patient_id",
+            name = "hospitalization_history_id",
             referencedColumnName = "id"
     )
     @XmlTransient
-    private Patient patient;
+    @JsonIgnore
+    private HospitalizationHistory hospitalizationHistory;
 }
