@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.PatientRequest;
+import ru.rightcode.arm.service.HospitalizationHistoryService;
 import ru.rightcode.arm.service.PatientService;
 
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ import java.util.List;
 public class PatientController {
 
     private final PatientService patientService;
+    private final HospitalizationHistoryService hospitalizationHistoryService;
 
     @GetMapping
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", required = false) int pageNumber,
@@ -59,6 +61,16 @@ public class PatientController {
     @GetMapping("/{patientCode}/rehab-programs/current")
     public ResponseEntity<?> getCurrentRehabProgram(@PathVariable Long patientCode) {
         return ResponseEntity.ok(patientService.getCurrentRehabProgram(patientCode));
+    }
+
+    @GetMapping("/{patientCode}/hosp-history")
+    public ResponseEntity<?> getHospitalizationHistory(@PathVariable Long patientCode) {
+        return ResponseEntity.ok(hospitalizationHistoryService.getPatientHospitalizationHistory(patientCode));
+    }
+
+    @GetMapping("/{patientCode}/hosp-history/{id}/epicrisises")
+    public ResponseEntity<?> getEpicrisises(@PathVariable Long patientCode, @PathVariable Long id) {
+        return ResponseEntity.ok(hospitalizationHistoryService.getEpicrisises(patientCode, id));
     }
 
 }
