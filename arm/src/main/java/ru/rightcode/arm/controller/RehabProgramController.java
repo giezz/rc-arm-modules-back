@@ -1,6 +1,7 @@
 package ru.rightcode.arm.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("api/v1/rehabs")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
+@Slf4j
 public class RehabProgramController {
 
     private final RehabProgramService rehabProgramService;
@@ -27,6 +29,7 @@ public class RehabProgramController {
                                                         @RequestParam(defaultValue = "10", required = false) int pageSize,
                                                         Principal principal,
                                                         RehabProgramRequest request) {
+        log.info("getProgramsByCurrentDoctor, INITIATOR: " + principal.getName());
         return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(
                 pageNumber,
                 pageSize,
@@ -38,6 +41,7 @@ public class RehabProgramController {
     @GetMapping("/{id}/modules-forms-results")
     public ResponseEntity<?> getModulesResults(@PathVariable Long id,
                                                @RequestParam(required = false) List<Long> excludeIds) {
+        log.info("getModulesResults");
         if (excludeIds == null) {
             excludeIds = List.of(-1L);
         }
@@ -47,6 +51,7 @@ public class RehabProgramController {
     @GetMapping("/{id}/program-forms-results")
     public ResponseEntity<?> getFormResults(@PathVariable Long id,
                                             @RequestParam(required = false) List<Long> excludeIds) {
+        log.info("getFormResults");
         if (excludeIds == null) {
             excludeIds = List.of(-1L);
         }
@@ -55,6 +60,7 @@ public class RehabProgramController {
 
     @PostMapping
     public ResponseEntity<?> create(Principal principal, @RequestBody CreateRehabProgramRequest request) {
+        log.info("create, INITIATOR: " + principal.getName());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(rehabProgramService.create(principal.getName(), request));
@@ -64,6 +70,7 @@ public class RehabProgramController {
     public ResponseEntity<?> createProtocol(Principal principal,
                                             @PathVariable Long id,
                                             @RequestBody CreateProtocolRequest request) {
+        log.info("createProtocol, INITIATOR: " + principal.getName());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(rehabProgramService.createProtocol(principal.getName(), id, request));
@@ -71,6 +78,7 @@ public class RehabProgramController {
 
     @GetMapping("/{id}/protocol")
     public ResponseEntity<?> getProtocol(@PathVariable Long id) {
+        log.info("getProtocol");
         return ResponseEntity.ok(rehabProgramService.getProtocol(id));
     }
 
@@ -78,6 +86,7 @@ public class RehabProgramController {
     public ResponseEntity<?> addForm(Principal principal,
                                      @RequestBody AddFormRequest request,
                                      @PathVariable Long id) {
+        log.info("addForm, INITIATOR: " + principal.getName());
         return ResponseEntity.ok(
                 rehabProgramService.addForm(
                         principal.getName(),
@@ -91,6 +100,7 @@ public class RehabProgramController {
     public ResponseEntity<?> deleteForm(Principal principal,
                                         @PathVariable Long programId,
                                         @PathVariable Long formId) {
+        log.info("deleteForm, INITIATOR: " + principal.getName());
         return ResponseEntity.ok(
                 rehabProgramService.deleteForm(
                         principal.getName(),
@@ -104,6 +114,7 @@ public class RehabProgramController {
     public ResponseEntity<?> addModule(Principal principal,
                                        @RequestBody AddModuleRequest request,
                                        @PathVariable Long id) {
+        log.info("addModule, INITIATOR: " + principal.getName());
         return ResponseEntity.ok(
                 rehabProgramService.addModule(
                         principal.getName(),
@@ -117,6 +128,7 @@ public class RehabProgramController {
     public ResponseEntity<?> deleteModule(Principal principal,
                                           @PathVariable Long programId,
                                           @PathVariable Long moduleId) {
+        log.info("deleteModule, INITIATOR: " + principal.getName());
         return ResponseEntity.ok(
                 rehabProgramService.deleteModule(
                         principal.getName(),

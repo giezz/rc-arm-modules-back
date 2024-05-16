@@ -1,11 +1,14 @@
 package ru.rightcode.arm.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.PatientRequest;
-import ru.rightcode.arm.service.HospitalizationHistoryService;
 import ru.rightcode.arm.service.PatientService;
+import ru.rightcode.arm.service.medcard.MedCardHospitalizationHistoryService;
+import ru.rightcode.arm.service.medcard.MedCardRehabilitationHistoryService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,10 +17,12 @@ import java.util.List;
 @RequestMapping("api/v1/patients")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
+@Slf4j
 public class PatientController {
 
     private final PatientService patientService;
-    private final HospitalizationHistoryService hospitalizationHistoryService;
+    private final MedCardHospitalizationHistoryService medCardHospitalizationHistoryService;
+    private final MedCardRehabilitationHistoryService medCardRehabilitationHistoryService;
 
     @GetMapping
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", required = false) int pageNumber,
@@ -28,30 +33,25 @@ public class PatientController {
                                     @RequestParam(required = false) List<Integer> status,
                                     @RequestParam(required = false) LocalDate birthDate,
                                     @RequestParam(required = false) String gender) {
-        return ResponseEntity.ok(
-                patientService.getAll(
+        log.info("getAll");
+        return ResponseEntity.ok(patientService.getAll(
                         pageNumber,
                         pageSize,
-                        new PatientRequest(
-                                firstName,
-                                middleName,
-                                lastName,
-                                status,
-                                birthDate,
-                                gender
-                        )
+                        new PatientRequest(firstName, middleName, lastName, status, birthDate, gender)
                 )
         );
     }
 
     @GetMapping("/{code}")
-    public ResponseEntity<?> getByCode(@PathVariable Long code) {
+    public ResponseEntity<?> getByCode(@PathVariable Long code, HttpServletRequest request) {
+        log.info("getByCode");
         return ResponseEntity.ok(patientService.getByCode(code));
     }
 
     @GetMapping("/{patientCode}/rehab-programs")
     public ResponseEntity<?> getRehabPrograms(@PathVariable Long patientCode,
                                               @RequestParam(required = false) Long id) {
+        log.info("getRehabPrograms");
         if (id == null) {
             return ResponseEntity.ok(patientService.getAllRehabPrograms(patientCode));
         }
@@ -60,17 +60,26 @@ public class PatientController {
 
     @GetMapping("/{patientCode}/rehab-programs/current")
     public ResponseEntity<?> getCurrentRehabProgram(@PathVariable Long patientCode) {
+        log.info("getCurrentRehabProgram");
         return ResponseEntity.ok(patientService.getCurrentRehabProgram(patientCode));
     }
 
     @GetMapping("/{patientCode}/hosp-history")
     public ResponseEntity<?> getHospitalizationHistory(@PathVariable Long patientCode) {
-        return ResponseEntity.ok(hospitalizationHistoryService.getPatientHospitalizationHistory(patientCode));
+        log.info("getHospitalizationHistory");
+        return medCardHospitalizationHistoryService.getPatientHospitalizationHistory(patientCode);
     }
 
-    @GetMapping("/{patientCode}/hosp-history/{id}/epicrisises")
-    public ResponseEntity<?> getEpicrisises(@PathVariable Long patientCode, @PathVariable Long id) {
-        return ResponseEntity.ok(hospitalizationHistoryService.getEpicrisises(patientCode, id));
+    @GetMapping("/{patientCode}/hosp-history/epicrisises")
+    public ResponseEntity<?> getEpicrisises(@PathVariable Long patientCode) {
+        log.info("getEpicrisises");
+        return ResponseEntity.ok(medCardHospitalizationHistoryService.getEpicrisises(patientCode));
+    }
+
+    @GetMapping("/{patientCode}/rehab-history")
+    public ResponseEntity<?> getPatientRehabHistory(@PathVariable Long patientCode) {
+        log.info("getPatientRehabHistory");
+        return ResponseEntity.ok(medCardRehabilitationHistoryService.getPatientRehabHistory(patientCode));
     }
 
 }
