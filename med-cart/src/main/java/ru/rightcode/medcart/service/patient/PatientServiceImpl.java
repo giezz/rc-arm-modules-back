@@ -23,7 +23,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient getPatientByCode(Long code) {
-        return patientRepository.findByPatientCode(code);
+        return patientRepository.findByPatientCode(code).orElse(null);
     }
 
 }

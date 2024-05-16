@@ -96,4 +96,26 @@ ALTER TABLE medcarta.epicrisis ADD CONSTRAINT hospitalization_history_fk FOREIGN
     ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
+-- object: medcarta.rehabilitation_history | type: TABLE --
+-- DROP TABLE IF EXISTS medcarta.rehabilitation_history CASCADE;
+CREATE TABLE medcarta.rehabilitation_history (
+                                                 id bigserial NOT NULL,
+                                                 patient_id bigint NOT NULL,
+                                                 mu_code bigint NOT NULL,
+                                                 doctor_code bigint NOT NULL,
+                                                 creation_date date NOT NULL,
+                                                 rehab_result text NOT NULL,
+                                                 CONSTRAINT rehabilitation_history_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE medcarta.rehabilitation_history OWNER TO postgres;
+-- ddl-end --
+
+-- object: patient_fk | type: CONSTRAINT --
+-- ALTER TABLE medcarta.rehabilitation_history DROP CONSTRAINT IF EXISTS patient_fk CASCADE;
+ALTER TABLE medcarta.rehabilitation_history ADD CONSTRAINT patient_fk FOREIGN KEY (patient_id)
+    REFERENCES medcarta.patient (id) MATCH FULL
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
 
