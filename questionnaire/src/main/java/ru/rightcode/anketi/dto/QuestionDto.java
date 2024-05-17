@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import lombok.*;
 import ru.rightcode.anketi.model.QuestionTypeEnum;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -11,7 +12,7 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
-public class QuestionDto{
+public class QuestionDto implements Serializable {
     @Nullable
     private Long id ;
     @Nullable

@@ -1,6 +1,9 @@
 package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.anketi.dto.FormDto;
@@ -43,6 +46,7 @@ public class FormService {
      * Получить список всех анкет
      * @return List<FormDto>
      */
+    @Transactional
     public List<FormDto> getAllFormDto() {
         List<Form> forms = formRepository.findAll();
         return forms.stream().map((Form form) -> formMapper.toDto(
@@ -67,6 +71,8 @@ public class FormService {
      * @param id Long
      * @return FormDto
      */
+    @Transactional
+    @Cacheable(value = "FormService::getFormDtoById", key = "#id")
     public FormDto getFormDtoById(Long id) {
         Form form = getFormById(id);
         List<FormQuestion> formQuestionList = form.getFormQuestions();
@@ -96,6 +102,9 @@ public class FormService {
      */
     // Возможность удалять вопросы и варианты
     @Transactional
+    @Caching(cacheable = {
+            @Cacheable(value = "FormService::getFormDtoById", key = "#formDTO.id")
+    })
     public FormDto createForm(FormDto formDTO) {
         // Создаем новую форму
         Form form = formMapper.toEntity(formDTO);
@@ -112,6 +121,9 @@ public class FormService {
      * @return FormDto
      */
     @Transactional
+    @Caching(put = {
+            @CachePut(value = "FormService::getFormDtoById", key = "#formDTO.id")
+    })
     public FormDto updateForm( Long id, FormDto formDTO) {
         Form existingForm = getFormById(id);
         // Обновляем поля существующей формы

@@ -1,6 +1,7 @@
 package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.anketi.dto.QuestionDto;
@@ -23,10 +24,12 @@ public class FormQuestionService {
         formQuestionRepository.save(fq);
     }
 
+    @Transactional
     public List<FormQuestion> findByFormId(Long id){
         return formQuestionRepository.findByFormId(id);
     }
 
+    @Transactional
     public void deleteByFormId(Long id){
         List<FormQuestion> formQuestionList = findByFormId(id);
         List<Question> questions = formQuestionList.stream().map(FormQuestion::getQuestion).toList();
@@ -39,14 +42,17 @@ public class FormQuestionService {
         });
     }
 
+    @Transactional
     public void deleteByQuestionId(Long questionId){
         formQuestionRepository.deleteByQuestionId(questionId);
     }
 
+    @Transactional
     public void deleteByQuestionFormId(Long formId, Long questionId){
         formQuestionRepository.deleteByQuestionFormId(formId, questionId);
     }
 
+    @Transactional
     public void deleteOldQuestions(List<QuestionDto> newQuestionDtoList, List<Question> oldQuestionList, Long savedFormId) {
         List<Question> newQuestions = questionService.toEntityList(newQuestionDtoList);
         List<Question> ostatok = oldQuestionList.stream()
@@ -59,6 +65,7 @@ public class FormQuestionService {
         });
     }
 
+    @Transactional
     public List<Question> processQuestionsAndVariants(List<QuestionDto> questionDTOs) {
         List<Question> newQuestionList = new ArrayList<>();
         // Проходимся по всем вопросам в DTO и обновляем или создаем соответствующие вопросы и варианты

@@ -1,6 +1,8 @@
 package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.anketi.dto.QuestionDto;
@@ -37,6 +39,7 @@ public class QuestionService {
     }
 
     @Transactional
+    @Cacheable(value = "QuestionService::findById", key = "#id")
     public Question findById(Long id) {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Question not found with id: " + id));
