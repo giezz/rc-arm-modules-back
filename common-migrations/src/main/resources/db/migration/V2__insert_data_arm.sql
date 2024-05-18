@@ -127,163 +127,48 @@ INSERT INTO arm.user_role VALUES (2, 1);
 INSERT INTO arm.user_role VALUES (2, 2);
 INSERT INTO arm.user_role VALUES (3, 3);
 
---
--- TOC entry 3576 (class 0 OID 0)
--- Dependencies: 246
--- Name: _role_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
+-- DATA for Name: rehab_program; Type: TABLE DATA; Schema: arm; Owner: postgres
+INSERT INTO arm.rehab_program (doctor_id, patient_id, is_current, created_at, start_date, end_date)
+VALUES
+    (1, 1, true, '2023-01-01 10:00:00', '2023-01-02 10:00:00', '2023-06-01 10:00:00'),
+    (1, 3, true, '2023-01-01 10:00:00', '2023-01-02 10:00:00', '2023-06-01 10:00:00'),
+    (2, 2, false, '2023-02-01 11:00:00', '2023-02-02 11:00:00', '2023-07-01 11:00:00');
 
-SELECT pg_catalog.setval('arm._role_id_seq', 1, false);
+-- DATA for Name: module; Type: TABLE DATA; Schema: arm; Owner: postgres
+INSERT INTO arm.module (rehab_program_id, finished_at, name)
+VALUES
+    (1, '2023-03-01 12:00:00', 'Module 1'),
+    (2, '2023-04-01 13:00:00', 'Module 2');
 
-
---
--- TOC entry 3577 (class 0 OID 0)
--- Dependencies: 244
--- Name: _user_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm._user_id_seq', 1, false);
-
-
---
--- TOC entry 3578 (class 0 OID 0)
--- Dependencies: 226
--- Name: block_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.block_id_seq', 1, false);
+-- DATA for Name: module_exercise; Type: TABLE DATA; Schema: arm; Owner: postgres
+INSERT INTO arm.protocol (rehab_program_id, creation_date, is_final, scales_result, rehab_result, recommendations, rehab_diagnosis)
+VALUES
+    (1, '2023-05-01 14:00:00', false, 'Scale 1 Result', 'Rehab 1 Result', 'Recommendation 1', 'Diagnosis 1'),
+    (2, '2023-06-01 15:00:00', true, 'Scale 2 Result', 'Rehab 2 Result', 'Recommendation 2', 'Diagnosis 2');
 
 
---
--- TOC entry 3579 (class 0 OID 0)
--- Dependencies: 212
--- Name: doctor_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
+INSERT INTO arm.module_exercise (exercise_id, module_id, block_id, finished_at)
+VALUES
+    (1, 1, 1, '2023-07-01 16:00:00'),
+    (2, 2, 2, '2023-08-01 17:00:00');
 
-SELECT pg_catalog.setval('arm.doctor_id_seq', 1, false);
+INSERT INTO arm.program_form (rehab_program_id, form_id, type_id, finished_at, score)
+VALUES
+    (1, 1, 1, '2023-11-01 20:00:00', 95.0),
+    (2, 2, 2, '2023-12-01 21:00:00', 85.0);
 
+INSERT INTO arm.program_form_answer (variant_id, program_form_id)
+VALUES
+    (1, 1),
+    (2, 2);
 
---
--- TOC entry 3580 (class 0 OID 0)
--- Dependencies: 218
--- Name: exercise_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
+INSERT INTO arm.module_form (module_id, form_id, finished_at, score)
+VALUES
+    (1, 1, '2024-01-01 22:00:00', 90.0),
+    (2, 2, '2024-02-01 23:00:00', 80.0);
 
-SELECT pg_catalog.setval('arm.exercise_id_seq', 1, false);
+INSERT INTO arm.module_form_answer (module_form_id, variant_id)
+VALUES
+    (1, 1),
+    (2, 2);
 
-
---
--- TOC entry 3581 (class 0 OID 0)
--- Dependencies: 238
--- Name: exercise_type_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.exercise_type_id_seq', 1, false);
-
-
---
--- TOC entry 3582 (class 0 OID 0)
--- Dependencies: 249
--- Name: module_exercise_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.module_exercise_id_seq', 1, false);
-
-
---
--- TOC entry 3583 (class 0 OID 0)
--- Dependencies: 259
--- Name: module_form_answer_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.module_form_answer_id_seq', 1, false);
-
-
---
--- TOC entry 3584 (class 0 OID 0)
--- Dependencies: 257
--- Name: module_form_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.module_form_id_seq', 1, false);
-
-
---
--- TOC entry 3585 (class 0 OID 0)
--- Dependencies: 224
--- Name: module_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.module_id_seq', 1, false);
-
-
---
--- TOC entry 3586 (class 0 OID 0)
--- Dependencies: 230
--- Name: passport_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.passport_id_seq', 1, false);
-
-
---
--- TOC entry 3587 (class 0 OID 0)
--- Dependencies: 214
--- Name: patient_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.patient_id_seq', 1, false);
-
-
---
--- TOC entry 3588 (class 0 OID 0)
--- Dependencies: 234
--- Name: program_form_answer_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.program_form_answer_id_seq', 1, false);
-
-
---
--- TOC entry 3589 (class 0 OID 0)
--- Dependencies: 253
--- Name: program_form_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.program_form_id_seq', 1, false);
-
-
---
--- TOC entry 3590 (class 0 OID 0)
--- Dependencies: 228
--- Name: protocol_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.protocol_id_seq', 1, false);
-
-
---
--- TOC entry 3591 (class 0 OID 0)
--- Dependencies: 222
--- Name: rehab_program_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.rehab_program_id_seq', 1, false);
-
-
---
--- TOC entry 3592 (class 0 OID 0)
--- Dependencies: 220
--- Name: status_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.status_id_seq', 1, false);
-
-
---
--- TOC entry 3593 (class 0 OID 0)
--- Dependencies: 255
--- Name: type_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.type_id_seq', 1, false);
