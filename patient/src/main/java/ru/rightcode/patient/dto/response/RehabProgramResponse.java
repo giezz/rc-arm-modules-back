@@ -6,8 +6,6 @@ import java.util.List;
 
 public record RehabProgramResponse(
         Long id,
-        PatientResponse patient,
-        DoctorResponse doctor,
         Boolean isCurrent,
         Instant startDate,
         Instant endDate,
