@@ -24,5 +24,11 @@ public class PatientService {
         return patientResponseMapper.toResponse(patientFromDB);
     }
 
-
+    // TODO: История проведения реабилитаций
+    // TODO: Результаты реабилитаций
+    // TODO: ПРограмма реабилитации
+    // TODO: Модули реабилитации
+    // TODO: get Эпикриз
+    // TODO: get Вводная анкета
+    // TODO: get Выходная анкета
 }
