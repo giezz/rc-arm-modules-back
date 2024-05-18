@@ -19,7 +19,7 @@ public record PatientResponse(
         String polis,
         String bookmark,
 
-        PatientStatus patientStatus, // TODO: сделать ResponseEntity
-        Passport passport // TODO: сделать ResponseEntity
+        String patientStatus, // TODO: сделать ResponseEntity
+        PassportResponse passport // TODO: сделать ResponseEntity
 ) implements Serializable {
 }
