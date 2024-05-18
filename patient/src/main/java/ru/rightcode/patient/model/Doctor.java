@@ -25,11 +25,6 @@ public class Doctor {
     @Column(name = "doctor_code", nullable = false)
     private Long doctorCode;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "_user_id", nullable = false)
-    @ToString.Exclude
-    private User user;
 
     @Size(max = 255)
     @NotNull

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -78,6 +79,12 @@ public class Patient {
     @NotNull
     @Column(name = "polis", nullable = false, length = 16)
     private String polis;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "_user_id", nullable = false)
+    @ToString.Exclude
+    private User user;
 
     @NotNull
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
