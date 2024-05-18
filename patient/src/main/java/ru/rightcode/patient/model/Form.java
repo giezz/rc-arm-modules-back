@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -23,5 +26,17 @@ public class Form {
 
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "scale_id")
+    private Scale scale;
+
+    @OneToMany(mappedBy = "form")
+    private List<FormQuestion> formQuestions = new ArrayList<>();
+
+
+    public Form(Long id) {
+        this.id = id;
+    }
 
 }

@@ -6,12 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "status", schema = "arm")
-public class PatientStatus {
+@Table(name = "scale", schema = "anketi")
+public class Scale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -20,5 +23,11 @@ public class PatientStatus {
     @NotNull
     @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
+
+    @Column(name = "description", length = Integer.MAX_VALUE)
+    private String description;
+
+    @OneToMany(mappedBy = "scale")
+    private List<Interpretation> interpretations = new ArrayList<>();
 
 }
