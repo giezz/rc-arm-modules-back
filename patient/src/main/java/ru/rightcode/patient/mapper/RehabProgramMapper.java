@@ -6,12 +6,26 @@ import org.mapstruct.MappingConstants;
 import ru.rightcode.patient.dto.response.RehabProgramResponse;
 import ru.rightcode.patient.model.Patient;
 import ru.rightcode.patient.model.PatientStatus;
+import ru.rightcode.patient.model.RehabProgram;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {Patient.class, PatientStatus.class
+        uses = {RehabProgram.class,
+                RehabProgramResponse.class,
+                ModuleMapper.class,
+                FormResponseMapper.class,
+                ProgramFormResponseMapper.class,
+                PatientResponseMapper.class,
+                DoctorResponseMapper.class,
         })
 public interface RehabProgramMapper {
 
-
-    RehabProgramResponse toRehabProgramResponse(Patient patient);
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "patient", source = "patient")
+    @Mapping(target = "doctor", source = "doctor")
+    @Mapping(target = "isCurrent", source = "isCurrent")
+    @Mapping(target = "startDate", source = "startDate")
+    @Mapping(target = "endDate", source = "endDate")
+    @Mapping(target = "forms", source = "forms")
+    @Mapping(target = "modules", source = "modules")
+    RehabProgramResponse toRehabProgramResponse(RehabProgram rehabProgram);
 }
