@@ -10,12 +10,14 @@ public record PatientResponse(
         String firstName,
         String middleName,
         String lastName,
+        String gender,
         LocalDate birthDate,
         String address,
         String phoneNumber,
         String workPlaceData,
         String snils,
         String polis,
+        String bookmark,
 
         PatientStatus patientStatus, // TODO: сделать ResponseEntity
         Passport passport // TODO: сделать ResponseEntity
