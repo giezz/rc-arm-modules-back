@@ -126,49 +126,49 @@ INSERT INTO arm.user_role VALUES (1, 1);
 INSERT INTO arm.user_role VALUES (2, 1);
 INSERT INTO arm.user_role VALUES (2, 2);
 INSERT INTO arm.user_role VALUES (3, 3);
-
--- DATA for Name: rehab_program; Type: TABLE DATA; Schema: arm; Owner: postgres
-INSERT INTO arm.rehab_program (doctor_id, patient_id, is_current, created_at, start_date, end_date)
-VALUES
-    (1, 1, true, '2023-01-01 10:00:00', '2023-01-02 10:00:00', '2023-06-01 10:00:00'),
-    (1, 3, true, '2023-01-01 10:00:00', '2023-01-02 10:00:00', '2023-06-01 10:00:00'),
-    (2, 2, false, '2023-02-01 11:00:00', '2023-02-02 11:00:00', '2023-07-01 11:00:00');
-
--- DATA for Name: module; Type: TABLE DATA; Schema: arm; Owner: postgres
-INSERT INTO arm.module (rehab_program_id, finished_at, name)
-VALUES
-    (1, '2023-03-01 12:00:00', 'Module 1'),
-    (2, '2023-04-01 13:00:00', 'Module 2');
-
--- DATA for Name: module_exercise; Type: TABLE DATA; Schema: arm; Owner: postgres
-INSERT INTO arm.protocol (rehab_program_id, creation_date, is_final, scales_result, rehab_result, recommendations, rehab_diagnosis)
-VALUES
-    (1, '2023-05-01 14:00:00', false, 'Scale 1 Result', 'Rehab 1 Result', 'Recommendation 1', 'Diagnosis 1'),
-    (2, '2023-06-01 15:00:00', true, 'Scale 2 Result', 'Rehab 2 Result', 'Recommendation 2', 'Diagnosis 2');
-
-
-INSERT INTO arm.module_exercise (exercise_id, module_id, block_id, finished_at)
-VALUES
-    (1, 1, 1, '2023-07-01 16:00:00'),
-    (2, 2, 2, '2023-08-01 17:00:00');
-
-INSERT INTO arm.program_form (rehab_program_id, form_id, type_id, finished_at, score)
-VALUES
-    (1, 1, 1, '2023-11-01 20:00:00', 95.0),
-    (2, 2, 2, '2023-12-01 21:00:00', 85.0);
-
-INSERT INTO arm.program_form_answer (variant_id, program_form_id)
-VALUES
-    (1, 1),
-    (2, 2);
-
-INSERT INTO arm.module_form (module_id, form_id, finished_at, score)
-VALUES
-    (1, 1, '2024-01-01 22:00:00', 90.0),
-    (2, 2, '2024-02-01 23:00:00', 80.0);
-
-INSERT INTO arm.module_form_answer (module_form_id, variant_id)
-VALUES
-    (1, 1),
-    (2, 2);
-
+--
+-- -- DATA for Name: rehab_program; Type: TABLE DATA; Schema: arm; Owner: postgres
+-- INSERT INTO arm.rehab_program (doctor_id, patient_id, is_current, created_at, start_date, end_date)
+-- VALUES
+--     (1, 1, true, '2023-01-01 10:00:00', '2023-01-02 10:00:00', '2023-06-01 10:00:00'),
+--     (1, 3, true, '2023-01-01 10:00:00', '2023-01-02 10:00:00', '2023-06-01 10:00:00'),
+--     (2, 2, false, '2023-02-01 11:00:00', '2023-02-02 11:00:00', '2023-07-01 11:00:00');
+--
+-- -- DATA for Name: module; Type: TABLE DATA; Schema: arm; Owner: postgres
+-- INSERT INTO arm.module (rehab_program_id, finished_at, name)
+-- VALUES
+--     (1, '2023-03-01 12:00:00', 'Module 1'),
+--     (2, '2023-04-01 13:00:00', 'Module 2');
+--
+-- -- DATA for Name: module_exercise; Type: TABLE DATA; Schema: arm; Owner: postgres
+-- INSERT INTO arm.protocol (rehab_program_id, creation_date, is_final, scales_result, rehab_result, recommendations, rehab_diagnosis)
+-- VALUES
+--     (1, '2023-05-01 14:00:00', false, 'Scale 1 Result', 'Rehab 1 Result', 'Recommendation 1', 'Diagnosis 1'),
+--     (2, '2023-06-01 15:00:00', true, 'Scale 2 Result', 'Rehab 2 Result', 'Recommendation 2', 'Diagnosis 2');
+--
+--
+-- INSERT INTO arm.module_exercise (exercise_id, module_id, block_id, finished_at)
+-- VALUES
+--     (1, 1, 1, '2023-07-01 16:00:00'),
+--     (2, 2, 2, '2023-08-01 17:00:00');
+--
+-- INSERT INTO arm.program_form (rehab_program_id, form_id, type_id, finished_at, score)
+-- VALUES
+--     (1, 1, 1, '2023-11-01 20:00:00', 95.0),
+--     (2, 2, 2, '2023-12-01 21:00:00', 85.0);
+--
+-- INSERT INTO arm.program_form_answer (variant_id, program_form_id)
+-- VALUES
+--     (1, 1),
+--     (2, 2);
+--
+-- INSERT INTO arm.module_form (module_id, form_id, finished_at, score)
+-- VALUES
+--     (1, 1, '2024-01-01 22:00:00', 90.0),
+--     (2, 2, '2024-02-01 23:00:00', 80.0);
+--
+-- INSERT INTO arm.module_form_answer (module_form_id, variant_id)
+-- VALUES
+--     (1, 1),
+--     (2, 2);
+--
