@@ -38,5 +38,4 @@ public class Interpretation {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "scale_id", nullable = false)
     private Scale scale;
-
 }

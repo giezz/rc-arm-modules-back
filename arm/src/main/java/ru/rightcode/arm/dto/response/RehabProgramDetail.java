@@ -6,14 +6,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
-/**
- * DTO for {@link ru.rightcode.arm.model.RehabProgram}
- */
-
-public record RehabProgramResponse(
+public record RehabProgramDetail(
         Long id,
-        PatientResponse patient,
-        DoctorResponse doctor,
         Boolean isCurrent,
         Instant startDate,
         Instant endDate,

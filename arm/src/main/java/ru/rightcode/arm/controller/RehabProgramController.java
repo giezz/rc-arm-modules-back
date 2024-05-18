@@ -4,13 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.rightcode.arm.dto.request.AddFormRequest;
-import ru.rightcode.arm.dto.request.AddModuleRequest;
-import ru.rightcode.arm.dto.request.CreateProtocolRequest;
-import ru.rightcode.arm.dto.request.CreateRehabProgramRequest;
+import ru.rightcode.arm.dto.request.*;
 import ru.rightcode.arm.service.ModuleFormService;
 import ru.rightcode.arm.service.ProgramFormService;
-import ru.rightcode.arm.service.ProtocolService;
 import ru.rightcode.arm.service.RehabProgramService;
 
 import java.security.Principal;
@@ -25,11 +21,18 @@ public class RehabProgramController {
     private final RehabProgramService rehabProgramService;
     private final ModuleFormService moduleFormService;
     private final ProgramFormService programFormService;
-    private final ProtocolService protocolService;
 
     @GetMapping
-    public ResponseEntity<?> getProgramsByCurrentDoctor(Principal principal) {
-        return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(principal.getName()));
+    public ResponseEntity<?> getProgramsByCurrentDoctor(@RequestParam(defaultValue = "0", required = false) int pageNumber,
+                                                        @RequestParam(defaultValue = "10", required = false) int pageSize,
+                                                        Principal principal,
+                                                        RehabProgramRequest request) {
+        return ResponseEntity.ok(rehabProgramService.getProgramsByCurrentDoctor(
+                pageNumber,
+                pageSize,
+                principal.getName(),
+                request
+        ));
     }
 
     @GetMapping("/{id}/modules-forms-results")
@@ -58,12 +61,17 @@ public class RehabProgramController {
     }
 
     @PostMapping("/{id}/protocol")
-    public ResponseEntity<?> createProtocol(@RequestBody CreateProtocolRequest request,
-                                            @PathVariable Long id) {
-        protocolService.create(id, request);
+    public ResponseEntity<?> createProtocol(Principal principal,
+                                            @PathVariable Long id,
+                                            @RequestBody CreateProtocolRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(null);
+                .body(rehabProgramService.createProtocol(principal.getName(), id, request));
+    }
+
+    @GetMapping("/{id}/protocol")
+    public ResponseEntity<?> getProtocol(@PathVariable Long id) {
+        return ResponseEntity.ok(rehabProgramService.getProtocol(id));
     }
 
     @PutMapping("/{id}/form")
@@ -79,6 +87,19 @@ public class RehabProgramController {
         );
     }
 
+    @DeleteMapping("/{programId}/form/{formId}")
+    public ResponseEntity<?> deleteForm(Principal principal,
+                                        @PathVariable Long programId,
+                                        @PathVariable Long formId) {
+        return ResponseEntity.ok(
+                rehabProgramService.deleteForm(
+                        principal.getName(),
+                        formId,
+                        programId
+                )
+        );
+    }
+
     @PutMapping("/{id}/module")
     public ResponseEntity<?> addModule(Principal principal,
                                        @RequestBody AddModuleRequest request,
@@ -88,6 +109,19 @@ public class RehabProgramController {
                         principal.getName(),
                         request,
                         id
+                )
+        );
+    }
+
+    @DeleteMapping("/{programId}/module/{moduleId}")
+    public ResponseEntity<?> deleteModule(Principal principal,
+                                          @PathVariable Long programId,
+                                          @PathVariable Long moduleId) {
+        return ResponseEntity.ok(
+                rehabProgramService.deleteModule(
+                        principal.getName(),
+                        moduleId,
+                        programId
                 )
         );
     }

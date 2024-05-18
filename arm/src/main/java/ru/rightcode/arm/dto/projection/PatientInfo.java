@@ -18,6 +18,8 @@ public interface PatientInfo {
 
     String getLastName();
 
+    String getGender();
+
     LocalDate getBirthDate();
 
     LocalDate getDeathDate();
