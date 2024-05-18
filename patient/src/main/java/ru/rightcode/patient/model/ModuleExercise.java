@@ -7,23 +7,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "module_form", schema = "arm")
-public class ModuleForm {
+@Table(name = "module_exercise", schema = "arm")
+public class ModuleExercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "exercise_id", nullable = false)
+    private Exercise exercise;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -31,18 +32,20 @@ public class ModuleForm {
     private Module module;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "form_id", nullable = false)
-    private Form form;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "block_id", nullable = false)
+    private Block block;
 
     @Column(name = "finished_at")
     private Instant finishedAt;
 
-    @Column(name = "score", precision = 100, scale = 2)
-    private BigDecimal score;
+    public void setExerciseById(Long id) {
+        exercise = new Exercise(id);
+    }
 
-    @OneToMany(mappedBy = "moduleForm", fetch = FetchType.LAZY)
-    private List<ModuleFormAnswer> moduleFormAnswers = new ArrayList<>();
+    public void setBlockById(Long id) {
+        block = new Block(id);
+    }
 
     @Override
     public final boolean equals(Object o) {
@@ -51,7 +54,7 @@ public class ModuleForm {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        ModuleForm that = (ModuleForm) o;
+        ModuleExercise that = (ModuleExercise) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 
@@ -59,4 +62,5 @@ public class ModuleForm {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
 }
