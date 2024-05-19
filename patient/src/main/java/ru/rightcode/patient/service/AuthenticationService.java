@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.patient.dto.PatientInfo;
 import ru.rightcode.patient.dto.request.JwtRequest;
 import ru.rightcode.patient.dto.response.JwtResponse;
@@ -23,6 +24,7 @@ public class AuthenticationService {
     private final PatientRepository patientRepository;
     private final JwtUtils jwtUtils;
 
+    @Transactional
     public JwtResponse authenticate(JwtRequest authRequest) {
         UserDetails userDetails;
         userDetails = (UserDetails) authenticationManager.authenticate(

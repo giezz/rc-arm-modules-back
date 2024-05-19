@@ -43,6 +43,10 @@ public class Patient {
     private String lastName;
 
     @NotNull
+    @Column(name = "gender", nullable = false, length = Integer.MAX_VALUE)
+    private String gender;
+
+    @NotNull
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 

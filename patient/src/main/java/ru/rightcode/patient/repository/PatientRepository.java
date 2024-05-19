@@ -14,12 +14,15 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     // auth
     // attributePaths = {"user", "status"}
     // Could not write JSON: could not initialize proxy [ru.rightcode.patient.model.Passport#3] - no Session]
-    @EntityGraph(attributePaths = {"user", "status", "passport"})
+    @EntityGraph(attributePaths = {"user"})
     <T> Optional<T> findByUserUsername(@Param("login") String login, Class<T> projection);
+
+    @EntityGraph(attributePaths = {"user", "patientStatus", "passport"})
+    Optional<Patient> getPatientByUserUsername(@Param("login") String login);
 
     @Override
     @NonNull
-    @EntityGraph(attributePaths = {"status", "passport"})
+    @EntityGraph(attributePaths = {"patientStatus", "passport"})
     Optional<Patient> findById(@NonNull Long id);
 
 }

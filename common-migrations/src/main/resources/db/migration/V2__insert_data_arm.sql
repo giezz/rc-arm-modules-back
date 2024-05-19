@@ -38,6 +38,17 @@ INSERT INTO arm.passport VALUES (2, '3456', '789012', '2014-02-10', 'Отдел�
 INSERT INTO arm.passport VALUES (3, '4567', '890123', '2007-11-05', 'Отделение УФМС по г. Нижний Новгороду');
 INSERT INTO arm.passport VALUES (4, '5678', '901234', '2015-06-15', 'Отделение УФМС по г. Казани');
 INSERT INTO arm.passport VALUES (5, '6789', '12345 ', '2018-03-25', 'Отделение УФМС по г. Владивостоку');
+INSERT INTO arm.passport VALUES (6, '7890', '23456', '2013-09-30', 'Отделение УФМС по г. Самаре');
+INSERT INTO arm.passport VALUES (7, '8901', '34567', '2016-12-10', 'Отделение УФМС по г. Ростову-на-Дону');
+INSERT INTO arm.passport VALUES (8, '9012', '45678', '2009-04-18', 'Отделение УФМС по г. Уфе');
+INSERT INTO arm.passport VALUES (9, '0123', '56789', '2017-07-22', 'Отделение УФМС по г. Краснодару');
+INSERT INTO arm.passport VALUES (10, '1234', '67890', '2011-10-05', 'Отделение УФМС по г. Челябинску');
+INSERT INTO arm.passport VALUES (11, '2345', '78901', '2019-05-15', 'Отделение УФМС по г. Омску');
+INSERT INTO arm.passport VALUES (12, '3456', '89012', '2008-08-28', 'Отделение УФМС по г. Тюмени');
+INSERT INTO arm.passport VALUES (13, '4567', '90123', '2012-11-20', 'Отделение УФМС по г. Иркутску');
+INSERT INTO arm.passport VALUES (14, '5678', '01234', '2015-04-03', 'Отделение УФМС по г. Хабаровску');
+INSERT INTO arm.passport VALUES (15, '6789', '12345', '2010-07-08', 'Отделение УФМС по г. Волгограду');
+
 
 --
 -- TOC entry 3510 (class 0 OID 32345)
@@ -55,11 +66,21 @@ INSERT INTO arm.status VALUES (3, 'Проходил реабилитацию р�
 -- Data for Name: patient; Type: TABLE DATA; Schema: arm; Owner: postgres
 --
 
-INSERT INTO arm.patient VALUES (1, 1008, 2, 4, 3, 'Иван', 'Дмитриевич', 'Петров', '5554444', '56789012345', '6789012345678901', 'm', NULL, '1988-09-10', 'пр. Ленинградский, д. 25, кв. 7, Казань', NULL, 'Лукойл');
-INSERT INTO arm.patient VALUES (2, 1009, 2, 5, 2, 'Мария', 'Андреевна', 'Новикова', '5555555', '67890123456', '7890123456789012', 'f', NULL, '1995-04-27', 'ул. Красная, д. 18, кв. 6, Владивосток', NULL, 'Сбербанк');
-INSERT INTO arm.patient VALUES (3, 1006, 2, 2, 2, 'Андрей', 'Валерьевич', 'Сидоров', '5552222', '34567890123', '4567890123456789', 'm', NULL, '1980-12-05', 'пр. Победы, д. 15, кв. 3, Екатеринбург', NULL, 'Транснефть');
+INSERT INTO arm.patient VALUES (1, 1008, 2, 4, 1, 'Иван', 'Дмитриевич', 'Петров', '5554444', '56789012345', '6789012345678901', 'm', NULL, '1988-09-10', 'пр. Ленинградский, д. 25, кв. 7, Казань', NULL, 'Лукойл');
+INSERT INTO arm.patient VALUES (2, 1009, 2, 5, 1, 'Мария', 'Андреевна', 'Новикова', '5555555', '67890123456', '7890123456789012', 'f', NULL, '1995-04-27', 'ул. Красная, д. 18, кв. 6, Владивосток', NULL, 'Сбербанк');
+INSERT INTO arm.patient VALUES (3, 1006, 2, 2, 1, 'Андрей', 'Валерьевич', 'Сидоров', '5552222', '34567890123', '4567890123456789', 'm', NULL, '1980-12-05', 'пр. Победы, д. 15, кв. 3, Екатеринбург', NULL, 'Транснефть');
 INSERT INTO arm.patient VALUES (4, 1005, 2, 1, 1, 'Елена', 'Петровна', 'Иванова', '5551111', '23456789012', '3456789012345678', 'f', NULL, '1992-03-18', 'ул. Ленина, д. 20, кв. 8, Санкт-Петербург', NULL, 'Газпром');
 INSERT INTO arm.patient VALUES (5, 1007, 3, 3, 1, 'Ольга', 'Сергеевна', 'Кузнецова', '5553333', '45678901234', '5678901234567890', 'f', NULL, '1975-06-30', 'ул. Гагарина, д. 8, кв. 12, Нижний Новгород', NULL, 'РЖД');
+INSERT INTO arm.patient VALUES (6, 1010, 2, 6, 1, 'Тест', 'Тестович', 'Тестов', '5553331', '45678901231', '5678901234567891', 'f', NULL, '1975-06-30', 'Тестовый адрес', NULL, 'Тестовая работа');
+INSERT INTO arm.patient VALUES (7, 1011, 2, 7, 1, 'Иван', 'Иванович', 'Иванов', '5553332', '45678901232', '5678901234567892', 'm', NULL, '1982-09-15', 'Улица Пушкина, дом Колотушкина', NULL, 'Менеджер');
+INSERT INTO arm.patient VALUES (8, 1012, 2, 8, 1, 'Мария', 'Алексеевна', 'Сидорова', '5553333', '45678901233', '5678901234567893', 'f', NULL, '1990-03-22', 'Проезд Орлова, дом Петрова', NULL, 'Бухгалтер');
+INSERT INTO arm.patient VALUES (9, 1013, 2, 9, 1, 'Петр', 'Семенович', 'Петров', '5553334', '45678901234', '5678901234567894', 'm', NULL, '1978-12-05', 'Проспект Ленина, дом Сталина', NULL, 'Инженер');
+INSERT INTO arm.patient VALUES (10, 1014, 2, 10, 1, 'Елена', 'Васильевна', 'Сергеева', '5553335', '45678901235', '5678901234567895', 'f', NULL, '1985-05-20', 'Бульвар Гагарина, дом Ленина', NULL, 'Учитель');
+INSERT INTO arm.patient VALUES (11, 1015, 2, 11, 1, 'Александр', 'Павлович', 'Кузнецов', '5553336', '45678901266', '5678901234567896', 'm', NULL, '1980-08-10', 'Улица Лермонтова, дом Пушкина', NULL, 'Врач');
+INSERT INTO arm.patient VALUES (12, 1016, 2, 12, 1, 'Наталья', 'Дмитриевна', 'Васильева', '5553337', '45678901237', '5678901234567897', 'f', NULL, '1992-01-25', 'Переулок Тургенева, дом Чехова', NULL, 'Художник');
+INSERT INTO arm.patient VALUES (13, 1017, 2, 13, 1, 'Дмитрий', 'Александрович', 'Козлов', '5553338', '45678901238', '2345678901234567', 'm', NULL, '1970-04-18', 'Проезд Пушкина, дом Гоголя', NULL, 'Администратор');
+INSERT INTO arm.patient VALUES (14, 1018, 2, 14, 1, 'Анна', 'Сергеевна', 'Иванова', '5553339', '45678901239', '3456789012345678', 'f', NULL, '1988-07-12', 'Улица Горького, дом Достоевского', NULL, 'Менеджер по продажам');
+INSERT INTO arm.patient VALUES (15, 1019, 2, 15, 1, 'Сергей', 'Николаевич', 'Смирнов', '5553340', '45678901230', '4567890123456789', 'm', NULL, '1977-10-30', 'Бульвар Ленина, дом Карла Маркса', NULL, 'Инженер-программист');
 
 --
 -- TOC entry 3516 (class 0 OID 32375)
@@ -105,164 +126,49 @@ INSERT INTO arm.user_role VALUES (1, 1);
 INSERT INTO arm.user_role VALUES (2, 1);
 INSERT INTO arm.user_role VALUES (2, 2);
 INSERT INTO arm.user_role VALUES (3, 3);
-
 --
--- TOC entry 3576 (class 0 OID 0)
--- Dependencies: 246
--- Name: _role_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+-- -- DATA for Name: rehab_program; Type: TABLE DATA; Schema: arm; Owner: postgres
+-- INSERT INTO arm.rehab_program (doctor_id, patient_id, is_current, created_at, start_date, end_date)
+-- VALUES
+--     (1, 1, true, '2023-01-01 10:00:00', '2023-01-02 10:00:00', '2023-06-01 10:00:00'),
+--     (1, 3, true, '2023-01-01 10:00:00', '2023-01-02 10:00:00', '2023-06-01 10:00:00'),
+--     (2, 2, false, '2023-02-01 11:00:00', '2023-02-02 11:00:00', '2023-07-01 11:00:00');
 --
-
-SELECT pg_catalog.setval('arm._role_id_seq', 1, false);
-
-
+-- -- DATA for Name: module; Type: TABLE DATA; Schema: arm; Owner: postgres
+-- INSERT INTO arm.module (rehab_program_id, finished_at, name)
+-- VALUES
+--     (1, '2023-03-01 12:00:00', 'Module 1'),
+--     (2, '2023-04-01 13:00:00', 'Module 2');
 --
--- TOC entry 3577 (class 0 OID 0)
--- Dependencies: 244
--- Name: _user_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+-- -- DATA for Name: module_exercise; Type: TABLE DATA; Schema: arm; Owner: postgres
+-- INSERT INTO arm.protocol (rehab_program_id, creation_date, is_final, scales_result, rehab_result, recommendations, rehab_diagnosis)
+-- VALUES
+--     (1, '2023-05-01 14:00:00', false, 'Scale 1 Result', 'Rehab 1 Result', 'Recommendation 1', 'Diagnosis 1'),
+--     (2, '2023-06-01 15:00:00', true, 'Scale 2 Result', 'Rehab 2 Result', 'Recommendation 2', 'Diagnosis 2');
 --
-
-SELECT pg_catalog.setval('arm._user_id_seq', 1, false);
-
-
 --
--- TOC entry 3578 (class 0 OID 0)
--- Dependencies: 226
--- Name: block_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+-- INSERT INTO arm.module_exercise (exercise_id, module_id, block_id, finished_at)
+-- VALUES
+--     (1, 1, 1, '2023-07-01 16:00:00'),
+--     (2, 2, 2, '2023-08-01 17:00:00');
 --
-
-SELECT pg_catalog.setval('arm.block_id_seq', 1, false);
-
-
+-- INSERT INTO arm.program_form (rehab_program_id, form_id, type_id, finished_at, score)
+-- VALUES
+--     (1, 1, 1, '2023-11-01 20:00:00', 95.0),
+--     (2, 2, 2, '2023-12-01 21:00:00', 85.0);
 --
--- TOC entry 3579 (class 0 OID 0)
--- Dependencies: 212
--- Name: doctor_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+-- INSERT INTO arm.program_form_answer (variant_id, program_form_id)
+-- VALUES
+--     (1, 1),
+--     (2, 2);
 --
-
-SELECT pg_catalog.setval('arm.doctor_id_seq', 1, false);
-
-
+-- INSERT INTO arm.module_form (module_id, form_id, finished_at, score)
+-- VALUES
+--     (1, 1, '2024-01-01 22:00:00', 90.0),
+--     (2, 2, '2024-02-01 23:00:00', 80.0);
 --
--- TOC entry 3580 (class 0 OID 0)
--- Dependencies: 218
--- Name: exercise_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
+-- INSERT INTO arm.module_form_answer (module_form_id, variant_id)
+-- VALUES
+--     (1, 1),
+--     (2, 2);
 --
-
-SELECT pg_catalog.setval('arm.exercise_id_seq', 1, false);
-
-
---
--- TOC entry 3581 (class 0 OID 0)
--- Dependencies: 238
--- Name: exercise_type_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.exercise_type_id_seq', 1, false);
-
-
---
--- TOC entry 3582 (class 0 OID 0)
--- Dependencies: 249
--- Name: module_exercise_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.module_exercise_id_seq', 1, false);
-
-
---
--- TOC entry 3583 (class 0 OID 0)
--- Dependencies: 259
--- Name: module_form_answer_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.module_form_answer_id_seq', 1, false);
-
-
---
--- TOC entry 3584 (class 0 OID 0)
--- Dependencies: 257
--- Name: module_form_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.module_form_id_seq', 1, false);
-
-
---
--- TOC entry 3585 (class 0 OID 0)
--- Dependencies: 224
--- Name: module_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.module_id_seq', 1, false);
-
-
---
--- TOC entry 3586 (class 0 OID 0)
--- Dependencies: 230
--- Name: passport_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.passport_id_seq', 1, false);
-
-
---
--- TOC entry 3587 (class 0 OID 0)
--- Dependencies: 214
--- Name: patient_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.patient_id_seq', 1, false);
-
-
---
--- TOC entry 3588 (class 0 OID 0)
--- Dependencies: 234
--- Name: program_form_answer_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.program_form_answer_id_seq', 1, false);
-
-
---
--- TOC entry 3589 (class 0 OID 0)
--- Dependencies: 253
--- Name: program_form_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.program_form_id_seq', 1, false);
-
-
---
--- TOC entry 3590 (class 0 OID 0)
--- Dependencies: 228
--- Name: protocol_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.protocol_id_seq', 1, false);
-
-
---
--- TOC entry 3591 (class 0 OID 0)
--- Dependencies: 222
--- Name: rehab_program_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.rehab_program_id_seq', 1, false);
-
-
---
--- TOC entry 3592 (class 0 OID 0)
--- Dependencies: 220
--- Name: status_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.status_id_seq', 1, false);
-
-
---
--- TOC entry 3593 (class 0 OID 0)
--- Dependencies: 255
--- Name: type_id_seq; Type: SEQUENCE SET; Schema: arm; Owner: postgres
---
-
-SELECT pg_catalog.setval('arm.type_id_seq', 1, false);

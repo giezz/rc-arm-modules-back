@@ -2,10 +2,7 @@ package ru.rightcode.arm.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.service.ExerciseService;
 
 @RestController
@@ -17,7 +14,9 @@ public class ExerciseController {
     private final ExerciseService exerciseService;
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(exerciseService.getAll());
+    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", required = false) int pageNumber,
+                                    @RequestParam(defaultValue = "10", required = false) int pageSize,
+                                    @RequestParam(required = false) String name) {
+        return ResponseEntity.ok(exerciseService.getAll(pageNumber, pageSize, name));
     }
 }

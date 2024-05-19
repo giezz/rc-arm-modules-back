@@ -92,6 +92,16 @@
             <version>1.5.5.Final</version>
             <scope>compile</scope>
         </dependency>
+		<!--        Kafka Redis-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
     </dependencies>
 
 	<build>

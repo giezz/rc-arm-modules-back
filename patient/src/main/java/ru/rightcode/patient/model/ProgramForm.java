@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -24,19 +22,21 @@ public class ProgramForm {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "rehab_program_id", nullable = false)
+    @JoinColumn(name = "form_id", nullable = false)
+    private Form form;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rehab_program_id")
     private RehabProgram rehabProgram;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "type_id")
     private Type type;
 
-    @Column(name = "finished_at")
-    private Instant finishedAt;
-
     @Column(name = "score", precision = 100, scale = 2)
     private BigDecimal score;
+
+    @Column(name = "finished_at", nullable = false)
+    private Instant finishedAt;
 
 }

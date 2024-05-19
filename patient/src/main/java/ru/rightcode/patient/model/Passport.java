@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -33,7 +34,7 @@ public class Passport {
 
     @NotNull
     @Column(name = "issued_date", nullable = false)
-    private LocalDate issuedDate;
+    private Instant issuedDate;
 
     @NotNull
     @Column(name = "issued", nullable = false, length = Integer.MAX_VALUE)

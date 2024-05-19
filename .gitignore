@@ -34,3 +34,4 @@ build/
 /questionnaire/uml
 questionnaire/uml/Graph.puml
 questionnaire/uml/Graph.puml
+.jpb/jpb-settings.xml

@@ -16,8 +16,10 @@ public class FormController {
     private final VariantService variantService;
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(formService.getAll());
+    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", required = false) int pageNumber,
+                                    @RequestParam(defaultValue = "10", required = false) int pageSize,
+                                    @RequestParam(required = false) String name) {
+        return ResponseEntity.ok(formService.getAll(pageNumber, pageSize, name));
     }
 
     @GetMapping("/module-form/{id}/results")

@@ -2,14 +2,18 @@
 -- pgModeler version: 1.0.4
 -- PostgreSQL version: 15.0
 -- Project Site: pgmodeler.io
--- Model Author: ---
+-- Model Author: Mikhail Batukhtin
 
 -- Database creation must be performed outside a multi lined SQL file.
 -- These commands were put in this file only as a convenience.
 --
 -- object: rc_doc | type: DATABASE --
 -- DROP DATABASE IF EXISTS rc_doc;
--- CREATE DATABASE rc_doc;
+-- CREATE DATABASE rc_doc_test
+--     TEMPLATE = template0
+--     ENCODING = 'UTF8'
+--     LC_COLLATE = 'ru_RU'
+--     LC_CTYPE = 'ru_RU';
 -- ddl-end --
 
 
