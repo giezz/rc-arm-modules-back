@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Builder
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(schema = "anketi")
 //@ToString(exclude = {"scale", "questions"})
@@ -36,6 +36,7 @@ public class Form {
     @OneToMany(mappedBy = "form")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @Builder.Default
     private List<FormQuestion> formQuestions = new ArrayList<>();
 
     public Form(Long id, String name, String description, Scale scale) {

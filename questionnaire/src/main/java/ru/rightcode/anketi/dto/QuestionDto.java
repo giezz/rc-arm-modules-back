@@ -18,8 +18,10 @@ public class QuestionDto implements Serializable {
     @Nullable
     private String content;
 
+    @Builder.Default
     private Boolean required = false;
     @Nullable
+    @Builder.Default
     private QuestionTypeEnum type = QuestionTypeEnum.SINGLE_CHOICE;
     @Nullable
     private Set<VariantDto> variants;

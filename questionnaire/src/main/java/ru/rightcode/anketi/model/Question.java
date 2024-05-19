@@ -29,14 +29,17 @@ public class Question {
     private String type;
 
     @Column(name = "required", nullable = false)
+    @Builder.Default
     private Boolean required = false;
 
     @OneToMany(mappedBy = "question")
     @ToString.Exclude
+    @Builder.Default
     private Set<Variant> variants = new HashSet<>();
 
     @OneToMany(mappedBy = "question")
     @ToString.Exclude
+    @Builder.Default
     private List<FormQuestion> formQuestions = new ArrayList<>();
 
     public Question(String content, Set<Variant> variants){
