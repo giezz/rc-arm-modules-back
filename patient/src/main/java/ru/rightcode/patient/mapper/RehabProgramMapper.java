@@ -4,8 +4,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import ru.rightcode.patient.dto.response.RehabProgramResponse;
-import ru.rightcode.patient.model.Patient;
-import ru.rightcode.patient.model.PatientStatus;
 import ru.rightcode.patient.model.RehabProgram;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
