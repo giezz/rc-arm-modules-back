@@ -1,6 +1,7 @@
 package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -22,6 +23,7 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j(topic = "form")
 @Transactional
 public class FormService {
 
@@ -37,6 +39,7 @@ public class FormService {
      * @param id Long
      * @return Form
      */
+    @Transactional
     public Form getFormById(Long id) {
         return formRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Form not found with id: " + id));

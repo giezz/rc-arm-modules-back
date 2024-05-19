@@ -2,6 +2,7 @@ package ru.rightcode.anketi.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,7 @@ import ru.rightcode.anketi.repository.DoctorRepository;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Slf4j(topic = "AuthenticationService")
 @Service
 public class AuthenticationService {
 
@@ -30,8 +32,9 @@ public class AuthenticationService {
 
     @Transactional
     public UserJwtResponse authenticate(UserJwtRequest authRequest) {
-        UserDetails userDetails;
-        userDetails = (UserDetails) authenticationManager.authenticate(
+        log.info("Authenticating user: {}", authRequest.getUsername());
+
+        UserDetails userDetails = (UserDetails) authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getUsername(),
                         authRequest.getPassword()
@@ -41,6 +44,8 @@ public class AuthenticationService {
         DoctorInfo doctor = doctorRepository
                 .findByUserUsername(userDetails.getUsername(), DoctorInfo.class)
                 .orElseThrow(EntityNotFoundException::new);
+
+        log.debug("Successfully authenticated user: {}", userDetails.getUsername());
 
         return UserJwtResponse.builder()
                 .token(jwtUtils.generateToken(userDetails, doctor))

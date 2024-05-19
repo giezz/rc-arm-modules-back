@@ -1,6 +1,7 @@
 package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j(topic = "QuestionService")
 @Transactional
 @RequiredArgsConstructor
 public class QuestionService {

@@ -1,6 +1,7 @@
 package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j(topic = "User")
 @Transactional(readOnly = true)
 public class UserService implements UserDetailsService {
 

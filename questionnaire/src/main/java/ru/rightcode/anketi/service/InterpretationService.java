@@ -1,6 +1,7 @@
 package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.anketi.dto.InterpretationDto;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j(topic = "interpretation")
 @Transactional
 public class InterpretationService {
     private final InterpretationRepository interpretationRepository;
