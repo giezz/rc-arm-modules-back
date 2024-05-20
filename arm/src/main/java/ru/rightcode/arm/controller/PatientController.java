@@ -1,6 +1,5 @@
 package ru.rightcode.arm.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -43,19 +42,21 @@ public class PatientController {
     }
 
     @GetMapping("/{code}")
-    public ResponseEntity<?> getByCode(@PathVariable Long code, HttpServletRequest request) {
+    public ResponseEntity<?> getByCode(@PathVariable Long code) {
         log.info("getByCode");
         return ResponseEntity.ok(patientService.getByCode(code));
     }
 
     @GetMapping("/{patientCode}/rehab-programs")
-    public ResponseEntity<?> getRehabPrograms(@PathVariable Long patientCode,
-                                              @RequestParam(required = false) Long id) {
+    public ResponseEntity<?> getRehabPrograms(@PathVariable Long patientCode) {
         log.info("getRehabPrograms");
-        if (id == null) {
-            return ResponseEntity.ok(patientService.getAllRehabPrograms(patientCode));
-        }
-        return ResponseEntity.ok(patientService.getRehabProgram(patientCode, id));
+        return ResponseEntity.ok(patientService.getAllRehabPrograms(patientCode));
+    }
+
+    @GetMapping("/{patientCode}/rehab-programs/{programId}")
+    public ResponseEntity<?> getRehabPrograms(@PathVariable Long patientCode, @PathVariable Long programId) {
+        log.info("getRehabPrograms");
+        return ResponseEntity.ok(patientService.getRehabProgram(patientCode,programId));
     }
 
     @GetMapping("/{patientCode}/rehab-programs/current")
@@ -70,16 +71,16 @@ public class PatientController {
         return medCardHospitalizationHistoryService.getPatientHospitalizationHistory(patientCode);
     }
 
-    @GetMapping("/{patientCode}/hosp-history/epicrisises")
-    public ResponseEntity<?> getEpicrisises(@PathVariable Long patientCode) {
+    @GetMapping("/{patientCode}/hosp-history/{id}/epicrisises")
+    public ResponseEntity<?> getEpicrisises(@PathVariable Long patientCode, @PathVariable Long id) {
         log.info("getEpicrisises");
-        return ResponseEntity.ok(medCardHospitalizationHistoryService.getEpicrisises(patientCode));
+        return medCardHospitalizationHistoryService.getEpicrisises(patientCode, id);
     }
 
     @GetMapping("/{patientCode}/rehab-history")
     public ResponseEntity<?> getPatientRehabHistory(@PathVariable Long patientCode) {
         log.info("getPatientRehabHistory");
-        return ResponseEntity.ok(medCardRehabilitationHistoryService.getPatientRehabHistory(patientCode));
+        return medCardRehabilitationHistoryService.getPatientRehabHistory(patientCode);
     }
 
 }

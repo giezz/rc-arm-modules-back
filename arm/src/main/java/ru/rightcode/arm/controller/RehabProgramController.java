@@ -38,6 +38,13 @@ public class RehabProgramController {
         ));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProgram(@PathVariable Long id) {
+        log.info("getProgram");
+
+        return ResponseEntity.ok(rehabProgramService.getProgram(id));
+    }
+
     @GetMapping("/{id}/modules-forms-results")
     public ResponseEntity<?> getModulesResults(@PathVariable Long id,
                                                @RequestParam(required = false) List<Long> excludeIds) {
