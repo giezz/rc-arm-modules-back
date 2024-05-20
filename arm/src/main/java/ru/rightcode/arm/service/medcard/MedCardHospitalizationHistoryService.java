@@ -29,11 +29,11 @@ public class MedCardHospitalizationHistoryService {
         ));
     }
 
-    public ResponseEntity<?> getEpicrisises(Long hospHistoryId) {
+    public ResponseEntity<?> getEpicrisises(Long patientCode, Long id) {
         return requestHandlerService.executeRequest(() -> restTemplate.getForEntity(
                 "/hosp-history/{id}/epicrisises",
                 EpicrisisResponse[].class,
-                hospHistoryId
+                id
         ));
     }
 }

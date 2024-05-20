@@ -1,5 +1,6 @@
 package ru.rightcode.arm.service.medcard;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -9,20 +10,21 @@ import ru.rightcode.arm.dto.response.ApiErrorResponse;
 import java.util.function.Supplier;
 
 @Service
+@Slf4j
 public class MedCardRequestHandlerService {
 
     public ResponseEntity<?> executeRequest(Supplier<ResponseEntity<?>> requestSupplier) {
         try {
             return requestSupplier.get();
         } catch (ResourceAccessException e) {
-            HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
+            log.warn("Сервис ЭМК недоступен");
             ApiErrorResponse response = new ApiErrorResponse(
-                    status,
+                    HttpStatus.SERVICE_UNAVAILABLE,
                     "Сервис ЭМК недоступен"
             );
 
             return ResponseEntity
-                    .status(status)
+                    .status(HttpStatus.SERVICE_UNAVAILABLE)
                     .body(response);
         }
     }
