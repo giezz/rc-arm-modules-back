@@ -19,12 +19,12 @@ import ru.rightcode.arm.exceptions.NoPermissionException;
 import ru.rightcode.arm.exceptions.PatientNotFoundException;
 import ru.rightcode.arm.mapper.ProtocolResponseMapper;
 import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
+import ru.rightcode.arm.model.Module;
 import ru.rightcode.arm.model.*;
 import ru.rightcode.arm.repository.*;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 
 import static ru.rightcode.arm.repository.specification.RehabProgramSpecification.hasDoctorIdEqual;
 import static ru.rightcode.arm.repository.specification.RehabProgramSpecification.params;
@@ -38,23 +38,22 @@ public class RehabProgramService {
     private final PatientRepository patientRepository;
     private final PatientStatusRepository patientStatusRepository;
     private final ProgramFormRepository programFormRepository;
+    private final FormRepository formRepository;
     private final ModuleRepository moduleRepository;
-
-    private final RehabProgramResponseMapper rehabProgramResponseMapper;
-    private final ProtocolResponseMapper protocolResponseMapper;
 
     private final DoctorService doctorService;
     private final ProtocolService protocolService;
-    private final ProgramFormService programFormService;
-    private final ModuleService moduleService;
+    private final RestrictionsService restrictionsService;
+
+    private final RehabProgramResponseMapper rehabProgramResponseMapper;
+    private final ProtocolResponseMapper protocolResponseMapper;
 
     public PageableResponse<List<RehabProgramResponse>> getProgramsByCurrentDoctor(int pageNumber,
                                                                                    int pageSize,
                                                                                    String doctorLogin,
                                                                                    RehabProgramRequest request) {
         DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
-        Specification<RehabProgram> specification = params(request);
-        specification = specification.and(hasDoctorIdEqual(doctor.getId()));
+        Specification<RehabProgram> specification = params(request).and(hasDoctorIdEqual(doctor.getId()));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         Page<RehabProgram> page = rehabProgramRepository.findAll(specification, pageable);
 
@@ -64,6 +63,10 @@ public class RehabProgramService {
                 page.getSize(),
                 page.getTotalElements()
         );
+    }
+
+    public RehabProgramResponse getProgram(Long id) {
+        return rehabProgramResponseMapper.mapFull(getProgramById(id));
     }
 
     @Transactional
@@ -82,35 +85,36 @@ public class RehabProgramService {
         return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
     }
 
+    // ???
     @Transactional
     public ProtocolResponse createProtocol(String doctorLogin, Long programId, CreateProtocolRequest request) {
-        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
+        RehabProgram rehabProgram = getProgramOrThrowIfDoctorCantEdit(programId, doctorLogin);
         completeRehabProgram(rehabProgram);
         Protocol protocol = protocolService.createProtocol(request);
+        protocolService.createMedCardRehabHistoryRecord(rehabProgram.getPatient(), rehabProgram.getDoctor(), request);
         rehabProgram.addProtocol(protocol);
         rehabProgramRepository.save(rehabProgram);
 
         return protocolResponseMapper.map(protocol);
     }
 
-    // FIXME: костыль
+    // FIXME: ахритектурный костыль
     public ProtocolResponse getProtocol(Long id) {
         return protocolService.getProtocolByProgramId(id).get(0);
     }
 
     @Transactional
     public RehabProgramResponse addForm(String doctorLogin, AddFormRequest request, Long programId) {
-        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
-        rehabProgram.addForm(
-                programFormService.create(new Form(request.formId()), new Type(request.formType().getCode()))
-        );
+        RehabProgram rehabProgram = getProgramOrThrowIfDoctorCantEdit(programId, doctorLogin);
+        Form form = formRepository.findById(request.formId()).orElseThrow(EntityExistsException::new);
+        rehabProgram.addForm(new ProgramForm(form, new Type(request.formType().getCode())));
 
         return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
     }
 
     @Transactional
     public RehabProgramResponse deleteForm(String doctorLogin, Long programFormId, Long programId) {
-        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
+        RehabProgram rehabProgram = getProgramOrThrowIfDoctorCantEdit(programId, doctorLogin);
         rehabProgram.deleteFom(programFormRepository.findById(programFormId).orElseThrow());
 
         return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
@@ -118,19 +122,36 @@ public class RehabProgramService {
 
     @Transactional
     public RehabProgramResponse addModule(String doctorLogin, AddModuleRequest request, Long programId) {
-        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
-        rehabProgram.addModule(moduleService.create(request.name()));
+        RehabProgram rehabProgram = getProgramOrThrowIfDoctorCantEdit(programId, doctorLogin);
+        rehabProgram.addModule(new Module(request.name()));
 
         return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
     }
 
     @Transactional
     public RehabProgramResponse deleteModule(String doctorLogin, Long moduleId, Long programId) {
-        RehabProgram rehabProgram = getProgramIfDoctorCanEdit(doctorLogin, programId);
-
+        RehabProgram rehabProgram = getProgramOrThrowIfDoctorCantEdit(programId, doctorLogin);
         rehabProgram.deleteModule(moduleRepository.findById(moduleId).orElseThrow());
 
         return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
+    }
+
+    private RehabProgram getProgramById(Long id) {
+        RehabProgram rehabProgram = rehabProgramRepository.findByIdWithProgramForms(id)
+                .orElseThrow(() -> new EntityNotFoundException("Программа реабилитации не найдена"));
+        rehabProgramRepository.findByIdWithModules(id)
+                .orElseThrow(() -> new EntityNotFoundException("Программа реабилитации не найдена"));
+
+        return rehabProgram;
+    }
+
+    private RehabProgram getProgramOrThrowIfDoctorCantEdit(Long id, String doctorLogin) {
+        RehabProgram rehabProgram = getProgramById(id);
+        if (!restrictionsService.canDoctorEditRehabProgram(rehabProgram, doctorLogin)) {
+            throw new NoPermissionException("Нет прав на редактирование программы реабилитации");
+        }
+
+        return rehabProgram;
     }
 
     private RehabProgram createCurrentProgram(Long doctorId, Patient patient) {
@@ -150,18 +171,6 @@ public class RehabProgramService {
         PatientStatus patientStatus = patientStatusRepository.findByName("Проходил реабилитацию ранее")
                 .orElseThrow(EntityNotFoundException::new);
         patient.setPatientStatus(patientStatus);
-    }
-
-    private RehabProgram getProgramIfDoctorCanEdit(String doctorLogin, Long programId) {
-        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
-        RehabProgram rehabProgram = rehabProgramRepository.findById(programId).orElseThrow(
-                () -> new EntityNotFoundException("Программа реабилитации не найдена")
-        );
-        if (!Objects.equals(rehabProgram.getDoctor().getId(), doctor.getId()) || !rehabProgram.getIsCurrent()) {
-            throw new NoPermissionException("Нет прав на редактирование программы реабилитации");
-        }
-
-        return rehabProgram;
     }
 
 }
