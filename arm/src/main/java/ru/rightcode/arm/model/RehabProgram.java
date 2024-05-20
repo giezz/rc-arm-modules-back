@@ -84,6 +84,10 @@ public class RehabProgram {
         doctor = doc;
     }
 
+    public boolean canDoctorEdit(Long doctorId) {
+        return this.getDoctor().getId().equals(doctorId) && this.getIsCurrent();
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
