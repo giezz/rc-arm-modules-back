@@ -5,7 +5,7 @@ import java.time.Instant;
 
 public record ModuleFormResponse(
         Long id,
-        String moduleName,
+        Long moduleId,
         FormResponse form,
         Instant finishedAt
 ) implements Serializable {
