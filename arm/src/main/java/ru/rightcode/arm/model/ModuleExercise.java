@@ -39,6 +39,11 @@ public class ModuleExercise {
     @Column(name = "finished_at")
     private Instant finishedAt;
 
+    public ModuleExercise(Exercise exercise, Block block) {
+        this.exercise = exercise;
+        this.block = block;
+    }
+
     public void setExerciseById(Long id) {
         exercise = new Exercise(id);
     }

@@ -40,4 +40,8 @@ public class ProgramForm {
     @Column(name = "finished_at", nullable = false)
     private Instant finishedAt;
 
+    public ProgramForm(Form form, Type type) {
+        this.form = form;
+        this.type = type;
+    }
 }
