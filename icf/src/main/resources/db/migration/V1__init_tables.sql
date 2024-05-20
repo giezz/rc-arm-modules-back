@@ -30,8 +30,8 @@ SET search_path TO pg_catalog,public,spravochnik;
 -- DROP TABLE IF EXISTS spravochnik.category CASCADE;
 CREATE TABLE spravochnik.category (
                                       code varchar(20) NOT NULL,
-                                      name varchar(50) NOT NULL,
-                                      description text,
+                                      name TEXT NOT NULL,
+                                      description TEXT,
                                       parent_id varchar(20),
                                       CONSTRAINT classification_pk PRIMARY KEY (code)
 );
