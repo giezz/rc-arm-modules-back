@@ -85,11 +85,12 @@ public class PatientService {
     }
 
     private RehabProgram getRehabProgramByPatientId(Long programId, Long patientId) {
-        RehabProgram rehabProgram = rehabProgramRepository.findByPatientIdWithModules(programId, patientId)
-                .orElseThrow(() -> new EntityNotFoundException("Нет 1"));
+        RehabProgram rehabProgram = rehabProgramRepository
+                .findByPatientIdWithModules(programId, patientId)
+                .orElseThrow(() -> new EntityNotFoundException("У пациента нет данной программы реабилитации"));
         rehabProgramRepository
                 .findByPatientIdWithProgramForms(programId, patientId)
-                .orElseThrow(() -> new EntityNotFoundException("Нет 2"));
+                .orElseThrow(() -> new EntityNotFoundException("У пациента нет данной программы реабилитации"));
 
         return rehabProgram;
     }
