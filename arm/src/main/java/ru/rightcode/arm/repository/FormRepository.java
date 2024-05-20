@@ -19,6 +19,11 @@ public interface FormRepository extends JpaRepository<Form, Long> {
     @Override
     @NonNull
     @EntityGraph(attributePaths = {Form_.SCALE})
+    Optional<Form> findById(@NonNull Long id);
+
+    @Override
+    @NonNull
+    @EntityGraph(attributePaths = {Form_.SCALE})
     Page<Form> findAll(@NonNull Pageable pageable);
 
     @EntityGraph(attributePaths = {Form_.SCALE})
