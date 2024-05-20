@@ -14,12 +14,12 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(categoryService.getAll());
+    public ResponseEntity<?> getAllRoots() {
+        return ResponseEntity.ok(categoryService.getAllRoots());
     }
 
     @GetMapping("/{code}")
-    public ResponseEntity<?> getCategoriesByCode(@PathVariable String code) {
-        return ResponseEntity.ok(categoryService.getByCode(code));
+    public ResponseEntity<?> getCategoriesByParentCode(@PathVariable String code) {
+        return ResponseEntity.ok(categoryService.getByParentCode(code));
     }
 }

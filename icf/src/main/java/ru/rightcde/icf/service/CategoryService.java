@@ -15,11 +15,11 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public List<Category> getAll() {
-        return categoryRepository.findAll();
+    public List<Category> getAllRoots() {
+        return categoryRepository.findAllByParentIsNull();
     }
 
-    public List<Category> getByCode(String code) {
-        return categoryRepository.findByCode(code);
+    public List<Category> getByParentCode(String code) {
+        return categoryRepository.findByParentCode(code);
     }
 }
