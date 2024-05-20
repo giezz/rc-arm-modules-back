@@ -1,37 +1,25 @@
 package ru.rightcode.arm.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Getter
+@Value
 public class ApiErrorResponse implements Serializable {
-    private final int code;
-    private final HttpStatus httpStatus;
-//    private final BusinessCodeError businessCode;
-//    private final String businessMessage;
+    int code;
+    HttpStatus httpStatus;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    private final LocalDateTime timestamp;
-    private final String message;
-
-    public ApiErrorResponse(int code, HttpStatus httpStatus, LocalDateTime timestamp, String message) {
-        this.code = code;
-        this.httpStatus = httpStatus;
-//        this.businessMessage = businessMessage;
-        this.timestamp = timestamp;
-        this.message = message;
-    }
+    LocalDateTime timestamp;
+    String message;
 
     public ApiErrorResponse(HttpStatus httpStatus) {
         this.code = httpStatus.value();
         this.httpStatus = httpStatus;
-//        this.businessCode = businessCode;
         this.timestamp = LocalDateTime.now();
         this.message = "Unhandled server error";
-//        this.businessMessage = businessCode.message();
     }
 
     public ApiErrorResponse(HttpStatus httpStatus, String message) {

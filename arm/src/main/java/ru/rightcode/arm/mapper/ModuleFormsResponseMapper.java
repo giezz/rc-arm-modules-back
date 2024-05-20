@@ -22,7 +22,7 @@ public class ModuleFormsResponseMapper implements Mapper<ModuleForm, ModuleFormR
 
         return new ModuleFormResponse(
                 object.getId(),
-                object.getModule().getName(),
+                object.getModule().getId(),
                 form,
                 object.getFinishedAt()
         );

@@ -21,7 +21,7 @@ public class ProgramFormServiceTest {
                 new AnswerRequest(1L),
                 new AnswerRequest(5L)
         );
-        programFormService.submitProgramFormAnswer(1L, request, "patient");
         programFormService.submitProgramFormAnswer(2L, request, "patient");
+        programFormService.submitProgramFormAnswer(3L, request, "patient");
     }
 }

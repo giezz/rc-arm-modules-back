@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+left to right direction
+
+
+frame Клиент {
+    component "Front-end" as ui
+}
+
+frame Server {
+    component "Управление анкетой" as ua
+    component "Управление модулем" as um
+    component "Управление программой реабилитации" as upr
+    component "Управление пациентом" as upp
+    portin " " as p
+    portout " " as p1
+}
+
+database PostgreSQL as db
+
+
+
+ui -- HTTP
+HTTP -- p
+ua --- p
+um --- p
+upr --- p
+upp --- p
+ua --- p1
+um --- p1
+upr --- p1
+upp --- p1
+p1 -- db
+@enduml

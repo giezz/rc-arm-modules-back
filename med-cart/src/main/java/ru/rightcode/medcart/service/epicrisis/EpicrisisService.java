@@ -16,7 +16,7 @@ public interface EpicrisisService {
     @WebMethod
     @RequestWrapper(localName = "getEpicrisisesRequest", className = "ru.rightcode.medcart.service.epicrisis.GetEpicrisisesRequest")
     @ResponseWrapper(localName = "getEpicrisisesResponse", className = "ru.rightcode.medcart.service.epicrisis.GetEpicrisisesResponse")
-    List<Epicrisis> getEpicrisises(@WebParam(name = "patientCode") Long patientCode);
+    List<Epicrisis> getEpicrisises(@WebParam(name = "hospHistoryId") Long hospHistoryId);
 
 
 }

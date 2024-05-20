@@ -39,6 +39,10 @@ public class Module {
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ModuleForm> forms = new ArrayList<>();
 
+    public Module(String name) {
+        this.name = name;
+    }
+
     public void addExercise(ModuleExercise exercise) {
         exercises.add(exercise);
         exercise.setModule(this);

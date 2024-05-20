@@ -9,7 +9,7 @@ public interface RehabProgramInfo {
     Long getId();
 
     PatientInfo getPatient();
-
+    DoctorInfo getDoctor();
     Boolean getIsCurrent();
 
     Instant getCreatedAt();

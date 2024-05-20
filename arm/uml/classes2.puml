@@ -1,0 +1,187 @@
+@startuml
+
+left to right direction
+skinparam linetype ortho
+
+class AuthController {
+  + createAuthToken(JwtRequest): ResponseEntity<?>
+}
+class AuthenticationService {
+  + authenticate(JwtRequest): JwtResponse
+}
+interface DoctorRepository << interface >> {
+  + findByUserUsername(String, Class<T>): Optional<T>
+}
+class DoctorService {
+  + getDoctorIdByLogin(String): DoctorIdInfo
+  + getByLogin(String, Class<T>): Optional<T>
+}
+class ExerciseController {
+  + getAll(): ResponseEntity<?>
+}
+interface ExerciseRepository << interface >> {
+  + findAll(): List<Exercise>
+}
+class ExerciseService {
+  + getAll(): List<ExerciseResponse>
+  + getById(Long): ExerciseResponse
+}
+class FormController {
+  + getModuleFormResults(Long): ResponseEntity<?>
+  + getDetails(Long): ResponseEntity<?>
+  + getProgramFormResults(Long): ResponseEntity<?>
+  + getAll(): ResponseEntity<?>
+}
+interface FormRepository << interface >> {
+  + findAll(): List<Form>
+  + findWithQuestions(Long): Optional<Form>
+}
+class FormService {
+  + getAll(): List<FormResponse>
+  + getFormDetails(Long): FormDetailsResponse
+}
+class ModuleController {
+  + addExercise(Long, AddModuleExerciseRequest, Principal): ResponseEntity<?>
+  + rename(Long, RenameModuleRequest, Principal): ResponseEntity<?>
+  + deleteForm(Long, Long, Principal): ResponseEntity<?>
+  + addForm(Long, AddModuleFormRequest, Principal): ResponseEntity<?>
+  + deleteExercise(Long, Long, Principal): ResponseEntity<?>
+  + getById(Long): ResponseEntity<?>
+}
+interface ModuleExerciseRepository << interface >>
+interface ModuleFormRepository << interface >> {
+  + findFormResultsByRehabProgramId(Long, List<Long>): List<ModuleForm>
+}
+class ModuleFormService {
+  + getAllResults(Long, List<Long>): List<ModuleFormResultResponse>
+}
+interface ModuleRepository << interface >> {
+  + findByIdWithForms(Long): Optional<Module>
+  + findByIdWithExercises(Long): Optional<Module>
+}
+class ModuleService {
+  + renameModule(String, RenameModuleRequest, Long): ModuleDetailsResponse
+  + addExercise(String, AddModuleExerciseRequest, Long): ModuleDetailsResponse
+  + getById(Long): ModuleDetailsResponse
+  + deleteExercise(String, Long, Long): ModuleDetailsResponse
+  + deleteForm(String, Long, Long): ModuleDetailsResponse
+  - getModuleIfDoctorCanEditModule(String, Long): Module
+  + addForm(String, AddModuleFormRequest, Long): ModuleDetailsResponse
+}
+class PatientController {
+  + getByCode(Long): ResponseEntity<?>
+  + getAll(String, String, String, String, LocalDate, Boolean): ResponseEntity<?>
+  + getRehabPrograms(Long, Long): ResponseEntity<?>
+  + getCurrentRehabProgram(Long): ResponseEntity<?>
+}
+interface PatientRepository << interface >> {
+  + findAll(Specification<Patient>?): List<Patient>
+  + findByPatientCode(Long): Optional<Patient>
+  + findAll(): List<Patient>
+}
+class PatientService {
+  - getRehabProgramByPatientId(Long, Long): RehabProgram
+  + getCurrentRehabProgram(Long): RehabProgramResponse
+  - getPatientByCode(Long): Patient
+  + getByCode(Long): PatientResponse
+  + getRehabProgram(Long, Long): RehabProgramResponse
+  + getAllRehabPrograms(Long): List<RehabProgramInfo>
+  + getAll(PatientRequest): List<PatientResponse>
+}
+interface PatientStatusRepository << interface >> {
+  + findByName(String): Optional<PatientStatus>
+}
+interface ProgramFormRepository << interface >> {
+  + findFormResultsByRehabProgramId(Long, List<Long>): List<ProgramForm>
+}
+class ProgramFormService {
+  + getAllResults(Long, List<Long>): List<ProgramFormResultResponse>
+}
+class ProtocolService {
+  + createProtocol(CreateProtocolRequest): Protocol
+  - transformFormsResults(String, String): String
+}
+interface QuestionRepository << interface >> {
+  + findQuestionsByFormId(Long): List<Question>
+}
+class RehabProgramController {
+  + getFormResults(Long, List<Long>): ResponseEntity<?>
+  + addModule(Principal, AddModuleRequest, Long): ResponseEntity<?>
+  + getModulesResults(Long, List<Long>): ResponseEntity<?>
+  + getProgramsByCurrentDoctor(Principal, RehabProgramRequest): ResponseEntity<?>
+  + create(Principal, CreateRehabProgramRequest): ResponseEntity<?>
+  + createProtocol(Principal, Long, CreateProtocolRequest): ResponseEntity<?>
+  + addForm(Principal, AddFormRequest, Long): ResponseEntity<?>
+}
+interface RehabProgramRepository << interface >> {
+  + findByPatientIdWithModules(Long, Long): Optional<RehabProgram>
+  + findCurrentWithModules(Long): Optional<RehabProgram>
+  + findAllByPatientId(Long): List<RehabProgramInfo>
+  + checkIfCurrentExists(Long, Long): boolean
+  + findByPatientIdWithProgramForms(Long, Long): Optional<RehabProgram>
+  + checkIfDoctorCanEdit(Long, Long): boolean
+  + findAll(Specification<RehabProgram>): List<RehabProgram>
+  + findById(Long): Optional<RehabProgram>
+  + findCurrentWithProgramForms(Long): Optional<RehabProgram>
+}
+class RehabProgramService {
+  - completeRehabProgram(RehabProgram): void
+  + addForm(String, AddFormRequest, Long): RehabProgramResponse
+  + addModule(String, AddModuleRequest, Long): RehabProgramResponse
+  + create(String, CreateRehabProgramRequest): RehabProgramResponse
+  + createProtocol(String, Long, CreateProtocolRequest): RehabProgramResponse
+  - createCurrentProgram(Long, Patient): RehabProgram
+  + getProgramsByCurrentDoctor(String, RehabProgramRequest): List<RehabProgramResponse>
+}
+class RestrictionsService {
+  + canDoctorEditRehabProgram(Long, Long): boolean
+}
+interface UserRepository << interface >> {
+  + findByUsername(String): Optional<User>
+  + findAll(): List<User>
+}
+class UserService {
+  + findByUsername(String): User
+  + loadUserByUsername(String): UserDetails
+}
+interface VariantRepository << interface >> {
+  + findAnsweredVariantsByModuleFormId(Long): List<Variant>
+  + findAnsweredVariantsByProgramFormId(Long): List<Variant>
+}
+class VariantService {
+  + getModuleFormAnsweredVariants(Long): List<VariantResponse>
+  + getProgramFormAnsweredVariants(Long): List<VariantResponse>
+}
+
+AuthController           *-->  AuthenticationService
+AuthenticationService    *--->  DoctorRepository
+DoctorService            *-->  DoctorRepository
+ExerciseController       *-->  ExerciseService
+ExerciseService          *-->  ExerciseRepository
+FormController           *-->  FormService
+FormController           *-->  VariantService
+FormService              *-->  FormRepository
+FormService              *-->  QuestionRepository
+ModuleController         *-->  ModuleService
+ModuleFormService        *-->  ModuleFormRepository
+ModuleService            *-->  DoctorService
+ModuleService            *-->  ModuleExerciseRepository
+ModuleService            *-->  ModuleFormRepository
+ModuleService            *-->  ModuleRepository
+ModuleService            *-->  RestrictionsService
+PatientController        *-->  PatientService
+PatientService           *-->  PatientRepository
+PatientService           *-->  RehabProgramRepository
+ProgramFormService       *-->  ProgramFormRepository
+RehabProgramController   *-->  ModuleFormService
+RehabProgramController   *-->  ProgramFormService
+RehabProgramController   *-->  RehabProgramService
+RehabProgramService      *-->  DoctorService
+RehabProgramService      *-->  PatientRepository
+RehabProgramService      *-->  PatientStatusRepository
+RehabProgramService      *-->  ProtocolService
+RehabProgramService      *-->  RehabProgramRepository
+RestrictionsService      *-->  RehabProgramRepository
+UserService              *-->  UserRepository
+VariantService           *-->  VariantRepository
+@enduml

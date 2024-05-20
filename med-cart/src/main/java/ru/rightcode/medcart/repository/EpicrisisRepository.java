@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface EpicrisisRepository extends JpaRepository<Epicrisis, Long> {
 
-    List<Epicrisis> findAllByPatientPatientCode(Long code);
+    List<Epicrisis> findAllByHospitalizationHistoryId(Long id);
 }

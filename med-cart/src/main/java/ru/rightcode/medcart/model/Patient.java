@@ -31,10 +31,12 @@ import java.time.LocalDate;
                 "address",
                 "phoneNumber",
                 "workPlaceData",
-                "bookmark",
-                "passport",
                 "snils",
-                "polis"
+                "polis",
+                "passportSeries",
+                "passportNumber",
+                "passportIssuedDate",
+                "passportIssued"
         })
 public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,19 +73,22 @@ public class Patient {
     @Column(name = "work_place_data", nullable = false, length = -1)
     private String workPlaceData;
 
-    @Column(name = "bookmark", nullable = true, length = -1)
-    private String bookmark;
-
     @Column(name = "snils", nullable = false, length = 11)
     private String snils;
 
     @Column(name = "polis", nullable = false, length = 16)
     private String polis;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(
-            name = "passport_id"
-    )
-    private Passport passport;
+    @Column(name = "passport_series")
+    private String passportSeries;
+
+    @Column(name = "passport_number")
+    private String passportNumber;
+
+    @Column(name = "passport_issued_date")
+    private LocalDate passportIssuedDate;
+
+    @Column(name = "passport_issued")
+    private String passportIssued;
 
 }

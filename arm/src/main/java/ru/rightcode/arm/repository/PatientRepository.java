@@ -1,7 +1,10 @@
 package ru.rightcode.arm.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -13,17 +16,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient> {
+public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient>, PagingAndSortingRepository<Patient, Long> {
 
-    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS})
+    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS, Patient_.PASSPORT})
     @NonNull
     @Override
-    List<Patient> findAll();
+    Page<Patient> findAll(Pageable pageable);
 
-    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS})
+    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS, Patient_.PASSPORT})
     @NonNull
     @Override
-    List<Patient> findAll(@Nullable Specification<Patient> specification);
+    Page<Patient> findAll(@Nullable Specification<Patient> specification, Pageable pageable);
 
     @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS, Patient_.PASSPORT})
     Optional<Patient> findByPatientCode(@Param("patientCode") Long patientCode);
