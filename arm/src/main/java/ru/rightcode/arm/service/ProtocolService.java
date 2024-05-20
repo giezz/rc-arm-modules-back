@@ -2,13 +2,19 @@ package ru.rightcode.arm.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.rightcode.arm.dto.request.CreateMedCardRehabRecordRequest;
 import ru.rightcode.arm.dto.request.CreateProtocolRequest;
 import ru.rightcode.arm.dto.response.ProtocolResponse;
 import ru.rightcode.arm.mapper.ProtocolResponseMapper;
+import ru.rightcode.arm.model.Doctor;
+import ru.rightcode.arm.model.Patient;
 import ru.rightcode.arm.model.Protocol;
 import ru.rightcode.arm.repository.ProtocolRepository;
+import ru.rightcode.arm.service.medcard.MedCardRehabilitationHistoryService;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,6 +23,8 @@ public class ProtocolService {
 
     private final ProtocolRepository protocolRepository;
     private final ProtocolResponseMapper protocolResponseMapper;
+
+    private final MedCardRehabilitationHistoryService medCardRehabilitationHistoryService;
 
     public Protocol createProtocol(CreateProtocolRequest request) {
         String results = transformFormsResults(request.modulesFormsResults(), request.programFormsResults());
@@ -31,6 +39,22 @@ public class ProtocolService {
         return protocol;
     }
 
+    public void createMedCardRehabHistoryRecord(Patient patient, Doctor doctor, CreateProtocolRequest request) {
+        String results = transformFormsResults(request.modulesFormsResults(), request.programFormsResults());
+        String result = results + request.diagnosis() + "\n" +
+                request.result() + "\n" +
+                request.recommendations();
+        CreateMedCardRehabRecordRequest rehabRecordRequest = new CreateMedCardRehabRecordRequest(
+                patient.getPatientCode(),
+                12345L,
+                doctor.getDoctorCode(),
+                LocalDate.now(),
+                result
+        );
+        medCardRehabilitationHistoryService.createRehabHistoryRecord(rehabRecordRequest);
+    }
+
+    @Transactional(readOnly = true)
     public List<ProtocolResponse> getProtocolByProgramId(Long id) {
         return protocolRepository.findByRehabProgramId(id).
                 stream()
