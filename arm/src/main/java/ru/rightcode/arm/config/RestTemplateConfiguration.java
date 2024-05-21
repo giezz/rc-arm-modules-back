@@ -12,9 +12,6 @@ public class RestTemplateConfiguration {
     @Value("${api.url.medcard.root.v1}")
     private String medCardApiV1Url;
 
-    @Value("${api.url.icf.root.v1}")
-    private String icfApiV1Ulr;
-
     @Bean
     public RestTemplate medCardRestTemplate(RestTemplateBuilder builder) {
         return builder
@@ -22,10 +19,4 @@ public class RestTemplateConfiguration {
                 .build();
     }
 
-    @Bean
-    public RestTemplate icfRestTemplate(RestTemplateBuilder builder) {
-        return builder
-                .rootUri(icfApiV1Ulr)
-                .build();
-    }
 }
