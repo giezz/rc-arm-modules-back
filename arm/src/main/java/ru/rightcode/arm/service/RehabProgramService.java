@@ -85,22 +85,22 @@ public class RehabProgramService {
         return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
     }
 
-    // ???
     @Transactional
-    public ProtocolResponse createProtocol(String doctorLogin, Long programId, CreateProtocolRequest request) {
+    public List<ProtocolResponse> createProtocol(String doctorLogin, Long programId, CreateProtocolRequest request) {
         RehabProgram rehabProgram = getProgramOrThrowIfDoctorCantEdit(programId, doctorLogin);
-        completeRehabProgram(rehabProgram);
         Protocol protocol = protocolService.createProtocol(request);
-        protocolService.createMedCardRehabHistoryRecord(rehabProgram.getPatient(), rehabProgram.getDoctor(), request);
+        if (protocol.getIsFinal()) {
+            completeRehabProgram(rehabProgram);
+            protocolService.createMedCardRehabHistoryRecord(rehabProgram.getPatient(), rehabProgram.getDoctor(), request);
+        }
         rehabProgram.addProtocol(protocol);
         rehabProgramRepository.save(rehabProgram);
 
-        return protocolResponseMapper.map(protocol);
+        return getProtocols(rehabProgram.getId());
     }
 
-    // FIXME: ахритектурный костыль
-    public ProtocolResponse getProtocol(Long id) {
-        return protocolService.getProtocolByProgramId(id).get(0);
+    public List<ProtocolResponse> getProtocols(Long id) {
+        return protocolService.getProtocolsByProgramId(id);
     }
 
     @Transactional

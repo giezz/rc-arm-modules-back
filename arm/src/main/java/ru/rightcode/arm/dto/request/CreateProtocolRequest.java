@@ -7,6 +7,7 @@ public record CreateProtocolRequest(
         String programFormsResults,
         String result,
         String recommendations,
-        String diagnosis
+        String diagnosis,
+        Boolean isFinal
 ) implements Serializable {
 }

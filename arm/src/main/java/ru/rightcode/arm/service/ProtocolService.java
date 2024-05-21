@@ -30,7 +30,7 @@ public class ProtocolService {
         String results = transformFormsResults(request.modulesFormsResults(), request.programFormsResults());
         Protocol protocol = new Protocol();
         protocol.setCreationDate(Instant.now());
-        protocol.setIsFinal(true);
+        protocol.setIsFinal(request.isFinal());
         protocol.setScalesResult(results);
         protocol.setRecommendations(request.recommendations());
         protocol.setRehabResult(request.result());
@@ -55,7 +55,7 @@ public class ProtocolService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProtocolResponse> getProtocolByProgramId(Long id) {
+    public List<ProtocolResponse> getProtocolsByProgramId(Long id) {
         return protocolRepository.findByRehabProgramId(id).
                 stream()
                 .map(protocolResponseMapper::map)

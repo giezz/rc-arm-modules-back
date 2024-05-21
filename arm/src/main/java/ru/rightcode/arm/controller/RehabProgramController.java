@@ -83,10 +83,10 @@ public class RehabProgramController {
                 .body(rehabProgramService.createProtocol(principal.getName(), id, request));
     }
 
-    @GetMapping("/{id}/protocol")
+    @GetMapping("/{id}/protocols")
     public ResponseEntity<?> getProtocol(@PathVariable Long id) {
         log.info("getProtocol");
-        return ResponseEntity.ok(rehabProgramService.getProtocol(id));
+        return ResponseEntity.ok(rehabProgramService.getProtocols(id));
     }
 
     @PutMapping("/{id}/form")
