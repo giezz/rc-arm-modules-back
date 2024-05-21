@@ -1,7 +1,6 @@
 package ru.rightcode.arm.config;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;

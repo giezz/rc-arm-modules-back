@@ -3,10 +3,7 @@ package ru.rightcode.arm.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rightcode.arm.dto.response.FormResponse;
-import ru.rightcode.arm.dto.response.ModuleFormResultResponse;
-import ru.rightcode.arm.dto.response.ProgramFormResponse;
 import ru.rightcode.arm.dto.response.ProgramFormResultResponse;
-import ru.rightcode.arm.model.ModuleForm;
 import ru.rightcode.arm.model.ProgramForm;
 
 @Component

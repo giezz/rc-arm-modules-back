@@ -2,8 +2,11 @@ package ru.rightcode.arm.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.rightcode.arm.dto.response.*;
 import ru.rightcode.arm.dto.ModuleDto;
+import ru.rightcode.arm.dto.response.DoctorResponse;
+import ru.rightcode.arm.dto.response.PatientResponse;
+import ru.rightcode.arm.dto.response.ProgramFormResponse;
+import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.model.RehabProgram;
 
 import java.util.List;

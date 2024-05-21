@@ -1,7 +1,5 @@
 package ru.rightcode.arm.config;
 
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 //import ru.rightcode.medcart.service.patient.PatientService;
 
