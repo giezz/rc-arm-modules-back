@@ -33,6 +33,7 @@ CREATE TABLE spravochnik.category (
                                       name TEXT NOT NULL,
                                       description TEXT,
                                       parent_id varchar(20),
+                                      has_children BOOLEAN DEFAULT TRUE,
                                       CONSTRAINT classification_pk PRIMARY KEY (code)
 );
 -- ddl-end --
