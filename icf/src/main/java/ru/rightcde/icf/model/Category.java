@@ -28,4 +28,7 @@ public class Category {
     @JsonIgnore
     private Category parent;
 
+    @Column(name = "has_children")
+    private Boolean hasChildren;
+
 }

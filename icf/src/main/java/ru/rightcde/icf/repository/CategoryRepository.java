@@ -11,4 +11,6 @@ public interface CategoryRepository extends JpaRepository<Category, String> {
     List<Category> findByParentCode(String code);
 
     List<Category> findAllByParentIsNull();
+
+    List<Category> findAllByCodeContainingIgnoreCase(String code);
 }

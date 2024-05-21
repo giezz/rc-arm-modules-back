@@ -14,8 +14,11 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<?> getAllRoots() {
-        return ResponseEntity.ok(categoryService.getAllRoots());
+    public ResponseEntity<?> getAllRoots(@RequestParam(required = false) String q) {
+        if (q == null || q.isEmpty()) {
+            return ResponseEntity.ok(categoryService.getAllRoots());
+        }
+        return ResponseEntity.ok(categoryService.getByCode(q));
     }
 
     @GetMapping("/{code}")

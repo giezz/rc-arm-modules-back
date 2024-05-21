@@ -22,4 +22,8 @@ public class CategoryService {
     public List<Category> getByParentCode(String code) {
         return categoryRepository.findByParentCode(code);
     }
+
+    public List<Category> getByCode(String code) {
+        return categoryRepository.findAllByCodeContainingIgnoreCase(code);
+    }
 }
