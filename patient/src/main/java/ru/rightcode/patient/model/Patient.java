@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -97,10 +98,6 @@ public class Patient {
     private Passport passport;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
-    private List<RehabProgram> rehabPrograms;
-
-    public Patient(Long id) {
-        this.id = id;
-    }
+    private List<RehabProgram> rehabPrograms = new ArrayList<>();
 
 }

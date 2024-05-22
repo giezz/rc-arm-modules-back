@@ -2,10 +2,7 @@ package ru.rightcode.patient.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.rightcode.patient.service.PatientService;
 
 import java.security.Principal;
@@ -27,13 +24,16 @@ public class PatientController {
     public ResponseEntity<?> getRehabProgram(Principal principal) {
         return ResponseEntity.ok(patientService.getRehabProgram(principal.getName()));
     }
-    // TODO: метод для получения Доктора
 
-    @GetMapping("/doctor")
-    public ResponseEntity<?> getDoctor(Principal principal) {
-        return ResponseEntity.ok(patientService.getDoctor(principal.getName()));
+    // Метод для получения модулей
+    @GetMapping("/modules/{moduleId}")
+    public ResponseEntity<?> getModule(Principal principal,
+                                        @PathVariable Long moduleId) {
+        return ResponseEntity.ok(patientService.getModule(principal.getName(), moduleId));
     }
-    // TODO: метод для получения модулей
     // TODO: метод для получения истории реабилитации
-
+    @GetMapping("/history")
+    public ResponseEntity<?> getHistory(Principal principal) {
+        return ResponseEntity.ok(patientService.getHistory(principal.getName()));
+    }
 }

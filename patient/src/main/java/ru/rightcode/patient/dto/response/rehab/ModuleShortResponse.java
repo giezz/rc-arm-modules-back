@@ -1,9 +1,9 @@
-package ru.rightcode.patient.dto.response;
+package ru.rightcode.patient.dto.response.rehab;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-public record ModuleResponse(
+public record ModuleShortResponse(
         Long id,
         String name,
         Instant finishedAt
