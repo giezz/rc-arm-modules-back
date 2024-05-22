@@ -12,6 +12,7 @@ import ru.rightcode.patient.model.ModuleForm;
         })
 public interface FormShortResponseMapper {
     @Mapping(target = "name", source = "form.name")
+    @Mapping(target = "id", source = "form.id")
     @Mapping(target = "description", source = "form.description")
     FormShortResponse toFormShortResponse(ModuleForm moduleForm);
 }

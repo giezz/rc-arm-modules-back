@@ -9,7 +9,7 @@ public record RehabProgramResponse(
         Boolean isCurrent,
         Instant startDate,
         Instant endDate,
-        Set<ProgramFormResponse> forms,
-        Set<ModuleShortResponse> modules
+        Set<ProgramFormResponse> programFormResponses,
+        Set<ModuleShortResponse> moduleShortResponses
 ) implements Serializable {
 }

@@ -20,7 +20,7 @@ public interface RehabProgramMapper {
     @Mapping(target = "isCurrent", source = "isCurrent")
     @Mapping(target = "startDate", source = "startDate")
     @Mapping(target = "endDate", source = "endDate")
-    @Mapping(target = "forms", source = "forms")
-    @Mapping(target = "modules", source = "modules")
+    @Mapping(target = "programFormResponses", source = "forms")
+    @Mapping(target = "moduleShortResponses", source = "modules")
     RehabProgramResponse toRehabProgramResponse(RehabProgram rehabProgram);
 }
