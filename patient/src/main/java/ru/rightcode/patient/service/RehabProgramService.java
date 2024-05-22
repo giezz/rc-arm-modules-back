@@ -19,8 +19,6 @@ public class RehabProgramService {
     private final RehabProgramRepository rehabProgramRepository;
     private final RehabProgramMapper rehabProgramMapper;
 
-    private final DoctorResponseMapper doctorResponseMapper;
-
     // Получение программы реабилитации по пациенту без доктора и пациента
     @Transactional
     protected RehabProgram getRehabProgramByPatient(Patient patient) {

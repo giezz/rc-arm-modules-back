@@ -38,10 +38,6 @@ public class Form {
     private Set<ProgramForm> programForms = new LinkedHashSet<>();
 
 
-    public Form(Long id) {
-        this.id = id;
-    }
-
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

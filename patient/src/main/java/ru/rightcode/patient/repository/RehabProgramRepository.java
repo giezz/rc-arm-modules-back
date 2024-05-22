@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import ru.rightcode.patient.model.Patient;
 import ru.rightcode.patient.model.RehabProgram;
 
-import java.util.Optional;
 
 @Repository
 public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long> {
