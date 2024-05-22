@@ -3,7 +3,7 @@ package ru.rightcode.patient.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import ru.rightcode.patient.dto.response.HistoryProtocolResponse;
+import ru.rightcode.patient.dto.response.history.HistoryProtocolResponse;
 import ru.rightcode.patient.model.Protocol;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
