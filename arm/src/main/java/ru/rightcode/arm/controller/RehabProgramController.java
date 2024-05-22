@@ -84,7 +84,7 @@ public class RehabProgramController {
     }
 
     @GetMapping("/{id}/protocols")
-    public ResponseEntity<?> getProtocol(@PathVariable Long id) {
+    public ResponseEntity<?> getProtocols(@PathVariable Long id) {
         log.info("getProtocol");
         return ResponseEntity.ok(rehabProgramService.getProtocols(id));
     }
