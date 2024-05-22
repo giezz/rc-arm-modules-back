@@ -34,7 +34,7 @@ public class Passport {
 
     @NotNull
     @Column(name = "issued_date", nullable = false)
-    private Instant issuedDate;
+    private LocalDate issuedDate;
 
     @NotNull
     @Column(name = "issued", nullable = false, length = Integer.MAX_VALUE)
