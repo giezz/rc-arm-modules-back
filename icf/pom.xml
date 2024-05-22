@@ -10,7 +10,7 @@
     </parent>
     <groupId>ru.rightcde</groupId>
     <artifactId>icf</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>icf</name>
     <description>icf</description>
     <properties>
@@ -70,6 +70,9 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <image>
+                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>
+                    </image>
                 </configuration>
             </plugin>
         </plugins>
