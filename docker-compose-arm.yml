@@ -4,12 +4,12 @@ services:
     ports:
       - 8080:8080
     environment:
-      db_arm_connection: jdbc:postgresql://host.docker.internal:5432/rc_doc_test
-      db_arm_login: postgres
-      db_arm_pass: admin
+      db_arm_connection: ${db_arm_connection}
+      db_arm_login: ${db_arm_login}
+      db_arm_pass: ${db_arm_pass}
       jpa_show_sql: false
       jwt_lifetime_days: 1
-      jwt_secret: 2374ygfjhsdf6wtryugdvfjhaguiwtgr2374ygfjhsdf6wtryugdvfjhaguiwtgr2374ygfjhsdf6wtryugdvfjhaguiwtgr2374ygfjhsdf
+      jwt_secret: ${jwt_secret}
       security_develop_mode: true
       medcard_root_url: http://host.docker.internal:8081/api/v1
 
@@ -18,9 +18,9 @@ services:
     ports:
       - 8081:8081
     environment:
-      db_medcart_connection: jdbc:postgresql://host.docker.internal:5432/rc_medcarta
-      db_medcart_login: postgres
-      db_medcart_pass: admin
+      db_medcart_connection: ${db_medcart_connection}
+      db_medcart_login: ${db_medcart_login}
+      db_medcart_pass: ${db_medcart_pass}
       jpa_show_sql: false
 
   dock-icf:
@@ -28,7 +28,7 @@ services:
     ports:
       - 8082:8082
     environment:
-      db_icf_connection: jdbc:postgresql://host.docker.internal:5432/rc_icf
-      db_icf_login: postgres
-      db_icf_pass: admin
+      db_icf_connection: ${db_icf_connection}
+      db_icf_login: ${db_icf_login}
+      db_icf_pass: ${db_icf_pass}
       jpa_show_sql: false
