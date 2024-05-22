@@ -17,7 +17,6 @@ import ru.rightcode.arm.dto.response.ProtocolResponse;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.exceptions.NoPermissionException;
 import ru.rightcode.arm.exceptions.PatientNotFoundException;
-import ru.rightcode.arm.mapper.ProtocolResponseMapper;
 import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
 import ru.rightcode.arm.model.Module;
 import ru.rightcode.arm.model.*;
@@ -46,9 +45,8 @@ public class RehabProgramService {
     private final RestrictionsService restrictionsService;
 
     private final RehabProgramResponseMapper rehabProgramResponseMapper;
-    private final ProtocolResponseMapper protocolResponseMapper;
 
-    public PageableResponse<List<RehabProgramResponse>> getProgramsByCurrentDoctor(int pageNumber,
+    public PageableResponse<RehabProgramResponse> getProgramsByCurrentDoctor(int pageNumber,
                                                                                    int pageSize,
                                                                                    String doctorLogin,
                                                                                    RehabProgramRequest request) {

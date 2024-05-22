@@ -26,7 +26,7 @@ public class ExerciseService {
 
     private final PageableUtils pageableUtils;
 
-    public PageableResponse<List<ExerciseResponse>> getAll(int pageNumber, int pageSize, String name) {
+    public PageableResponse<ExerciseResponse> getAll(int pageNumber, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         Page<Exercise> page = pageableUtils.getPageableResult(
                 name,

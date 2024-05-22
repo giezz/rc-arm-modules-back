@@ -1,7 +1,9 @@
 package ru.rightcode.arm.dto.response;
 
+import java.util.List;
+
 public record PageableResponse<T>(
-        T content,
+        List<T> content,
         int pageNumber,
         int pageSize,
         long totalElements

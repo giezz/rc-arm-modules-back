@@ -34,7 +34,7 @@ public class FormService {
 
     private final PageableUtils pageableUtils;
 
-    public PageableResponse<List<FormResponse>> getAll(int pageNumber, int pageSize, String name) {
+    public PageableResponse<FormResponse> getAll(int pageNumber, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         Page<Form> page = pageableUtils.getPageableResult(
                 name,
