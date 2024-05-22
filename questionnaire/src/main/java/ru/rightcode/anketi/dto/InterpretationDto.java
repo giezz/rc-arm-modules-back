@@ -3,6 +3,7 @@ package ru.rightcode.anketi.dto;
 import jakarta.annotation.Nullable;
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @AllArgsConstructor
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 @Setter
-public class InterpretationDto {
+public class InterpretationDto implements Serializable {
     @Nullable
     private Long id;
     @Nullable

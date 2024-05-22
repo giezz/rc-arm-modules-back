@@ -29,10 +29,12 @@ public class Scale {
 
     @OneToMany(mappedBy = "scale")
     @ToString.Exclude
+    @Builder.Default
     private List<Interpretation> interpretations = new ArrayList<>();
 
     @OneToMany(mappedBy = "scale")
     @ToString.Exclude
+    @Builder.Default
     private List<Form> forms = new ArrayList<>();
 
     public Scale(Long id, String name, String description) {
