@@ -1,7 +1,6 @@
-package ru.rightcode.patient.dto.response;
+package ru.rightcode.patient.dto.response.history;
 
 import java.io.Serializable;
-import java.time.Instant;
 
 public record HistoryProtocolResponse(
         String scalesResult,

@@ -3,17 +3,15 @@ package ru.rightcode.patient.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rightcode.patient.dto.response.HistoryResponse;
+import ru.rightcode.patient.dto.response.history.HistoryResponse;
 import ru.rightcode.patient.dto.response.PatientResponse;
 import ru.rightcode.patient.dto.response.module.ModuleResponse;
-import ru.rightcode.patient.dto.response.RehabProgramResponse;
+import ru.rightcode.patient.dto.response.rehab.RehabProgramResponse;
 import ru.rightcode.patient.exception.NotFoundException;
 import ru.rightcode.patient.mapper.PatientResponseMapper;
 import ru.rightcode.patient.model.Patient;
 import ru.rightcode.patient.repository.PatientRepository;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service

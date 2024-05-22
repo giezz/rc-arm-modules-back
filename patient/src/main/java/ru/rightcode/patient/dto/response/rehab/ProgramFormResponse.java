@@ -1,4 +1,4 @@
-package ru.rightcode.patient.dto.response;
+package ru.rightcode.patient.dto.response.rehab;
 
 import java.io.Serializable;
 import java.time.Instant;

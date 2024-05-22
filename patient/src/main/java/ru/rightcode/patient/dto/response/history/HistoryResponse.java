@@ -1,4 +1,4 @@
-package ru.rightcode.patient.dto.response;
+package ru.rightcode.patient.dto.response.history;
 
 import java.time.Instant;
 import java.util.Set;

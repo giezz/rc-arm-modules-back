@@ -3,7 +3,7 @@ package ru.rightcode.patient.mapper.rehab;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import ru.rightcode.patient.dto.response.ProgramFormResponse;
+import ru.rightcode.patient.dto.response.rehab.ProgramFormResponse;
 import ru.rightcode.patient.model.ProgramForm;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
