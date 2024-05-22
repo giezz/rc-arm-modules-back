@@ -8,9 +8,7 @@ import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @NoArgsConstructor
 @Getter
@@ -47,10 +45,10 @@ public class RehabProgram {
     private Instant endDate;
 
     @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Module> modules = new ArrayList<>();
+    private Set<Module> modules = new HashSet<>();
 
     @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ProgramForm> forms = new ArrayList<>();
+    private Set<ProgramForm> forms = new HashSet<>();
 
     @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Protocol> protocols = new ArrayList<>();
