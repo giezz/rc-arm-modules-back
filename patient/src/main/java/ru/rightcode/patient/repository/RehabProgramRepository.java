@@ -12,9 +12,7 @@ import java.util.Optional;
 @Repository
 public interface RehabProgramRepository extends JpaRepository<RehabProgram, Long> {
 //    cannot simultaneously fetch multiple bags hibernate
-    @EntityGraph(attributePaths = {"modules", "forms.form.scale"})
+    @EntityGraph(attributePaths = {"doctor", "modules", "forms.form.scale"})
     RehabProgram findByPatient(@NotNull Patient patient);
 
-    @EntityGraph(attributePaths = {"doctor"})
-    Optional<RehabProgram> findDoctorByPatient(@NotNull Patient patient);
 }
