@@ -1,7 +1,5 @@
 package ru.rightcode.patient.dto.response;
 
-import ru.rightcode.patient.model.Passport;
-import ru.rightcode.patient.model.PatientStatus;
 
 import java.io.Serializable;
 import java.time.LocalDate;

@@ -2,14 +2,14 @@ package ru.rightcode.patient.dto.response;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 public record RehabProgramResponse(
         Long id,
         Boolean isCurrent,
         Instant startDate,
         Instant endDate,
-        List<ProgramFormResponse> forms,
-        List<ModuleResponse> modules
+        Set<ProgramFormResponse> forms,
+        Set<ModuleShortResponse> modules
 ) implements Serializable {
 }
