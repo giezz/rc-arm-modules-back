@@ -5,8 +5,9 @@ import java.time.Instant;
 
 public record ProgramFormResponse(
         Long id,
-        FormNoQuestionsResponse form,
-        Long typeId,
+        String name,
+        String description,
+        String typeName,
         Instant finishedAt
 ) implements Serializable {
 }

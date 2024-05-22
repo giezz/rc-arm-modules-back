@@ -7,8 +7,7 @@ import ru.rightcode.patient.dto.response.FormNoQuestionsResponse;
 import ru.rightcode.patient.model.Form;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {Form.class,
-                FormNoQuestionsResponse.class,
+        uses = {
         })
 public interface FormNoQuestionsResponseMapper {
     @Mapping(target = "id", source = "id")

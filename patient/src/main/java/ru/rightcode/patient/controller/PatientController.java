@@ -25,12 +25,15 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getRehabProgram(principal.getName()));
     }
 
-    // TODO: метод для получения модулей
+    // Метод для получения модулей
     @GetMapping("/modules/{moduleId}")
     public ResponseEntity<?> getModule(Principal principal,
                                         @PathVariable Long moduleId) {
         return ResponseEntity.ok(patientService.getModule(principal.getName(), moduleId));
     }
     // TODO: метод для получения истории реабилитации
-
+    @GetMapping("/history")
+    public ResponseEntity<?> getHistory(Principal principal) {
+        return ResponseEntity.ok(patientService.getHistory(principal.getName()));
+    }
 }

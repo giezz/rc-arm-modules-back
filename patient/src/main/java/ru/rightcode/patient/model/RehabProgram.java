@@ -51,7 +51,11 @@ public class RehabProgram {
     private Set<ProgramForm> forms = new HashSet<>();
 
     @OneToMany(mappedBy = "rehabProgram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Protocol> protocols = new ArrayList<>();
+    private Set<Protocol> protocols = new HashSet<>();
+
+    public boolean getIsNotCurrent() {
+        return !this.isCurrent;
+    }
 
     public void addModule(Module module) {
         modules.add(module);
