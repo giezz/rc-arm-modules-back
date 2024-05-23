@@ -7,10 +7,11 @@ services:
       db_arm_connection: ${db_arm_connection}
       db_arm_login: ${db_arm_login}
       db_arm_pass: ${db_arm_pass}
-      jpa_show_sql: false
+      enable_migrations: ${enable_migrations}
+      jpa_show_sql: ${arm_jpa_show_sql}
       jwt_lifetime_days: 1
       jwt_secret: ${jwt_secret}
-      security_develop_mode: true
+      security_develop_mode: ${security_develop_mode}
       medcard_root_url: http://host.docker.internal:8081/api/v1
 
   dock-med-cart:
