@@ -13,7 +13,7 @@ Backend-часть автоматизированного рабочего ме�
 mvn -pl arm,icf,med-cart spring-boot:build-image
 docker compose -f docker-compose-arm.yml up
 ```
-#### Сборка с помощью Dockerfile
+#### Сборка с помощью Spring Boot Maven Plugin и Dockerfile
 ```
 docker compose -f docker-compose-arm-dockerfile.yml up
 ```
