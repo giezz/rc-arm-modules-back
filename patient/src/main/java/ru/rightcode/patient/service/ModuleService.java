@@ -3,10 +3,13 @@ package ru.rightcode.patient.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rightcode.patient.dto.response.module.ModuleResponse;
+import ru.rightcode.patient.dto.response.form.FormResponse;
 import ru.rightcode.patient.exception.NotFoundException;
+import ru.rightcode.patient.mapper.form.FormResponseMapper;
 import ru.rightcode.patient.mapper.module.ModuleResponseMapper;
 import ru.rightcode.patient.model.Module;
+import ru.rightcode.patient.model.ModuleForm;
+import ru.rightcode.patient.repository.ModuleFormRepository;
 import ru.rightcode.patient.repository.ModuleRepository;
 
 @Service
@@ -14,7 +17,10 @@ import ru.rightcode.patient.repository.ModuleRepository;
 @Transactional(readOnly = true)
 public class ModuleService {
     private final ModuleRepository repository;
+    private final ModuleFormRepository moduleFormRepository;
     private final ModuleResponseMapper moduleResponseMapper;
+
+    private final FormResponseMapper formResponseMapper;
 
     @Transactional
     protected Module findById(Long id) {
@@ -22,7 +28,15 @@ public class ModuleService {
                 .orElseThrow(() -> new NotFoundException("Module with id " + id + " not found"));
     }
 
-    public ModuleResponse getModuleResponseById(Long moduleId) {
-        return moduleResponseMapper.toModuleResponse(findById(moduleId));
+    @Transactional
+    protected ModuleForm getModuleById(Long moduleId, Long formsId) {
+        return moduleFormRepository.getModuleFormByModuleIdAndId(moduleId, formsId)
+                .orElseThrow(() -> new NotFoundException("Module with id " + moduleId + " not found"));
+    }
+
+
+    public FormResponse getModuleResponseById(Long moduleId, Long formsId) {
+        ModuleForm module = getModuleById(moduleId, formsId);
+        return formResponseMapper.toResponse(module);
     }
 }

@@ -36,28 +36,28 @@ public class Module {
     private String name;
 
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<ModuleExercise> exercises = new HashSet<>();
+    private Set<ModuleExercise> moduleExercises = new HashSet<>();
 
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<ModuleForm> forms = new HashSet<>();
+    private Set<ModuleForm> moduleForms = new HashSet<>();
 
     public void addExercise(ModuleExercise exercise) {
-        exercises.add(exercise);
+        moduleExercises.add(exercise);
         exercise.setModule(this);
     }
 
     public void deleteExercise(ModuleExercise exercise) {
-        exercises.remove(exercise);
+        moduleExercises.remove(exercise);
         exercise.setModule(null);
     }
 
     public void addForm(ModuleForm form) {
-        forms.add(form);
+        moduleForms.add(form);
         form.setModule(this);
     }
 
     public void deleteForm(ModuleForm programForm) {
-        forms.remove(programForm);
+        moduleForms.remove(programForm);
         programForm.setModule(null);
     }
 

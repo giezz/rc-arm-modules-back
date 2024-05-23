@@ -10,8 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ModuleRepository extends JpaRepository<Module, Long> {
-    @Override
-    @NonNull
-    @EntityGraph(attributePaths = {"exercises.exercise.exerciseType", "exercises.block", "forms.form.programForms.type"})
-    Optional<Module> findById(@NonNull Long id);
+
+    @EntityGraph(attributePaths = {"moduleForms.form.scale", "moduleForms.form.formQuestions.question.variants"})
+    Optional<Module> getModuleByIdAndModuleFormsId(@NonNull Long id, @NonNull Long moduleFormsId);
 }
