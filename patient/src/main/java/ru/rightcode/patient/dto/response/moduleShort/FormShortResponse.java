@@ -1,4 +1,4 @@
-package ru.rightcode.patient.dto.response.module;
+package ru.rightcode.patient.dto.response.moduleShort;
 
 import java.io.Serializable;
 

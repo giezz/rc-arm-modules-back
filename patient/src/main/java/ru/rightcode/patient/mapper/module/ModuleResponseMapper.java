@@ -3,7 +3,7 @@ package ru.rightcode.patient.mapper.module;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import ru.rightcode.patient.dto.response.module.ModuleResponse;
+import ru.rightcode.patient.dto.response.moduleShort.ModuleResponse;
 import ru.rightcode.patient.model.Module;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,

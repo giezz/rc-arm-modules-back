@@ -3,7 +3,7 @@ package ru.rightcode.patient.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rightcode.patient.dto.response.module.ModuleResponse;
+import ru.rightcode.patient.dto.response.moduleShort.ModuleResponse;
 import ru.rightcode.patient.exception.NotFoundException;
 import ru.rightcode.patient.mapper.module.ModuleResponseMapper;
 import ru.rightcode.patient.model.Module;

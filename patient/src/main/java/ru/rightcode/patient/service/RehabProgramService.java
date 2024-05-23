@@ -1,20 +1,17 @@
 package ru.rightcode.patient.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.patient.dto.response.history.HistoryResponse;
-import ru.rightcode.patient.dto.response.module.ModuleResponse;
+import ru.rightcode.patient.dto.response.moduleShort.ModuleResponse;
 import ru.rightcode.patient.dto.response.rehab.RehabProgramResponse;
 import ru.rightcode.patient.exception.BusinessException;
 import ru.rightcode.patient.exception.NotFoundException;
 import ru.rightcode.patient.mapper.HistoryResponseMapper;
 import ru.rightcode.patient.mapper.module.ModuleResponseMapper;
 import ru.rightcode.patient.mapper.rehab.RehabProgramMapper;
-import ru.rightcode.patient.model.Patient;
 import ru.rightcode.patient.model.RehabProgram;
-import ru.rightcode.patient.repository.RehabProgramRepository;
 
 import java.util.Set;
 
@@ -51,7 +48,6 @@ public class RehabProgramService {
     }
 
     // Получение программы реабилитации по пациенту
-    @Cacheable(value = "RehabProgramService::getRehabProgramResponseByPatient", key = "#rehabPrograms")
     public RehabProgramResponse getRehabProgramResponseByPatient(Set<RehabProgram> rehabPrograms) {
         // Проверка актуальности программы реабилитации, если программа неактуальна, то удаляем ее из списка
         rehabPrograms.removeIf(RehabProgram::getIsNotCurrent);
@@ -61,7 +57,6 @@ public class RehabProgramService {
         return rehabProgramMapper.toRehabProgramResponse(rh);
     }
 
-    @Cacheable(value = "RehabProgramService::getHistoryResponseByPatient", key = "#historyRehabPrograms")
     // Получение истории программы реабилитации по пациенту
     public Set<HistoryResponse> getHistoryResponseByPatient(Set<RehabProgram> historyRehabPrograms) {
         Set<RehabProgram> rehabPrograms =
