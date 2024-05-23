@@ -6,16 +6,22 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.ToString;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "patient", schema = "arm")
+@Table(name = "patient", schema = "arm", indexes = {
+        @Index(name = "patient_code_uq", columnList = "patient_code", unique = true),
+        @Index(name = "passport_uq", columnList = "passport_id", unique = true)
+})
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,18 +31,6 @@ public class Patient {
     @NotNull
     @Column(name = "patient_code", nullable = false)
     private Long patientCode;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "_user_id", nullable = false)
-    private User user;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "status_id", nullable = false)
-    private Status status;
 
     @Size(max = 255)
     @NotNull
@@ -52,10 +46,32 @@ public class Patient {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @NotNull
+    @Column(name = "gender", nullable = false, length = Integer.MAX_VALUE)
+    private String gender;
+
+    @NotNull
+    @Column(name = "birth_date", nullable = false)
+    private LocalDate birthDate;
+
+    @Column(name = "death_date")
+    private LocalDate deathDate;
+
+    @NotNull
+    @Column(name = "address", nullable = false, length = Integer.MAX_VALUE)
+    private String address;
+
     @Size(max = 18)
     @NotNull
     @Column(name = "phone_number", nullable = false, length = 18)
     private String phoneNumber;
+
+    @NotNull
+    @Column(name = "work_place_data", nullable = false, length = Integer.MAX_VALUE)
+    private String workPlaceData;
+
+    @Column(name = "bookmark", length = Integer.MAX_VALUE)
+    private String bookmark;
 
     @Size(max = 11)
     @NotNull
@@ -68,25 +84,37 @@ public class Patient {
     private String polis;
 
     @NotNull
-    @Column(name = "gender", nullable = false, length = Integer.MAX_VALUE)
-    private String gender;
-
-    @Column(name = "death_date")
-    private LocalDate deathDate;
-
-    @NotNull
-    @Column(name = "birth_date", nullable = false)
-    private LocalDate birthDate;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "_user_id", nullable = false)
+    @ToString.Exclude
+    private User user;
 
     @NotNull
-    @Column(name = "address", nullable = false, length = Integer.MAX_VALUE)
-    private String address;
-
-    @Column(name = "bookmark", length = Integer.MAX_VALUE)
-    private String bookmark;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", nullable = false)
+    private PatientStatus patientStatus;
 
     @NotNull
-    @Column(name = "work_place_data", nullable = false, length = Integer.MAX_VALUE)
-    private String workPlaceData;
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "passport_id", nullable = false)
+    private Passport passport;
 
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private Set<RehabProgram> rehabPrograms = new HashSet<>();
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Patient patient = (Patient) o;
+        return getId() != null && Objects.equals(getId(), patient.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

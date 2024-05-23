@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "_user", schema = "arm")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

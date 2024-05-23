@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Getter
@@ -14,7 +15,7 @@ import java.time.Instant;
 @Table(name = "form_question", schema = "anketi")
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormQuestion {
+public class FormQuestion implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

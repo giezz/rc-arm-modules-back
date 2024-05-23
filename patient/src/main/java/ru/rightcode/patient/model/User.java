@@ -24,7 +24,7 @@ public class User {
     @Size(max = 255)
     @NotNull
     @Column(name = "login", nullable = false)
-    private String login;
+    private String username;
 
     @Size(max = 255)
     @NotNull
@@ -32,7 +32,9 @@ public class User {
     private String password;
 
     @ManyToMany
-    @JoinTable(name = "user_role",
+    @JoinTable(
+            schema = "arm",
+            name = "user_role",
             joinColumns = @JoinColumn(name = "_user_id"),
             inverseJoinColumns = @JoinColumn(name = "_role_id"))
     private Set<Role> roles = new LinkedHashSet<>();
