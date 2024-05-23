@@ -71,6 +71,7 @@
                         </exclude>
                     </excludes>
                     <image>
+                        <name>doc-icf</name>
                         <builder>paketobuildpacks/builder-jammy-base:latest</builder>
                     </image>
                 </configuration>

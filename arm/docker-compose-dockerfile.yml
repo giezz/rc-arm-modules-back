@@ -1,5 +1,5 @@
 services:
-  arm:
+  dock-arm:
     build: .
     ports:
       - 8080:8080

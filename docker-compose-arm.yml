@@ -1,6 +1,6 @@
 services:
   dock-arm:
-    image: dock-arm:latest
+    image: doc-arm:latest
     ports:
       - 8080:8080
     environment:
@@ -14,7 +14,7 @@ services:
       medcard_root_url: http://host.docker.internal:8081/api/v1
 
   dock-med-cart:
-    image: med-cart:0.0.1
+    image: doc-medcard:latest
     ports:
       - 8081:8081
     environment:
@@ -24,7 +24,7 @@ services:
       jpa_show_sql: false
 
   dock-icf:
-    image: icf:0.0.1
+    image: doc-icf:latest
     ports:
       - 8082:8082
     environment:

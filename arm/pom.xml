@@ -129,7 +129,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>dock-arm</name>
+                        <name>doc-arm</name>
                         <builder>paketobuildpacks/builder-jammy-base:latest</builder>
                     </image>
                     <excludes>

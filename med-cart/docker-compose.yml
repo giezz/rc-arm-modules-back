@@ -1,8 +1,8 @@
 services:
-  dock-med-cart:
-    image: med-cart:latest
+  doc-medcard:
+    image: doc-medcard:latest
     ports:
-      - 8080:8081
+      - 8081:8081
     environment:
       db_medcart_connection: jdbc:postgresql://host.docker.internal:5432/rc_medcarta
       db_medcart_login: postgres

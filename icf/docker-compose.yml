@@ -2,7 +2,7 @@ services:
   dock-icf:
     image: icf:latest
     ports:
-      - 8080:8082
+      - 8082:8082
     environment:
       db_icf_connection: jdbc:postgresql://host.docker.internal:5432/rc_icf
       db_icf_login: postgres
