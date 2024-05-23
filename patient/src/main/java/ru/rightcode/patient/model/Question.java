@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.proxy.HibernateProxy;
+import ru.rightcode.patient.dto.response.form.QuestionTypeEnum;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @NoArgsConstructor
 @Getter
@@ -27,10 +27,19 @@ public class Question {
     private String content;
 
     @OneToMany(mappedBy = "question")
-    private List<Variant> variants = new ArrayList<>();
+    private Set<Variant> variants = new HashSet<>();
 
     @OneToMany(mappedBy = "question")
     private List<FormQuestion> formQuestions = new ArrayList<>();
+
+    @NotNull
+    @ColumnDefault("false")
+    @Column(name = "required", nullable = false)
+    private Boolean required = false;
+
+    @NotNull
+    @Column(name = "type", nullable = false)
+    private String type = QuestionTypeEnum.SINGLE_CHOICE.toString();
 
     @Override
     public final boolean equals(Object o) {

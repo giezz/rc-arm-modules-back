@@ -26,11 +26,32 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     Optional<Patient> getPatientRehabProgramByUserUsername(@Param("login") String login);
 
 
-    @EntityGraph(attributePaths = {"rehabPrograms.modules", "rehabPrograms.forms.form", "rehabPrograms.forms.type"})
+    @EntityGraph(attributePaths = {"rehabPrograms.modules.moduleExercises.exercise.exerciseType",
+            "rehabPrograms.modules.moduleExercises.block",
+            "rehabPrograms.forms.form",
+            "rehabPrograms.forms.type"})
     Optional<Patient> getPatientCurrentRehabProgramByUserUsername(@Param("login") String login);
 
-    @EntityGraph(attributePaths = {"rehabPrograms.modules.exercises.exercise.exerciseType", "rehabPrograms.modules.exercises.block", "rehabPrograms.modules.forms.form"})
+    @EntityGraph(attributePaths = {
+            "rehabPrograms.modules.moduleExercises.exercise.exerciseType",
+            "rehabPrograms.modules.moduleExercises.block",
+            "rehabPrograms.modules.moduleForms.form"})
     Optional<Patient> getPatientCurrentModuleByUserUsername(@Param("login") String login);
+
+//    @Query("select p from Patient p " +
+//            "left join fetch p.rehabPrograms r " +
+//            "left join fetch r.modules m " +
+//            "left join fetch m.moduleForms mf " +
+//            "left join fetch mf.form f " +
+//            "left join fetch f.scale s " +
+//            "left join fetch f.formQuestions fq " +
+//            "left join fetch fq.question q " +
+//            "left join fetch q.variants v " +
+//            "where p.user.username = :login and r.isCurrent = true and m.id = :moduleId and mf.id = :formId")
+//    @EntityGraph(attributePaths = {"rehabPrograms.modules.forms.module.forms.form.scale", "rehabPrograms.modules.forms.module.forms.form.formQuestions.question.variants"})
+//    Optional<Patient> getPatientCurrentModuleFormQuestionByUserUsername(
+//            @Param("login") String login, @Param("moduleId") Long moduleId, @Param("formId") Long formId);
+
 
     @Override
     @NonNull

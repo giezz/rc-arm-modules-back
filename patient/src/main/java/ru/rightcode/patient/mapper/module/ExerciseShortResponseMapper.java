@@ -11,7 +11,7 @@ import ru.rightcode.patient.model.ModuleExercise;
         })
 public interface ExerciseShortResponseMapper {
     @Mapping(target = "name", source = "exercise.name")
-    @Mapping(target = "id", source = "exercise.id")
+    @Mapping(target = "moduleExId", source = "id")
     @Mapping(target = "description", source = "exercise.description")
     @Mapping(target = "videoUrl", source = "exercise.videoUrl")
     @Mapping(target = "exerciseType", source = "exercise.exerciseType.name")

@@ -36,4 +36,18 @@ public class PatientController {
     public ResponseEntity<?> getHistory(Principal principal) {
         return ResponseEntity.ok(patientService.getHistory(principal.getName()));
     }
+
+    @GetMapping("/modules/{moduleId}/exercises/{exerciseId}")
+    public ResponseEntity<?> getExercise(Principal principal,
+                                        @PathVariable Long moduleId,
+                                        @PathVariable Long exerciseId) {
+        return ResponseEntity.ok(patientService.getExerciseByModuleIdExerciseId(principal.getName(), moduleId, exerciseId));
+    }
+
+    @GetMapping("/modules/{moduleId}/forms/{formId}")
+    public ResponseEntity<?> getForm(Principal principal,
+                                     @PathVariable Long moduleId,
+                                     @PathVariable Long formId) {
+        return ResponseEntity.ok(patientService.getFormByModuleIdFormId(principal.getName(), moduleId, formId));
+    }
 }

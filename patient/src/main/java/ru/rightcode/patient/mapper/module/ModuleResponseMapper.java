@@ -14,7 +14,7 @@ import ru.rightcode.patient.model.Module;
 public interface ModuleResponseMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "finishedAt", target = "finishedAt")
-    @Mapping(target = "exercises", source = "exercises")
-    @Mapping(target = "forms", source = "forms")
+    @Mapping(target = "exercises", source = "moduleExercises")
+    @Mapping(target = "forms", source = "moduleForms")
     ModuleResponse toModuleResponse(Module module);
 }
