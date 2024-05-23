@@ -22,7 +22,7 @@ public class ModuleService {
                 .orElseThrow(() -> new NotFoundException("Module with id " + id + " not found"));
     }
 
-    public ModuleResponse getModuleResponse(Long moduleId) {
+    public ModuleResponse getModuleResponseById(Long moduleId) {
         return moduleResponseMapper.toModuleResponse(findById(moduleId));
     }
 }

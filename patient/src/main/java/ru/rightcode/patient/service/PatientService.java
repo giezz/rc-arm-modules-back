@@ -22,7 +22,7 @@ public class PatientService {
     private final PatientResponseMapper patientResponseMapper;
 
     private final RehabProgramService rehabProgramService;
-    private final ModuleService moduleService;
+
 
     @Transactional
     protected Patient getPatientByUsername(String username) {
@@ -58,15 +58,15 @@ public class PatientService {
     // ПРограмма реабилитации
     @Transactional
     public RehabProgramResponse getRehabProgram(String username){
-        Patient patientFromDB = getPatientByUsername(username);
-        return rehabProgramService.getRehabProgramResponseByPatient(patientFromDB);
+        Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
+        return rehabProgramService.getRehabProgramResponseByPatient(patientFromDB.getRehabPrograms());
     }
 
     // Модули реабилитации
     @Transactional
     public ModuleResponse getModule(String username, Long moduleId){
-        Patient patientFromDB = getPatientByUsername(username);
-        return moduleService.getModuleResponse(moduleId);
+        Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
+        return rehabProgramService.getModuleByPatientModuleId(patientFromDB.getRehabPrograms(), moduleId);
     }
     // TODO: get Эпикриз
 }

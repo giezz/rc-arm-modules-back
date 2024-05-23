@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.patient.dto.response.history.HistoryResponse;
+import ru.rightcode.patient.dto.response.module.ModuleResponse;
 import ru.rightcode.patient.dto.response.rehab.RehabProgramResponse;
 import ru.rightcode.patient.exception.BusinessException;
 import ru.rightcode.patient.mapper.HistoryResponseMapper;
@@ -13,7 +14,6 @@ import ru.rightcode.patient.model.Patient;
 import ru.rightcode.patient.model.RehabProgram;
 import ru.rightcode.patient.repository.RehabProgramRepository;
 
-import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -25,12 +25,13 @@ public class RehabProgramService {
     private final RehabProgramMapper rehabProgramMapper;
 
     private final HistoryResponseMapper historyResponseMapper;
+    private final ModuleService moduleService;
 
     // Получение программы реабилитации по пациенту без доктора и пациента
     @Transactional
     protected RehabProgram getRehabProgramByPatient(Patient patient) {
         return rehabProgramRepository.findByPatientId(patient.getId())
-                .orElseThrow(()  -> new BusinessException("Не найдено программы реабилитации"));
+                .orElseThrow(() -> new BusinessException("Не найдено программы реабилитации"));
     }
 
     // Проверка актуальности программы реабилитации
@@ -41,26 +42,46 @@ public class RehabProgramService {
         return rehabProgram;
     }
 
-    private List<RehabProgram> checkAllRehabProgramIsNotCurrent(List<RehabProgram> rehabProgram) {
-        // Проверка актуальности программы реабилитации, если программа неактуальна, то удаляем ее из списка
-        rehabProgram.removeIf(RehabProgram::getIsNotCurrent);
+    private Set<RehabProgram> checkAllRehabProgramIsNotCurrent(Set<RehabProgram> rehabProgram) {
+        // Проверка актуальности программы реабилитации, если программа актуальна, то удаляем ее из списка
+        rehabProgram.removeIf(RehabProgram::getIsCurrent);
         return rehabProgram;
     }
 
     // Получение программы реабилитации по пациенту
-    @Cacheable(value = "RehabProgramService::getRehabProgramResponseByPatient", key = "#patient.id")
-    public RehabProgramResponse getRehabProgramResponseByPatient(Patient patient) {
-//        RehabProgram rehabProgram = getRehabProgramByPatient(patient);
-        return rehabProgramMapper.toRehabProgramResponse(getRehabProgramByPatient(patient));
+    @Cacheable(value = "RehabProgramService::getRehabProgramResponseByPatient", key = "#rehabPrograms")
+    public RehabProgramResponse getRehabProgramResponseByPatient(Set<RehabProgram> rehabPrograms) {
+        // Проверка актуальности программы реабилитации, если программа неактуальна, то удаляем ее из списка
+        rehabPrograms.removeIf(RehabProgram::getIsNotCurrent);
+
+        RehabProgram rh = rehabPrograms.stream().findFirst()
+                .orElseThrow(() -> new BusinessException("Не найдено программы реабилитации"));
+        return rehabProgramMapper.toRehabProgramResponse(rh);
     }
 
-    @Cacheable(value = "RehabProgramService::getHistoryResponseByPatient", key = "#rehabProgramSet.history")
+    @Cacheable(value = "RehabProgramService::getHistoryResponseByPatient", key = "#historyRehabPrograms")
     // Получение истории программы реабилитации по пациенту
-    public Set<HistoryResponse> getHistoryResponseByPatient(List<RehabProgram> rehabProgramSet) {
-        List<RehabProgram> rehabPrograms =
-                checkAllRehabProgramIsNotCurrent(rehabProgramSet);
+    public Set<HistoryResponse> getHistoryResponseByPatient(Set<RehabProgram> historyRehabPrograms) {
+        Set<RehabProgram> rehabPrograms =
+                checkAllRehabProgramIsNotCurrent(historyRehabPrograms);
         return rehabPrograms.stream().map(historyResponseMapper::toResponse)
                 .collect(java.util.stream.Collectors.toSet());
+    }
+
+    public ModuleResponse getModuleByPatientModuleId(Set<RehabProgram> rehabProgramsSet, Long moduleId) {
+        // Проверка актуальности программы реабилитации, если программа неактуальна, то удаляем ее из списка
+        rehabProgramsSet.removeIf(RehabProgram::getIsNotCurrent);
+
+        // Проверка модуль относится к программе реабилитации пациента
+        rehabProgramsSet.stream()
+                .filter(rp -> rp.getModules().stream()
+                        .anyMatch(module -> module.getId().equals(moduleId))
+                )
+                .findFirst()
+                .orElseThrow(() -> new BusinessException("Модуль не относится к программе реабилитации"));
+
+        // Получение модуля по id
+        return moduleService.getModuleResponseById(moduleId);
     }
 
 }
