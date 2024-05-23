@@ -1,0 +1,34 @@
+services:
+  dock-arm:
+    build: ./arm/.
+    ports:
+      - 8080:8080
+    environment:
+      db_arm_connection: ${db_arm_connection}
+      db_arm_login: ${db_arm_login}
+      db_arm_pass: ${db_arm_pass}
+      jpa_show_sql: false
+      jwt_lifetime_days: 1
+      jwt_secret: ${jwt_secret}
+      security_develop_mode: true
+      medcard_root_url: http://host.docker.internal:8081/api/v1
+
+  dock-med-cart:
+    build: ./med-cart/.
+    ports:
+      - 8081:8081
+    environment:
+      db_medcart_connection: ${db_medcart_connection}
+      db_medcart_login: ${db_medcart_login}
+      db_medcart_pass: ${db_medcart_pass}
+      jpa_show_sql: false
+
+  dock-icf:
+    build: ./icf/.
+    ports:
+      - 8082:8082
+    environment:
+      db_icf_connection: ${db_icf_connection}
+      db_icf_login: ${db_icf_login}
+      db_icf_pass: ${db_icf_pass}
+      jpa_show_sql: false
