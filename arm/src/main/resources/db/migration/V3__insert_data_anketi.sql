@@ -41,6 +41,8 @@ INSERT INTO anketi.form_question(question_id, form_id, created_at) VALUES (2, 1,
 INSERT INTO anketi.form_question(question_id, form_id, created_at) VALUES (3, 2, '2024-03-04 19:07:18');
 INSERT INTO anketi.form_question(question_id, form_id, created_at) VALUES (4, 2, '2024-03-04 19:07:19');
 INSERT INTO anketi.form_question(question_id, form_id, created_at) VALUES (5, 2, '2024-03-04 19:07:20');
+INSERT INTO anketi.form_question(question_id, form_id, created_at) VALUES (3, 3, '2024-03-04 19:07:18');
+INSERT INTO anketi.form_question(question_id, form_id, created_at) VALUES (4, 3, '2024-03-04 19:07:19');
 
 --
 -- TOC entry 3530 (class 0 OID 32468)
