@@ -3,7 +3,7 @@ package ru.rightcode.patient.mapper.module;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import ru.rightcode.patient.dto.response.module.FormShortResponse;
+import ru.rightcode.patient.dto.response.moduleShort.FormShortResponse;
 import ru.rightcode.patient.model.Form;
 import ru.rightcode.patient.model.ModuleForm;
 
@@ -12,7 +12,7 @@ import ru.rightcode.patient.model.ModuleForm;
         })
 public interface FormShortResponseMapper {
     @Mapping(target = "name", source = "form.name")
-    @Mapping(target = "id", source = "form.id")
+    @Mapping(target = "moduleFormId", source = "id")
     @Mapping(target = "description", source = "form.description")
     FormShortResponse toFormShortResponse(ModuleForm moduleForm);
 }

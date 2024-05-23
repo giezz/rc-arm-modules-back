@@ -1,8 +1,8 @@
-package ru.rightcode.patient.dto.response.module;
+package ru.rightcode.patient.dto.response.form;
 
 import java.io.Serializable;
 
-public record FormShortResponse(
+public record ScaleResponse(
         Long id,
         String name,
         String description

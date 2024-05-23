@@ -1,9 +1,9 @@
-package ru.rightcode.patient.dto.response.module;
+package ru.rightcode.patient.dto.response.moduleShort;
 
 import java.io.Serializable;
 
 public record ExerciseShortResponse(
-        Long id,
+        Long moduleExId,
         String name,
         String exerciseType,
         String description,
