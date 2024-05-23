@@ -28,8 +28,9 @@ public class PatientController {
     // Метод для получения модулей
     @GetMapping("/modules/{moduleId}")
     public ResponseEntity<?> getModule(Principal principal,
-                                        @PathVariable Long moduleId) {
-        return ResponseEntity.ok(patientService.getModule(principal.getName(), moduleId));
+                                        @PathVariable String moduleId) {
+        return ResponseEntity.ok(patientService.getModule(
+                principal.getName(), Long.parseLong(moduleId)));
     }
     // TODO: метод для получения истории реабилитации
     @GetMapping("/history")
@@ -39,15 +40,20 @@ public class PatientController {
 
     @GetMapping("/modules/{moduleId}/exercises/{exerciseId}")
     public ResponseEntity<?> getExercise(Principal principal,
-                                        @PathVariable Long moduleId,
-                                        @PathVariable Long exerciseId) {
-        return ResponseEntity.ok(patientService.getExerciseByModuleIdExerciseId(principal.getName(), moduleId, exerciseId));
+                                        @PathVariable String moduleId,
+                                        @PathVariable String exerciseId) {
+        return ResponseEntity.ok(patientService.getExerciseByModuleIdExerciseId(
+                principal.getName(),
+                Long.parseLong(moduleId),
+                Long.parseLong(exerciseId))
+        );
     }
 
     @GetMapping("/modules/{moduleId}/forms/{formId}")
     public ResponseEntity<?> getForm(Principal principal,
-                                     @PathVariable Long moduleId,
-                                     @PathVariable Long formId) {
-        return ResponseEntity.ok(patientService.getFormByModuleIdFormId(principal.getName(), moduleId, formId));
+                                     @PathVariable String moduleId,
+                                     @PathVariable String formId) {
+        return ResponseEntity.ok(patientService.getFormByModuleIdFormId(
+                principal.getName(), Long.parseLong(moduleId), Long.parseLong(formId)));
     }
 }
