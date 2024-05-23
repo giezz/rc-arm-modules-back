@@ -42,6 +42,12 @@ public class PatientService {
                 .orElseThrow(() -> new NotFoundException("Пациент не найден"));
     }
 
+    @Transactional
+    protected Patient getPatientCurrentModuleByUsername(String username) {
+        return patientRepository.getPatientCurrentModuleByUserUsername(username)
+                .orElseThrow(() -> new NotFoundException("Пациент не найден"));
+    }
+
 //    @Cacheable(value = "PatientService::getYourSelf", key = "#username")
     public PatientResponse getYourSelf(String username){
         return patientResponseMapper.toResponse(getPatientByUsername(username));
@@ -65,7 +71,7 @@ public class PatientService {
     // Модули реабилитации
     @Transactional
     public ModuleResponse getModule(String username, Long moduleId){
-        Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
+        Patient patientFromDB = getPatientCurrentModuleByUsername(username);
         return rehabProgramService.getModuleByPatientModuleId(patientFromDB.getRehabPrograms(), moduleId);
     }
     // TODO: get Эпикриз

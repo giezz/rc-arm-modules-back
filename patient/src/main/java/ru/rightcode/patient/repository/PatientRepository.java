@@ -29,6 +29,9 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @EntityGraph(attributePaths = {"rehabPrograms.modules", "rehabPrograms.forms.form", "rehabPrograms.forms.type"})
     Optional<Patient> getPatientCurrentRehabProgramByUserUsername(@Param("login") String login);
 
+    @EntityGraph(attributePaths = {"rehabPrograms.modules.exercises.exercise.exerciseType", "rehabPrograms.modules.exercises.block", "rehabPrograms.modules.forms.form"})
+    Optional<Patient> getPatientCurrentModuleByUserUsername(@Param("login") String login);
+
     @Override
     @NonNull
     @EntityGraph(attributePaths = {"patientStatus", "passport"})
