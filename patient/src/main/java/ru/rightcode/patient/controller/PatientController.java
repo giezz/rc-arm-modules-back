@@ -56,4 +56,12 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getFormByModuleIdFormId(
                 principal.getName(), Long.parseLong(moduleId), Long.parseLong(formId)));
     }
+
+    @GetMapping("/program/{programId}/forms/{formId}")
+    public ResponseEntity<?> getFormFromProgram(Principal principal,
+                                     @PathVariable String programId,
+                                     @PathVariable String formId) {
+        return ResponseEntity.ok(patientService.getFormResponseByProgramIdFormId(
+                principal.getName(), Long.parseLong(programId), Long.parseLong(formId)));
+    }
 }

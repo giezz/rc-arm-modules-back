@@ -64,7 +64,7 @@ public class PatientService {
     // Методы для работы с пациентом
     // Пациент
     @Cacheable(value = "PatientService::getPatientByUsername", key = "#username")
-    public PatientResponse getYourSelf(String username){
+    public PatientResponse getYourSelf(String username) {
         return patientResponseMapper.toResponse(getPatientByUsername(username));
     }
 
@@ -72,7 +72,7 @@ public class PatientService {
     // Результаты реабилитаций
     @Cacheable(value = "PatientService::getHistory", key = "#username")
     @Transactional
-    public Set<HistoryResponse> getHistory(String username){
+    public Set<HistoryResponse> getHistory(String username) {
         Patient patientFromDB = getPatientRehabsProtocolsByUsername(username);
         return rehabProgramService.getHistoryResponseByPatient(patientFromDB.getRehabPrograms());
     }
@@ -80,7 +80,7 @@ public class PatientService {
     // ПРограмма реабилитации
     @Cacheable(value = "PatientService::getRehabProgram", key = "#username")
     @Transactional
-    public RehabProgramResponse getRehabProgram(String username){
+    public RehabProgramResponse getRehabProgram(String username) {
         Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
         return rehabProgramService.getRehabProgramResponseByPatient(patientFromDB.getRehabPrograms());
     }
@@ -88,7 +88,7 @@ public class PatientService {
     // Модуль реабилитации по Id
     @Cacheable(value = "PatientService::getModule", key = "#moduleId")
     @Transactional
-    public ModuleResponse getModule(String username, Long moduleId){
+    public ModuleResponse getModule(String username, Long moduleId) {
         Patient patientFromDB = getPatientCurrentModuleByUsername(username);
         return rehabProgramService.getModuleByPatientModuleId(patientFromDB.getRehabPrograms(), moduleId);
     }
@@ -96,7 +96,7 @@ public class PatientService {
     // Упражнение модуля реабилитации по Id
     @Cacheable(value = "PatientService::getExerciseByModuleIdExerciseId", key = "#exerciseId")
     @Transactional
-    public ExerciseShortResponse getExerciseByModuleIdExerciseId(String username, Long moduleId, Long exerciseId){
+    public ExerciseShortResponse getExerciseByModuleIdExerciseId(String username, Long moduleId, Long exerciseId) {
         Patient patientFromDB = getPatientCurrentModuleByUsername(username);
         return rehabProgramService.getExerciseByPatientModuleId(patientFromDB.getRehabPrograms(), moduleId, exerciseId);
     }
@@ -106,8 +106,20 @@ public class PatientService {
     // необходимо сделать запрос к базе
     @Cacheable(value = "PatientService::getFormByModuleIdFormId", key = "#formId")
     @Transactional
-    public FormResponse getFormByModuleIdFormId(String username, Long moduleId, Long formId){
+    public FormResponse getFormByModuleIdFormId(String username, Long moduleId, Long formId) {
         Patient patientFromDB = getPatientCurrentModuleByUsername(username);
         return rehabProgramService.getFormByPatientModuleId(patientFromDB.getRehabPrograms(), moduleId, formId);
+    }
+
+    // Анкета модуля реабилитации по Id
+    // TODO: multiply selects FormQuestions
+    // необходимо сделать запрос к базе
+    @Cacheable(value = "PatientService::getFormResponseByProgramIdFormId", key = "#programId")
+    @Transactional
+    public FormResponse getFormResponseByProgramIdFormId(
+            String username, Long programId, Long formId) {
+        Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
+        return rehabProgramService.getFormResponseByProgramId(
+                patientFromDB.getRehabPrograms(), programId, formId);
     }
 }
