@@ -15,8 +15,22 @@ INSERT INTO arm._role VALUES (3, 'PATIENT');
 --
 
 INSERT INTO arm._user VALUES (1, 'admin', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
-INSERT INTO arm._user VALUES (2, 'user', '$2a$12$Kwjwg2cajJef3S/8uCWPwuTg8PAXTDuJ9TPXZ66LVXpegbgSbvsGW');
-INSERT INTO arm._user VALUES (3, 'patient', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (2, 'user', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (3, 'patient1', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (4, 'patient2', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (5, 'patient3', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (6, 'patient4', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (7, 'patient5', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (8, 'patient6', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (9, 'patient7', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (10, 'patient8', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (11, 'patient9', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (12, 'patient10', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (13, 'patient11', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (14, 'patient12', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (15, 'patient13', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+INSERT INTO arm._user VALUES (16, 'patient14', '$2a$12$XM6RePLH/FcCB1yu3izFYOQRLaiYr/u8F2NrmJwBH/KJbpct1eJQu');
+
 
 --
 -- TOC entry 3502 (class 0 OID 32305)
@@ -67,20 +81,20 @@ INSERT INTO arm.status VALUES (3, 'Проходил реабилитацию р�
 --
 
 INSERT INTO arm.patient VALUES (1, 1008, 2, 4, 1, 'Иван', 'Дмитриевич', 'Петров', '5554444', '56789012345', '6789012345678901', 'm', NULL, '1988-09-10', 'пр. Ленинградский, д. 25, кв. 7, Казань', NULL, 'Лукойл');
-INSERT INTO arm.patient VALUES (2, 1009, 2, 5, 1, 'Мария', 'Андреевна', 'Новикова', '5555555', '67890123456', '7890123456789012', 'f', NULL, '1995-04-27', 'ул. Красная, д. 18, кв. 6, Владивосток', NULL, 'Сбербанк');
-INSERT INTO arm.patient VALUES (3, 1006, 2, 2, 1, 'Андрей', 'Валерьевич', 'Сидоров', '5552222', '34567890123', '4567890123456789', 'm', NULL, '1980-12-05', 'пр. Победы, д. 15, кв. 3, Екатеринбург', NULL, 'Транснефть');
-INSERT INTO arm.patient VALUES (4, 1005, 2, 1, 1, 'Елена', 'Петровна', 'Иванова', '5551111', '23456789012', '3456789012345678', 'f', NULL, '1992-03-18', 'ул. Ленина, д. 20, кв. 8, Санкт-Петербург', NULL, 'Газпром');
-INSERT INTO arm.patient VALUES (5, 1007, 3, 3, 1, 'Ольга', 'Сергеевна', 'Кузнецова', '5553333', '45678901234', '5678901234567890', 'f', NULL, '1975-06-30', 'ул. Гагарина, д. 8, кв. 12, Нижний Новгород', NULL, 'РЖД');
-INSERT INTO arm.patient VALUES (6, 1010, 2, 6, 1, 'Тест', 'Тестович', 'Тестов', '5553331', '45678901231', '5678901234567891', 'f', NULL, '1975-06-30', 'Тестовый адрес', NULL, 'Тестовая работа');
-INSERT INTO arm.patient VALUES (7, 1011, 2, 7, 1, 'Иван', 'Иванович', 'Иванов', '5553332', '45678901232', '5678901234567892', 'm', NULL, '1982-09-15', 'Улица Пушкина, дом Колотушкина', NULL, 'Менеджер');
-INSERT INTO arm.patient VALUES (8, 1012, 2, 8, 1, 'Мария', 'Алексеевна', 'Сидорова', '5553333', '45678901233', '5678901234567893', 'f', NULL, '1990-03-22', 'Проезд Орлова, дом Петрова', NULL, 'Бухгалтер');
-INSERT INTO arm.patient VALUES (9, 1013, 2, 9, 1, 'Петр', 'Семенович', 'Петров', '5553334', '45678901234', '5678901234567894', 'm', NULL, '1978-12-05', 'Проспект Ленина, дом Сталина', NULL, 'Инженер');
-INSERT INTO arm.patient VALUES (10, 1014, 2, 10, 1, 'Елена', 'Васильевна', 'Сергеева', '5553335', '45678901235', '5678901234567895', 'f', NULL, '1985-05-20', 'Бульвар Гагарина, дом Ленина', NULL, 'Учитель');
-INSERT INTO arm.patient VALUES (11, 1015, 2, 11, 1, 'Александр', 'Павлович', 'Кузнецов', '5553336', '45678901266', '5678901234567896', 'm', NULL, '1980-08-10', 'Улица Лермонтова, дом Пушкина', NULL, 'Врач');
-INSERT INTO arm.patient VALUES (12, 1016, 2, 12, 1, 'Наталья', 'Дмитриевна', 'Васильева', '5553337', '45678901237', '5678901234567897', 'f', NULL, '1992-01-25', 'Переулок Тургенева, дом Чехова', NULL, 'Художник');
-INSERT INTO arm.patient VALUES (13, 1017, 2, 13, 1, 'Дмитрий', 'Александрович', 'Козлов', '5553338', '45678901238', '2345678901234567', 'm', NULL, '1970-04-18', 'Проезд Пушкина, дом Гоголя', NULL, 'Администратор');
-INSERT INTO arm.patient VALUES (14, 1018, 2, 14, 1, 'Анна', 'Сергеевна', 'Иванова', '5553339', '45678901239', '3456789012345678', 'f', NULL, '1988-07-12', 'Улица Горького, дом Достоевского', NULL, 'Менеджер по продажам');
-INSERT INTO arm.patient VALUES (15, 1019, 2, 15, 1, 'Сергей', 'Николаевич', 'Смирнов', '5553340', '45678901230', '4567890123456789', 'm', NULL, '1977-10-30', 'Бульвар Ленина, дом Карла Маркса', NULL, 'Инженер-программист');
+INSERT INTO arm.patient VALUES (2, 1009, 3, 5, 1, 'Мария', 'Андреевна', 'Новикова', '5555555', '67890123456', '7890123456789012', 'f', NULL, '1995-04-27', 'ул. Красная, д. 18, кв. 6, Владивосток', NULL, 'Сбербанк');
+INSERT INTO arm.patient VALUES (3, 1006, 4, 2, 1, 'Андрей', 'Валерьевич', 'Сидоров', '5552222', '34567890123', '4567890123456789', 'm', NULL, '1980-12-05', 'пр. Победы, д. 15, кв. 3, Екатеринбург', NULL, 'Транснефть');
+INSERT INTO arm.patient VALUES (4, 1005, 5, 1, 1, 'Елена', 'Петровна', 'Иванова', '5551111', '23456789012', '3456789012345678', 'f', NULL, '1992-03-18', 'ул. Ленина, д. 20, кв. 8, Санкт-Петербург', NULL, 'Газпром');
+INSERT INTO arm.patient VALUES (5, 1007, 6, 3, 1, 'Ольга', 'Сергеевна', 'Кузнецова', '5553333', '45678901234', '5678901234567890', 'f', NULL, '1975-06-30', 'ул. Гагарина, д. 8, кв. 12, Нижний Новгород', NULL, 'РЖД');
+INSERT INTO arm.patient VALUES (6, 1010, 7, 6, 1, 'Тест', 'Тестович', 'Тестов', '5553331', '45678901231', '5678901234567891', 'f', NULL, '1975-06-30', 'Тестовый адрес', NULL, 'Тестовая работа');
+INSERT INTO arm.patient VALUES (7, 1011, 8, 7, 1, 'Иван', 'Иванович', 'Иванов', '5553332', '45678901232', '5678901234567892', 'm', NULL, '1982-09-15', 'Улица Пушкина, дом Колотушкина', NULL, 'Менеджер');
+INSERT INTO arm.patient VALUES (8, 1012, 9, 8, 1, 'Мария', 'Алексеевна', 'Сидорова', '5553333', '45678901233', '5678901234567893', 'f', NULL, '1990-03-22', 'Проезд Орлова, дом Петрова', NULL, 'Бухгалтер');
+INSERT INTO arm.patient VALUES (9, 1013, 10, 9, 1, 'Петр', 'Семенович', 'Петров', '5553334', '45678901234', '5678901234567894', 'm', NULL, '1978-12-05', 'Проспект Ленина, дом Сталина', NULL, 'Инженер');
+INSERT INTO arm.patient VALUES (10, 1014, 11, 10, 1, 'Елена', 'Васильевна', 'Сергеева', '5553335', '45678901235', '5678901234567895', 'f', NULL, '1985-05-20', 'Бульвар Гагарина, дом Ленина', NULL, 'Учитель');
+INSERT INTO arm.patient VALUES (11, 1015, 12, 11, 1, 'Александр', 'Павлович', 'Кузнецов', '5553336', '45678901266', '5678901234567896', 'm', NULL, '1980-08-10', 'Улица Лермонтова, дом Пушкина', NULL, 'Врач');
+INSERT INTO arm.patient VALUES (12, 1016, 13, 12, 1, 'Наталья', 'Дмитриевна', 'Васильева', '5553337', '45678901237', '5678901234567897', 'f', NULL, '1992-01-25', 'Переулок Тургенева, дом Чехова', NULL, 'Художник');
+INSERT INTO arm.patient VALUES (13, 1017, 14, 13, 1, 'Дмитрий', 'Александрович', 'Козлов', '5553338', '45678901238', '2345678901234567', 'm', NULL, '1970-04-18', 'Проезд Пушкина, дом Гоголя', NULL, 'Администратор');
+INSERT INTO arm.patient VALUES (14, 1018, 15, 14, 1, 'Анна', 'Сергеевна', 'Иванова', '5553339', '45678901239', '3456789012345678', 'f', NULL, '1988-07-12', 'Улица Горького, дом Достоевского', NULL, 'Менеджер по продажам');
+INSERT INTO arm.patient VALUES (15, 1019, 16, 15, 1, 'Сергей', 'Николаевич', 'Смирнов', '5553340', '45678901230', '4567890123456789', 'm', NULL, '1977-10-30', 'Бульвар Ленина, дом Карла Маркса', NULL, 'Инженер-программист');
 
 --
 -- TOC entry 3516 (class 0 OID 32375)
@@ -125,5 +139,19 @@ INSERT INTO arm.user_role VALUES (1, 2);
 INSERT INTO arm.user_role VALUES (1, 1);
 INSERT INTO arm.user_role VALUES (2, 1);
 INSERT INTO arm.user_role VALUES (2, 2);
+INSERT INTO arm.user_role VALUES (2, 3);
 INSERT INTO arm.user_role VALUES (3, 3);
+INSERT INTO arm.user_role VALUES (4, 3);
+INSERT INTO arm.user_role VALUES (5, 3);
+INSERT INTO arm.user_role VALUES (6, 3);
+INSERT INTO arm.user_role VALUES (7, 3);
+INSERT INTO arm.user_role VALUES (8, 3);
+INSERT INTO arm.user_role VALUES (9, 3);
+INSERT INTO arm.user_role VALUES (10, 3);
+INSERT INTO arm.user_role VALUES (11, 3);
+INSERT INTO arm.user_role VALUES (12, 3);
+INSERT INTO arm.user_role VALUES (13, 3);
+INSERT INTO arm.user_role VALUES (14, 3);
+INSERT INTO arm.user_role VALUES (15, 3);
+INSERT INTO arm.user_role VALUES (16, 3);
 
