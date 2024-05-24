@@ -114,12 +114,12 @@ public class PatientService {
     // Анкета модуля реабилитации по Id
     // TODO: multiply selects FormQuestions
     // необходимо сделать запрос к базе
-    @Cacheable(value = "PatientService::getFormResponseByProgramIdFormId", key = "#programId")
+    @Cacheable(value = "PatientService::getFormResponseByProgramIdFormId", key = "#programFormId")
     @Transactional
     public FormResponse getFormResponseByProgramIdFormId(
-            String username, Long programId, Long formId) {
+            String username, Long programFormId) {
         Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
         return rehabProgramService.getFormResponseByProgramId(
-                patientFromDB.getRehabPrograms(), programId, formId);
+                patientFromDB.getRehabPrograms(), programFormId);
     }
 }

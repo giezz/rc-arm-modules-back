@@ -119,16 +119,17 @@ public class RehabProgramService {
         return moduleService.getModuleResponseById(moduleId, formId);
     }
 
-    public FormResponse getFormResponseByProgramId(Set<RehabProgram> rehabProgramsSet, Long programId, Long formId) {
+    public FormResponse getFormResponseByProgramId(Set<RehabProgram> rehabProgramsSet, Long programFormId) {
         // Проверка актуальности программы реабилитации, если программа неактуальна, то удаляем ее из списка
         rehabProgramsSet.removeIf(RehabProgram::getIsNotCurrent);
         RehabProgram rehabProgram = rehabProgramsSet.stream().
                 filter(rp -> rp.getForms().stream()
-                        .anyMatch(pf -> pf.getId().equals(programId)))
+                        .anyMatch(pf -> pf.getId().equals(programFormId)))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException("Анкеты не актуальны для программы реабилитации"));
+        // TODO: проверка дату окончания программы реабилитации
         ProgramForm programForm = rehabProgram.getForms().stream()
-                .filter(pf -> pf.getId().equals(formId)).findFirst()
+                .filter(pf -> pf.getId().equals(programFormId)).findFirst()
                 .orElseThrow(() -> new NotFoundException("Анкета не найдена"));
         return formProgramResponseMapper.toResponse(programForm);
     }
