@@ -1,12 +1,12 @@
 services:
   dock-arm:
-    image: dock-arm:latest
+    build: .
     ports:
       - 8080:8080
     environment:
-      db_arm_connection: ${db_connection}
-      db_arm_login: ${db_login}
-      db_arm_pass: ${db_pass}
+      db_connection: ${db_connection}
+      db_login: ${db_login}
+      db_pass: ${db_pass}
       jpa_show_sql: true
       jwt_lifetime_days: 1
       jwt_secret: ${jwt_secret}
