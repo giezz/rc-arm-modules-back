@@ -4,10 +4,9 @@ services:
     ports:
       - 8080:8080
     environment:
-      db_arm_connection: jdbc:postgresql://host.docker.internal:5432/rc_doc_test
-      db_arm_login: postgres
-      db_arm_pass: admin
-      enable_migrations: true
+      db_connection: jdbc:postgresql://188.225.37.249:5432/rc_doc
+      db_login: pablo
+      db_pass: iloveyou1qs2wd
       jpa_show_sql: false
       jwt_lifetime_days: 1
       jwt_secret: 2374ygfjhsdf6wtryugdvfjhaguiwtgr2374ygfjhsdf6wtryugdvfjhaguiwtgr2374ygfjhsdf6wtryugdvfjhaguiwtgr2374ygfjhsdf
