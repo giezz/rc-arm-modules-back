@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: soundflog/questionnaire-back:latest
     ports:
       - "8080:8080"
     env_file:

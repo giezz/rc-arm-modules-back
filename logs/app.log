@@ -1,0 +1,341 @@
+2024-05-24 13:01:22 - Starting QuestionnaireApplication using Java 17.0.10 with PID 21736 (E:\GithubRepositories\rc-arm-modules-back\questionnaire\target\classes started by pakha in E:\GithubRepositories\rc-arm-modules-back)
+2024-05-24 13:01:22 - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-05-24 13:01:22 - No active profile set, falling back to 1 default profile: "default"
+2024-05-24 13:01:22 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-05-24 13:01:22 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-05-24 13:01:23 - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-24 13:01:23 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-24 13:01:23 - Finished Spring Data repository scanning in 172 ms. Found 8 JPA repository interfaces.
+2024-05-24 13:01:24 - Tomcat initialized with port(s): 8080 (http)
+2024-05-24 13:01:24 - Starting service [Tomcat]
+2024-05-24 13:01:24 - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-05-24 13:01:24 - Initializing Spring embedded WebApplicationContext
+2024-05-24 13:01:24 - Root WebApplicationContext: initialization completed in 2225 ms
+2024-05-24 13:01:24 - Flyway Community Edition 9.16.3 by Redgate
+2024-05-24 13:01:24 - See release notes here: https://rd.gt/416ObMi
+2024-05-24 13:01:24 - 
+2024-05-24 13:01:24 - HikariPool-1 - Starting...
+2024-05-24 13:01:25 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@fadc534
+2024-05-24 13:01:25 - HikariPool-1 - Start completed.
+2024-05-24 13:01:25 - Database: jdbc:postgresql://188.225.37.249:5432/rc_doc (PostgreSQL 14.11)
+2024-05-24 13:01:26 - Successfully validated 0 migrations (execution time 00:00.153s)
+2024-05-24 13:01:26 - No migrations found. Are your locations set up correctly?
+2024-05-24 13:01:26 - Current version of schema "public": << Empty Schema >>
+2024-05-24 13:01:26 - Schema "public" is up to date. No migration necessary.
+2024-05-24 13:01:26 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-24 13:01:26 - HHH000412: Hibernate ORM core version 6.2.13.Final
+2024-05-24 13:01:26 - HHH000406: Using bytecode reflection optimizer
+2024-05-24 13:01:27 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-24 13:01:27 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-24 13:01:28 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-24 13:01:28 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:01:28 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-24 13:01:29 - Filter 'jwtRequestFilter' configured for use
+2024-05-24 13:01:30 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@30b47861, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@760c7353, org.springframework.security.web.context.SecurityContextHolderFilter@555fb410, org.springframework.security.web.header.HeaderWriterFilter@66e50188, org.springframework.web.filter.CorsFilter@6acceeac, org.springframework.security.web.authentication.logout.LogoutFilter@1fcf95ba, ru.rightcode.anketi.config.JwtRequestFilter@534f3f43, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6807b087, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@15a9618c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@984ac47, org.springframework.security.web.session.SessionManagementFilter@12260b8, org.springframework.security.web.access.ExceptionTranslationFilter@60c56824, org.springframework.security.web.access.intercept.AuthorizationFilter@4020dbc7]
+2024-05-24 13:01:30 - LiveReload server is running on port 35729
+2024-05-24 13:01:30 - Tomcat started on port(s): 8080 (http) with context path ''
+2024-05-24 13:01:30 - Started QuestionnaireApplication in 8.83 seconds (process running for 10.026)
+2024-05-24 13:04:15 - Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x010x02,0x010x000x02(0x030x030xa10xd2B0x950xc90xa10xdc;0x0b0xb10x890x0b0x0fe0xb40xab0xbe0x1d0x1c0x0b0xca0xd5Z-Fy0xf0>0x060x1bcu ]. HTTP method names must be tokens
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:407)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:264)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2024-05-24 13:04:15 - Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x010x020x0c0x010x000x020x080x030x030xfc0xdb"0xe80H0xe9]0x820xccnQ0xb3_0x8d0x080xd10xd10x9b20xe7T0xdeGvxR0xeb0xa50xe9D0x85 ]. HTTP method names must be tokens
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:407)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:264)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2024-05-24 13:07:51 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:07:51 - HikariPool-1 - Shutdown initiated...
+2024-05-24 13:07:52 - HikariPool-1 - Shutdown completed.
+2024-05-24 13:07:58 - Starting QuestionnaireApplication using Java 17.0.10 with PID 9168 (E:\GithubRepositories\rc-arm-modules-back\questionnaire\target\classes started by pakha in E:\GithubRepositories\rc-arm-modules-back)
+2024-05-24 13:07:58 - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-05-24 13:07:58 - No active profile set, falling back to 1 default profile: "default"
+2024-05-24 13:07:58 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-05-24 13:07:58 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-05-24 13:07:59 - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-24 13:07:59 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-24 13:07:59 - Finished Spring Data repository scanning in 161 ms. Found 8 JPA repository interfaces.
+2024-05-24 13:08:00 - Tomcat initialized with port(s): 8080 (http)
+2024-05-24 13:08:00 - Starting service [Tomcat]
+2024-05-24 13:08:00 - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-05-24 13:08:00 - Initializing Spring embedded WebApplicationContext
+2024-05-24 13:08:00 - Root WebApplicationContext: initialization completed in 2168 ms
+2024-05-24 13:08:00 - Flyway Community Edition 9.16.3 by Redgate
+2024-05-24 13:08:00 - See release notes here: https://rd.gt/416ObMi
+2024-05-24 13:08:00 - 
+2024-05-24 13:08:00 - HikariPool-1 - Starting...
+2024-05-24 13:08:01 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3d836c2
+2024-05-24 13:08:01 - HikariPool-1 - Start completed.
+2024-05-24 13:08:01 - Database: jdbc:postgresql://188.225.37.249:5432/rc_doc (PostgreSQL 14.11)
+2024-05-24 13:08:02 - Successfully validated 0 migrations (execution time 00:00.149s)
+2024-05-24 13:08:02 - No migrations found. Are your locations set up correctly?
+2024-05-24 13:08:02 - Current version of schema "public": << Empty Schema >>
+2024-05-24 13:08:02 - Schema "public" is up to date. No migration necessary.
+2024-05-24 13:08:02 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-24 13:08:02 - HHH000412: Hibernate ORM core version 6.2.13.Final
+2024-05-24 13:08:02 - HHH000406: Using bytecode reflection optimizer
+2024-05-24 13:08:03 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-24 13:08:03 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-24 13:08:04 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-24 13:08:04 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:08:04 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-24 13:08:05 - Filter 'jwtRequestFilter' configured for use
+2024-05-24 13:08:06 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@407ca85d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@79bc687b, org.springframework.security.web.context.SecurityContextHolderFilter@1a76b332, org.springframework.security.web.header.HeaderWriterFilter@4e3cf4f3, org.springframework.web.filter.CorsFilter@58e24d9a, org.springframework.security.web.authentication.logout.LogoutFilter@55a4d557, ru.rightcode.anketi.config.JwtRequestFilter@24eb4043, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@127a0042, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3cfca269, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@17dd653, org.springframework.security.web.session.SessionManagementFilter@11e8b1c2, org.springframework.security.web.access.ExceptionTranslationFilter@75fb938a, org.springframework.security.web.access.intercept.AuthorizationFilter@32f16108]
+2024-05-24 13:08:07 - LiveReload server is running on port 35729
+2024-05-24 13:08:07 - Tomcat started on port(s): 8080 (http) with context path ''
+2024-05-24 13:08:07 - Started QuestionnaireApplication in 9.456 seconds (process running for 10.831)
+2024-05-24 13:08:13 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-24 13:08:13 - Initializing Servlet 'dispatcherServlet'
+2024-05-24 13:08:13 - Completed initialization in 1 ms
+2024-05-24 13:08:14 - Authenticating user: admin
+2024-05-24 13:08:14 - Authenticating user: admin
+2024-05-24 13:09:11 - Exception: Null key returned for cache operation (maybe you are using named params on classes without debug info?) Builder[public ru.rightcode.anketi.dto.FormDto ru.rightcode.anketi.service.FormService.createForm(ru.rightcode.anketi.dto.FormDto)] caches=[FormService::getFormDtoById] | key='#formDTO.id' | keyGenerator='' | cacheManager='' | cacheResolver='' | condition='' | unless='' | sync='false'
+2024-05-24 13:09:11 - Resolved [java.lang.IllegalArgumentException: Null key returned for cache operation (maybe you are using named params on classes without debug info?) Builder[public ru.rightcode.anketi.dto.FormDto ru.rightcode.anketi.service.FormService.createForm(ru.rightcode.anketi.dto.FormDto)] caches=[FormService::getFormDtoById] | key='#formDTO.id' | keyGenerator='' | cacheManager='' | cacheResolver='' | condition='' | unless='' | sync='false']
+2024-05-24 13:12:32 - Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2024-05-24 13:12:32 - Stopping service [Tomcat]
+2024-05-24 13:12:32 - Destroying Spring FrameworkServlet 'dispatcherServlet'
+2024-05-24 13:12:32 - The web application [ROOT] appears to have started a thread named [HikariPool-1 housekeeper] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.10/jdk.internal.misc.Unsafe.park(Native Method)
+ java.base@17.0.10/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:252)
+ java.base@17.0.10/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1672)
+ java.base@17.0.10/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+ java.base@17.0.10/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+ java.base@17.0.10/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1062)
+ java.base@17.0.10/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1122)
+ java.base@17.0.10/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.10/java.lang.Thread.run(Thread.java:842)
+2024-05-24 13:12:32 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:12:32 - HikariPool-1 - Shutdown initiated...
+2024-05-24 13:12:32 - HikariPool-1 - Shutdown completed.
+2024-05-24 13:12:32 - Starting QuestionnaireApplication using Java 17.0.10 with PID 9168 (E:\GithubRepositories\rc-arm-modules-back\questionnaire\target\classes started by pakha in E:\GithubRepositories\rc-arm-modules-back)
+2024-05-24 13:12:32 - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-05-24 13:12:32 - No active profile set, falling back to 1 default profile: "default"
+2024-05-24 13:12:32 - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-24 13:12:32 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-24 13:12:33 - Finished Spring Data repository scanning in 40 ms. Found 8 JPA repository interfaces.
+2024-05-24 13:12:33 - Tomcat initialized with port(s): 8080 (http)
+2024-05-24 13:12:33 - Starting service [Tomcat]
+2024-05-24 13:12:33 - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-05-24 13:12:33 - Initializing Spring embedded WebApplicationContext
+2024-05-24 13:12:33 - Root WebApplicationContext: initialization completed in 814 ms
+2024-05-24 13:12:33 - HikariPool-2 - Starting...
+2024-05-24 13:12:33 - HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@585236b6
+2024-05-24 13:12:33 - HikariPool-2 - Start completed.
+2024-05-24 13:12:33 - Database: jdbc:postgresql://188.225.37.249:5432/rc_doc (PostgreSQL 14.11)
+2024-05-24 13:12:34 - Successfully validated 0 migrations (execution time 00:00.138s)
+2024-05-24 13:12:34 - No migrations found. Are your locations set up correctly?
+2024-05-24 13:12:34 - Current version of schema "public": << Empty Schema >>
+2024-05-24 13:12:34 - Schema "public" is up to date. No migration necessary.
+2024-05-24 13:12:34 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-24 13:12:34 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-24 13:12:35 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-24 13:12:35 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-24 13:12:35 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:12:35 - Filter 'jwtRequestFilter' configured for use
+2024-05-24 13:12:35 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'formController' defined in file [E:\GithubRepositories\rc-arm-modules-back\questionnaire\target\classes\ru\rightcode\anketi\controller\FormController.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'ru.rightcode.anketi.service.FormService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2024-05-24 13:12:35 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:12:35 - HikariPool-2 - Shutdown initiated...
+2024-05-24 13:12:36 - HikariPool-2 - Shutdown completed.
+2024-05-24 13:12:36 - Stopping service [Tomcat]
+2024-05-24 13:12:36 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-05-24 13:12:36 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in ru.rightcode.anketi.controller.FormController required a bean of type 'ru.rightcode.anketi.service.FormService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'ru.rightcode.anketi.service.FormService' in your configuration.
+
+2024-05-24 13:12:37 - Starting QuestionnaireApplication using Java 17.0.10 with PID 9168 (E:\GithubRepositories\rc-arm-modules-back\questionnaire\target\classes started by pakha in E:\GithubRepositories\rc-arm-modules-back)
+2024-05-24 13:12:37 - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-05-24 13:12:37 - No active profile set, falling back to 1 default profile: "default"
+2024-05-24 13:12:37 - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-24 13:12:37 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-24 13:12:37 - Finished Spring Data repository scanning in 21 ms. Found 8 JPA repository interfaces.
+2024-05-24 13:12:38 - Tomcat initialized with port(s): 8080 (http)
+2024-05-24 13:12:38 - Starting service [Tomcat]
+2024-05-24 13:12:38 - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-05-24 13:12:38 - Initializing Spring embedded WebApplicationContext
+2024-05-24 13:12:38 - Root WebApplicationContext: initialization completed in 481 ms
+2024-05-24 13:12:38 - HikariPool-3 - Starting...
+2024-05-24 13:12:38 - HikariPool-3 - Added connection org.postgresql.jdbc.PgConnection@311a73d9
+2024-05-24 13:12:38 - HikariPool-3 - Start completed.
+2024-05-24 13:12:38 - Database: jdbc:postgresql://188.225.37.249:5432/rc_doc (PostgreSQL 14.11)
+2024-05-24 13:12:38 - Successfully validated 0 migrations (execution time 00:00.134s)
+2024-05-24 13:12:38 - No migrations found. Are your locations set up correctly?
+2024-05-24 13:12:39 - Current version of schema "public": << Empty Schema >>
+2024-05-24 13:12:39 - Schema "public" is up to date. No migration necessary.
+2024-05-24 13:12:39 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-24 13:12:39 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-24 13:12:39 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-24 13:12:39 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-24 13:12:39 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:12:39 - Filter 'jwtRequestFilter' configured for use
+2024-05-24 13:12:40 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1531c6f7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@50744467, org.springframework.security.web.context.SecurityContextHolderFilter@75d4ea2f, org.springframework.security.web.header.HeaderWriterFilter@2ece18a2, org.springframework.web.filter.CorsFilter@45eac243, org.springframework.security.web.authentication.logout.LogoutFilter@4c812026, ru.rightcode.anketi.config.JwtRequestFilter@54fb0142, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@55676fd4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@b3276d2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2b204f18, org.springframework.security.web.session.SessionManagementFilter@29a79ad7, org.springframework.security.web.access.ExceptionTranslationFilter@a9550d9, org.springframework.security.web.access.intercept.AuthorizationFilter@3aea89d7]
+2024-05-24 13:12:40 - LiveReload server is running on port 35729
+2024-05-24 13:12:40 - Tomcat started on port(s): 8080 (http) with context path ''
+2024-05-24 13:12:40 - Started QuestionnaireApplication in 2.911 seconds (process running for 283.759)
+2024-05-24 13:12:40 - Condition evaluation unchanged
+2024-05-24 13:12:49 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:12:49 - HikariPool-3 - Shutdown initiated...
+2024-05-24 13:12:50 - HikariPool-3 - Shutdown completed.
+2024-05-24 13:12:53 - Starting QuestionnaireApplication using Java 17.0.10 with PID 21880 (E:\GithubRepositories\rc-arm-modules-back\questionnaire\target\classes started by pakha in E:\GithubRepositories\rc-arm-modules-back)
+2024-05-24 13:12:53 - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-05-24 13:12:53 - No active profile set, falling back to 1 default profile: "default"
+2024-05-24 13:12:53 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-05-24 13:12:53 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-05-24 13:12:53 - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-24 13:12:53 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-24 13:12:53 - Finished Spring Data repository scanning in 148 ms. Found 8 JPA repository interfaces.
+2024-05-24 13:12:54 - Tomcat initialized with port(s): 8080 (http)
+2024-05-24 13:12:54 - Starting service [Tomcat]
+2024-05-24 13:12:54 - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-05-24 13:12:54 - Initializing Spring embedded WebApplicationContext
+2024-05-24 13:12:54 - Root WebApplicationContext: initialization completed in 1898 ms
+2024-05-24 13:12:55 - Flyway Community Edition 9.16.3 by Redgate
+2024-05-24 13:12:55 - See release notes here: https://rd.gt/416ObMi
+2024-05-24 13:12:55 - 
+2024-05-24 13:12:55 - HikariPool-1 - Starting...
+2024-05-24 13:12:55 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@516ab3c8
+2024-05-24 13:12:55 - HikariPool-1 - Start completed.
+2024-05-24 13:12:55 - Database: jdbc:postgresql://188.225.37.249:5432/rc_doc (PostgreSQL 14.11)
+2024-05-24 13:12:56 - Successfully validated 0 migrations (execution time 00:00.152s)
+2024-05-24 13:12:56 - No migrations found. Are your locations set up correctly?
+2024-05-24 13:12:56 - Current version of schema "public": << Empty Schema >>
+2024-05-24 13:12:56 - Schema "public" is up to date. No migration necessary.
+2024-05-24 13:12:57 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-24 13:12:57 - HHH000412: Hibernate ORM core version 6.2.13.Final
+2024-05-24 13:12:57 - HHH000406: Using bytecode reflection optimizer
+2024-05-24 13:12:57 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-24 13:12:57 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-24 13:12:58 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-24 13:12:58 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:12:58 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-24 13:12:59 - Filter 'jwtRequestFilter' configured for use
+2024-05-24 13:13:00 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@293347d4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3944d86f, org.springframework.security.web.context.SecurityContextHolderFilter@369384ca, org.springframework.security.web.header.HeaderWriterFilter@7e1a19f7, org.springframework.web.filter.CorsFilter@1649655c, org.springframework.security.web.authentication.logout.LogoutFilter@d0ef111, ru.rightcode.anketi.config.JwtRequestFilter@608ba210, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@46bf3456, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6408caf0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@299a9cdd, org.springframework.security.web.session.SessionManagementFilter@15110a2c, org.springframework.security.web.access.ExceptionTranslationFilter@5a9e99ad, org.springframework.security.web.access.intercept.AuthorizationFilter@53087de0]
+2024-05-24 13:13:00 - LiveReload server is running on port 35729
+2024-05-24 13:13:00 - Tomcat started on port(s): 8080 (http) with context path ''
+2024-05-24 13:13:00 - Started QuestionnaireApplication in 7.918 seconds (process running for 8.67)
+2024-05-24 13:13:00 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-24 13:13:00 - Initializing Servlet 'dispatcherServlet'
+2024-05-24 13:13:00 - Completed initialization in 2 ms
+2024-05-24 13:13:10 - Exception: Null key returned for cache operation (maybe you are using named params on classes without debug info?) Builder[public ru.rightcode.anketi.dto.FormDto ru.rightcode.anketi.service.FormService.createForm(ru.rightcode.anketi.dto.FormDto)] caches=[FormService::createForm] | key='#formDTO.id' | keyGenerator='' | cacheManager='' | cacheResolver='' | condition='' | unless='' | sync='false'
+2024-05-24 13:13:10 - Resolved [java.lang.IllegalArgumentException: Null key returned for cache operation (maybe you are using named params on classes without debug info?) Builder[public ru.rightcode.anketi.dto.FormDto ru.rightcode.anketi.service.FormService.createForm(ru.rightcode.anketi.dto.FormDto)] caches=[FormService::createForm] | key='#formDTO.id' | keyGenerator='' | cacheManager='' | cacheResolver='' | condition='' | unless='' | sync='false']
+2024-05-24 13:13:47 - Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2024-05-24 13:13:47 - Stopping service [Tomcat]
+2024-05-24 13:13:47 - Destroying Spring FrameworkServlet 'dispatcherServlet'
+2024-05-24 13:13:47 - The web application [ROOT] appears to have started a thread named [HikariPool-1 housekeeper] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.10/jdk.internal.misc.Unsafe.park(Native Method)
+ java.base@17.0.10/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:252)
+ java.base@17.0.10/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1672)
+ java.base@17.0.10/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+ java.base@17.0.10/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+ java.base@17.0.10/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1062)
+ java.base@17.0.10/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1122)
+ java.base@17.0.10/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.10/java.lang.Thread.run(Thread.java:842)
+2024-05-24 13:13:47 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:13:47 - HikariPool-1 - Shutdown initiated...
+2024-05-24 13:13:47 - HikariPool-1 - Shutdown completed.
+2024-05-24 13:13:47 - Starting QuestionnaireApplication using Java 17.0.10 with PID 21880 (E:\GithubRepositories\rc-arm-modules-back\questionnaire\target\classes started by pakha in E:\GithubRepositories\rc-arm-modules-back)
+2024-05-24 13:13:47 - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-05-24 13:13:47 - No active profile set, falling back to 1 default profile: "default"
+2024-05-24 13:13:47 - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-24 13:13:47 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-24 13:13:47 - Finished Spring Data repository scanning in 23 ms. Found 8 JPA repository interfaces.
+2024-05-24 13:13:48 - Tomcat initialized with port(s): 8080 (http)
+2024-05-24 13:13:48 - Starting service [Tomcat]
+2024-05-24 13:13:48 - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-05-24 13:13:48 - Initializing Spring embedded WebApplicationContext
+2024-05-24 13:13:48 - Root WebApplicationContext: initialization completed in 539 ms
+2024-05-24 13:13:48 - HikariPool-2 - Starting...
+2024-05-24 13:13:48 - HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@578d3e69
+2024-05-24 13:13:48 - HikariPool-2 - Start completed.
+2024-05-24 13:13:48 - Database: jdbc:postgresql://188.225.37.249:5432/rc_doc (PostgreSQL 14.11)
+2024-05-24 13:13:49 - Successfully validated 0 migrations (execution time 00:00.136s)
+2024-05-24 13:13:49 - No migrations found. Are your locations set up correctly?
+2024-05-24 13:13:49 - Current version of schema "public": << Empty Schema >>
+2024-05-24 13:13:49 - Schema "public" is up to date. No migration necessary.
+2024-05-24 13:13:49 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-24 13:13:49 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-24 13:13:49 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-24 13:13:49 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-24 13:13:49 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:13:50 - Filter 'jwtRequestFilter' configured for use
+2024-05-24 13:13:51 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@576a3cf2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@149e8c80, org.springframework.security.web.context.SecurityContextHolderFilter@2cd15fef, org.springframework.security.web.header.HeaderWriterFilter@1b3d6d3, org.springframework.web.filter.CorsFilter@6d27e63f, org.springframework.security.web.authentication.logout.LogoutFilter@3f5f8d02, ru.rightcode.anketi.config.JwtRequestFilter@b957d3a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@73c6abf6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6cdcfe13, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2522e31f, org.springframework.security.web.session.SessionManagementFilter@19ad9a72, org.springframework.security.web.access.ExceptionTranslationFilter@7085e9ba, org.springframework.security.web.access.intercept.AuthorizationFilter@72275d51]
+2024-05-24 13:13:51 - LiveReload server is running on port 35729
+2024-05-24 13:13:51 - Tomcat started on port(s): 8080 (http) with context path ''
+2024-05-24 13:13:51 - Started QuestionnaireApplication in 3.749 seconds (process running for 59.494)
+2024-05-24 13:13:51 - Condition evaluation unchanged
+2024-05-24 13:13:52 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:13:52 - HikariPool-2 - Shutdown initiated...
+2024-05-24 13:13:52 - HikariPool-2 - Shutdown completed.
+2024-05-24 13:13:55 - Starting QuestionnaireApplication using Java 17.0.10 with PID 11456 (E:\GithubRepositories\rc-arm-modules-back\questionnaire\target\classes started by pakha in E:\GithubRepositories\rc-arm-modules-back)
+2024-05-24 13:13:55 - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-05-24 13:13:55 - No active profile set, falling back to 1 default profile: "default"
+2024-05-24 13:13:55 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-05-24 13:13:55 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-05-24 13:13:55 - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-24 13:13:55 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-24 13:13:56 - Finished Spring Data repository scanning in 147 ms. Found 8 JPA repository interfaces.
+2024-05-24 13:13:57 - Tomcat initialized with port(s): 8080 (http)
+2024-05-24 13:13:57 - Starting service [Tomcat]
+2024-05-24 13:13:57 - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-05-24 13:13:57 - Initializing Spring embedded WebApplicationContext
+2024-05-24 13:13:57 - Root WebApplicationContext: initialization completed in 2037 ms
+2024-05-24 13:13:57 - Flyway Community Edition 9.16.3 by Redgate
+2024-05-24 13:13:57 - See release notes here: https://rd.gt/416ObMi
+2024-05-24 13:13:57 - 
+2024-05-24 13:13:57 - HikariPool-1 - Starting...
+2024-05-24 13:13:58 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6df8cabb
+2024-05-24 13:13:58 - HikariPool-1 - Start completed.
+2024-05-24 13:13:58 - Database: jdbc:postgresql://188.225.37.249:5432/rc_doc (PostgreSQL 14.11)
+2024-05-24 13:13:58 - Successfully validated 0 migrations (execution time 00:00.141s)
+2024-05-24 13:13:58 - No migrations found. Are your locations set up correctly?
+2024-05-24 13:13:59 - Current version of schema "public": << Empty Schema >>
+2024-05-24 13:13:59 - Schema "public" is up to date. No migration necessary.
+2024-05-24 13:13:59 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-24 13:13:59 - HHH000412: Hibernate ORM core version 6.2.13.Final
+2024-05-24 13:13:59 - HHH000406: Using bytecode reflection optimizer
+2024-05-24 13:13:59 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-24 13:13:59 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-24 13:14:00 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-24 13:14:00 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:14:01 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-24 13:14:01 - Filter 'jwtRequestFilter' configured for use
+2024-05-24 13:14:02 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@31313cea, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2067a98a, org.springframework.security.web.context.SecurityContextHolderFilter@40ebd053, org.springframework.security.web.header.HeaderWriterFilter@1c885240, org.springframework.web.filter.CorsFilter@1d9f7ad8, org.springframework.security.web.authentication.logout.LogoutFilter@ae38f06, ru.rightcode.anketi.config.JwtRequestFilter@60cf6f61, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2503aeda, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2641a36c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5fc6da96, org.springframework.security.web.session.SessionManagementFilter@318f5bb, org.springframework.security.web.access.ExceptionTranslationFilter@6f8ea602, org.springframework.security.web.access.intercept.AuthorizationFilter@fe3d482]
+2024-05-24 13:14:02 - LiveReload server is running on port 35729
+2024-05-24 13:14:02 - Tomcat started on port(s): 8080 (http) with context path ''
+2024-05-24 13:14:02 - Started QuestionnaireApplication in 7.908 seconds (process running for 8.656)
+2024-05-24 13:14:06 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-24 13:14:06 - Initializing Servlet 'dispatcherServlet'
+2024-05-24 13:14:06 - Completed initialization in 1 ms
+2024-05-24 13:16:09 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-24 13:16:09 - HikariPool-1 - Shutdown initiated...
+2024-05-24 13:16:09 - HikariPool-1 - Shutdown completed.
