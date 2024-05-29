@@ -38,6 +38,9 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             "rehabPrograms.modules.moduleForms.form"})
     Optional<Patient> getPatientCurrentModuleByUserUsername(@Param("login") String login);
 
+    @EntityGraph(attributePaths = {"rehabPrograms.forms.form", "rehabPrograms.forms.type"})
+    Optional<Patient> getPatientCurrentRehabProgramProgramFormByUserUsername(
+            @Param("login") String login);
 //    @Query("select p from Patient p " +
 //            "left join fetch p.rehabPrograms r " +
 //            "left join fetch r.modules m " +

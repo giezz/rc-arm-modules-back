@@ -14,15 +14,19 @@ package "Сервер" {
 
 package "База данных" {
     [PostgreSQL]
+    [Redis]
 }
 
 [Веб-интерфейс] -down- HTTP
 HTTP -down- [Контроллеры (SpringWeb)]
 [Контроллеры (SpringWeb)] -down-> [Сервисы (Spring)]
 [Контроллеры (SpringWeb)] -down-> [Сервис авторизации (SpringSecurity)]
-[Репозитории (JPA)] -down- JDBC
-JDBC - [PostgreSQL]
-[Сервисы (Spring)] -down-> [Репозитории (JPA)] : Использует
 [Сервис авторизации (SpringSecurity)] -down-> [Репозитории (JPA)]
+[Репозитории (JPA)] -down- JDBC
+[Сервисы (Spring)] -down- Jedis
+Jedis -down- [Redis]
+JDBC -down- [PostgreSQL]
+[Сервисы (Spring)] -down-> [Репозитории (JPA)]
+
 
 @enduml

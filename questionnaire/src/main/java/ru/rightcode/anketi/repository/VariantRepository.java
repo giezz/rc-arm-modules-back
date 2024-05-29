@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface VariantRepository extends JpaRepository<Variant, Long> {
     @Override
-    @EntityGraph(attributePaths = {"question_id"})
+    @EntityGraph(attributePaths = {"question"})
     @NonNull
-    Optional<Variant> findById(Long id);
+    Optional<Variant> findById(@NonNull Long id);
 
     @Override
     @EntityGraph(attributePaths = {})

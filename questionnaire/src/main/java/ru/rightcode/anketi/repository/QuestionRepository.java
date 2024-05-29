@@ -15,7 +15,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Override
     @EntityGraph(attributePaths = {"variants", "formQuestions"})
     @NonNull
-    Optional<Question> findById(Long id);
+    Optional<Question> findById(@NonNull Long id);
 
     @Override
     @EntityGraph(attributePaths = {"variants"})

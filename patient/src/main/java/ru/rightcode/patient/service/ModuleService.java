@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.patient.dto.response.form.FormResponse;
 import ru.rightcode.patient.exception.NotFoundException;
-import ru.rightcode.patient.mapper.form.FormResponseMapper;
+import ru.rightcode.patient.mapper.form.ModuleFormResponseMapper;
 import ru.rightcode.patient.mapper.module.ModuleResponseMapper;
 import ru.rightcode.patient.model.Module;
 import ru.rightcode.patient.model.ModuleForm;
@@ -20,7 +20,7 @@ public class ModuleService {
     private final ModuleFormRepository moduleFormRepository;
     private final ModuleResponseMapper moduleResponseMapper;
 
-    private final FormResponseMapper formResponseMapper;
+    private final ModuleFormResponseMapper moduleFormResponseMapper;
 
     @Transactional
     protected Module findById(Long id) {
@@ -37,6 +37,6 @@ public class ModuleService {
 
     public FormResponse getModuleResponseById(Long moduleId, Long formsId) {
         ModuleForm module = getModuleById(moduleId, formsId);
-        return formResponseMapper.toResponse(module);
+        return moduleFormResponseMapper.toResponse(module);
     }
 }

@@ -75,7 +75,7 @@ public class FormService {
      * @return FormDto
      */
     @Transactional
-    @Cacheable(value = "FormService::getFormDtoById", key = "#id")
+//    @Cacheable(value = "FormService::getFormDtoById", key = "#id")
     public FormDto getFormDtoById(Long id) {
         Form form = getFormById(id);
         List<FormQuestion> formQuestionList = form.getFormQuestions();
@@ -105,9 +105,9 @@ public class FormService {
      */
     // Возможность удалять вопросы и варианты
     @Transactional
-    @Caching(cacheable = {
-            @Cacheable(value = "FormService::getFormDtoById", key = "#formDTO.id")
-    })
+//    @Caching(cacheable = {
+//            @Cacheable(value = "FormService::createForm", key = "#formDTO.id")
+//    })
     public FormDto createForm(FormDto formDTO) {
         // Создаем новую форму
         Form form = formMapper.toEntity(formDTO);
@@ -124,9 +124,9 @@ public class FormService {
      * @return FormDto
      */
     @Transactional
-    @Caching(put = {
-            @CachePut(value = "FormService::getFormDtoById", key = "#formDTO.id")
-    })
+//    @Caching(put = {
+//            @CachePut(value = "FormService::updateForm", key = "#formDTO.id")
+//    })
     public FormDto updateForm( Long id, FormDto formDTO) {
         Form existingForm = getFormById(id);
         // Обновляем поля существующей формы
