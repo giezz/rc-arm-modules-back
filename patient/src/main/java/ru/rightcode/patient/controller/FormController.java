@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.patient.dto.request.AnswerRequest;
+import ru.rightcode.patient.dto.response.PatientResponse;
 import ru.rightcode.patient.service.ModuleFormService;
+import ru.rightcode.patient.service.PatientService;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -17,13 +19,15 @@ import java.util.List;
 public class FormController {
 
     private final ModuleFormService moduleFormService;
+    private final PatientService patientService;
 
     @PostMapping("/{moduleFormId}")
-    @Tag(name = "form-controller", description = "Нет никаких проверок на соответсвие бизнес-логики!!!")
+    @Tag(name = "form-controller")
     public ResponseEntity<?> answerQuestions(@PathVariable Long moduleFormId,
                                              @RequestBody List<AnswerRequest> request,
                                              Principal principal) {
-        final BigDecimal score = moduleFormService.submitModuleFormAnswer(moduleFormId, request, principal.getName());
+        PatientResponse pr = patientService.getYourSelf(principal.getName());
+        final BigDecimal score = moduleFormService.submitModuleFormAnswer(moduleFormId, request);
         return ResponseEntity.ok("score: " + score);
     }
 }
