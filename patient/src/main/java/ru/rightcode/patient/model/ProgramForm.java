@@ -8,6 +8,10 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -38,5 +42,8 @@ public class ProgramForm {
 
     @Column(name = "finished_at", nullable = false)
     private Instant finishedAt;
+
+    @OneToMany(mappedBy = "programForm")
+    private List<ProgramFormAnswer> programFormAnswers = new ArrayList<>();
 
 }

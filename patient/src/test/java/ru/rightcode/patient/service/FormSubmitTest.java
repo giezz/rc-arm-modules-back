@@ -12,13 +12,24 @@ import java.util.List;
 public class FormSubmitTest {
     @Autowired
     private ModuleFormService moduleFormService;
+    @Autowired
+    private ProgramFormService programFormService;
 
     @Test
-    public void submitAnswers(){
+    public void submitModuleFormAnswers(){
         List<AnswerRequest> request = List.of(
                 new AnswerRequest(35L, null),
                 new AnswerRequest(37L, BigDecimal.valueOf(2.0))
         );
         moduleFormService.submitModuleFormAnswer(2L, request);
+    }
+
+    @Test
+    public void submitProgramFormAnswers(){
+        List<AnswerRequest> request = List.of(
+                new AnswerRequest(35L, null),
+                new AnswerRequest(37L, BigDecimal.valueOf(3.0))
+        );
+        programFormService.submitProgramFormAnswer(3L, request);
     }
 }
