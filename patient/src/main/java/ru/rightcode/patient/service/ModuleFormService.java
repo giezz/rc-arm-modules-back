@@ -2,7 +2,6 @@ package ru.rightcode.patient.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.patient.dto.request.AnswerRequest;
@@ -29,7 +28,7 @@ public class ModuleFormService {
     @Transactional
     public BigDecimal submitModuleFormAnswer(Long moduleFormId, List<AnswerRequest> request) {
         ModuleForm moduleForm = moduleFormRepository.findById(moduleFormId)
-                .orElseThrow(() -> new EntityNotFoundException("Анкета модуля не найдена"));
+                .orElseThrow(() -> new EntityNotFoundException("Модуль не найден"));
         if (moduleForm.getFinishedAt() != null) {
             throw new BusinessException("Анкета модуля уже пройдена");
         }
@@ -39,7 +38,7 @@ public class ModuleFormService {
 
         validateVariants(moduleForm.getModuleFormAnswers(), variants);
 
-        BigDecimal sum = calculateSum(request, variants);
+        BigDecimal sum = calculateSumModuleForm(request, variants);
 
         List<ModuleFormAnswer> moduleFormAnswers = createModuleFormAnswers(moduleForm, variants);
         moduleFormAnswerRepository.saveAll(moduleFormAnswers);
@@ -59,7 +58,7 @@ public class ModuleFormService {
         }
     }
 
-    private BigDecimal calculateSum(List<AnswerRequest> request, List<Variant> variants) {
+    private BigDecimal calculateSumModuleForm(List<AnswerRequest> request, List<Variant> variants) {
         BigDecimal sum = BigDecimal.ZERO;
         Map<Long, BigDecimal> variantScoreMap = request.stream()
                 .filter(aR -> aR.scaleScore() != null)

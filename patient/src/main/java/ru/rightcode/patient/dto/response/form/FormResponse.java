@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public record FormResponse(
         String name,
+        Boolean isAnswered,
         String description,
         ScaleResponse scale,
         QuestionResponse[] questions

@@ -27,6 +27,7 @@ public class RehabProgramService {
 
     //    private final RehabProgramRepository rehabProgramRepository;
     private final ModuleService moduleService;
+    private final CheckAnswersFormService checkAnswersFormService;
 
     private final RehabProgramMapper rehabProgramMapper;
     private final HistoryResponseMapper historyResponseMapper;
@@ -104,9 +105,11 @@ public class RehabProgramService {
                 .filter(ex -> ex.getId().equals(exerciseId)
                 ).findFirst()
                 .orElseThrow(() -> new NotFoundException("Упражнение не найдено"));
+
         return exerciseShortResponseMapper.toExerciseShortResponse(exercise);
     }
 
+    // Получение анкеты из программы реабилитации по пациенту
     public FormResponse getFormByPatientModuleId(Set<RehabProgram> rehabProgramsSet, Long moduleId, Long formId) {
         // Проверка актуальности программы реабилитации, если программа неактуальна, то удаляем ее из списка
         rehabProgramsSet.removeIf(RehabProgram::getIsNotCurrent);
@@ -116,7 +119,11 @@ public class RehabProgramService {
                 .filter(ex -> ex.getId().equals(formId)
                 ).findFirst()
                 .orElseThrow(() -> new NotFoundException("Анкета не найдена"));
-        return moduleService.getModuleResponseById(moduleId, formId);
+        Form form  = moduleForm.getForm();
+        if(checkAnswersFormService.checkModule(moduleForm.getId())){
+            return formProgramResponseMapper.toResponse(form, true);
+        }
+        return formProgramResponseMapper.toResponse(form, false);
     }
 
     public FormResponse getFormResponseByProgramId(Set<RehabProgram> rehabProgramsSet, Long programFormId) {
@@ -131,6 +138,11 @@ public class RehabProgramService {
         ProgramForm programForm = rehabProgram.getForms().stream()
                 .filter(pf -> pf.getId().equals(programFormId)).findFirst()
                 .orElseThrow(() -> new NotFoundException("Анкета не найдена"));
-        return formProgramResponseMapper.toResponse(programForm);
+        Form formFromProgramForm = programForm.getForm();
+        boolean isAnswered = checkAnswersFormService.checkProgram(programForm.getId(), formFromProgramForm);
+        if (isAnswered)  {
+            return formProgramResponseMapper.toResponse(formFromProgramForm, true);
+        }
+        return formProgramResponseMapper.toResponse(formFromProgramForm, false);
     }
 }
