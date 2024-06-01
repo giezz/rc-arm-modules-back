@@ -18,7 +18,7 @@ public class Exercise {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "exercise_type_id")
     private ExerciseType exerciseType;
 

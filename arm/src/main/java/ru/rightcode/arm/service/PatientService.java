@@ -15,6 +15,7 @@ import ru.rightcode.arm.dto.response.PageableResponse;
 import ru.rightcode.arm.dto.response.PatientResponse;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.exceptions.PatientNotFoundException;
+import ru.rightcode.arm.mapper.PatientMapper;
 import ru.rightcode.arm.mapper.PatientResponseMapper;
 import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
 import ru.rightcode.arm.model.Patient;
@@ -36,6 +37,7 @@ public class PatientService {
 
     private final PatientResponseMapper patientResponseMapper;
     private final RehabProgramResponseMapper rehabProgramResponseMapper;
+    private final PatientMapper patientMapper;
 
     public PageableResponse<PatientResponse> getAll(int pageNumber, int pageSize, PatientRequest patientRequest) {
         Optional<Specification<Patient>> spec = PatientSpecification.specificationBuilder(patientRequest);
@@ -45,7 +47,7 @@ public class PatientService {
                 .orElseGet(() -> patientRepository.findAll(pageable));
 
         return new PageableResponse<>(
-                page.get().map(patientResponseMapper::mapDetails).toList(),
+                page.get().map(patientMapper::toDto).toList(),
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalElements()

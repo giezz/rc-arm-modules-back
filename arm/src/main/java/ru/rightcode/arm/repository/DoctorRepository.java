@@ -12,4 +12,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     <T> Optional<T> findByUserUsername(@Param("login") String login, Class<T> projection);
 
+    Optional<Doctor> findByUserUsername(@Param("login") String login);
+
 }

@@ -32,7 +32,7 @@ public class ModuleExercise {
     private Module module;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "block_id", nullable = false)
     private Block block;
 

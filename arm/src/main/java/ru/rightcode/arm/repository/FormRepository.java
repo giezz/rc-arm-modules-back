@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import ru.rightcode.arm.model.Form;
-import ru.rightcode.arm.model.Form_;
+//import ru.rightcode.arm.model.Form_;
 
 import java.util.Optional;
 
@@ -18,15 +18,15 @@ public interface FormRepository extends JpaRepository<Form, Long> {
 
     @Override
     @NonNull
-    @EntityGraph(attributePaths = {Form_.SCALE})
+    @EntityGraph(attributePaths = {"Form_.SCALE"})
     Optional<Form> findById(@NonNull Long id);
 
     @Override
     @NonNull
-    @EntityGraph(attributePaths = {Form_.SCALE})
+    @EntityGraph(attributePaths = {"Form_.SCALE"})
     Page<Form> findAll(@NonNull Pageable pageable);
 
-    @EntityGraph(attributePaths = {Form_.SCALE})
+    @EntityGraph(attributePaths = {"Form_.SCALE"})
     Page<Form> findAllByNameContainsIgnoreCase(String name, Pageable pageable);
 
     @Query("select f from Form f " +

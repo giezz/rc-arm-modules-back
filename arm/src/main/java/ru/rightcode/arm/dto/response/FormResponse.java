@@ -10,6 +10,6 @@ public record FormResponse(
         Long id,
         String name,
         String description,
-        String scale
+        String scaleName
 ) implements Serializable {
 }
