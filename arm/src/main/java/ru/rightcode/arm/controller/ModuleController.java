@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.rightcode.arm.dto.request.AddModuleExerciseRequest;
 import ru.rightcode.arm.dto.request.AddModuleFormRequest;
 import ru.rightcode.arm.dto.request.RenameModuleRequest;
+import ru.rightcode.arm.dto.request.UpdateModuleRequest;
+import ru.rightcode.arm.dto.response.ModuleDetailsResponse;
 import ru.rightcode.arm.service.ModuleService;
 
 import java.security.Principal;
@@ -63,5 +65,12 @@ public class ModuleController {
                                             Principal principal) {
         return ResponseEntity
                 .ok(moduleService.deleteExercise(principal.getName(), moduleId, moduleExerciseId));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateModule(@PathVariable Long id,
+                                          @RequestBody UpdateModuleRequest request,
+                                          Principal principal) {
+        return ResponseEntity.ok(moduleService.updateModule(principal.getName(), id, request));
     }
 }
