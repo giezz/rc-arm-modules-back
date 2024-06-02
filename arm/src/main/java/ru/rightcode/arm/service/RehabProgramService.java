@@ -18,7 +18,6 @@ import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.exceptions.NoPermissionException;
 import ru.rightcode.arm.exceptions.PatientNotFoundException;
 import ru.rightcode.arm.mapper.RehabProgramMapper;
-import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
 import ru.rightcode.arm.model.Module;
 import ru.rightcode.arm.model.*;
 import ru.rightcode.arm.repository.*;

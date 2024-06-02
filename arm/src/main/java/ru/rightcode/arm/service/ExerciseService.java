@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.response.ExerciseResponse;
 import ru.rightcode.arm.dto.response.PageableResponse;
-import ru.rightcode.arm.mapper.ExerciseResponseMapper;
+import ru.rightcode.arm.mapper.ExerciseMapper;
 import ru.rightcode.arm.model.Exercise;
 import ru.rightcode.arm.repository.ExerciseRepository;
 import ru.rightcode.arm.utils.PageableUtils;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +20,7 @@ import java.util.List;
 public class ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
-    private final ExerciseResponseMapper exerciseResponseMapper;
+    private final ExerciseMapper exerciseMapper;
 
     private final PageableUtils pageableUtils;
 
@@ -35,7 +33,7 @@ public class ExerciseService {
         );
 
         return new PageableResponse<>(
-                page.get().map(exerciseResponseMapper::map).toList(),
+                page.get().map(exerciseMapper::toDto).toList(),
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalElements()

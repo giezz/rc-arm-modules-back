@@ -3,8 +3,6 @@ package ru.rightcode.arm.repository.specification;
 import org.springframework.data.jpa.domain.Specification;
 import ru.rightcode.arm.dto.request.PatientRequest;
 import ru.rightcode.arm.model.Patient;
-//import ru.rightcode.arm.model.PatientStatus_;
-//import ru.rightcode.arm.model.Patient_;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ public class PatientSpecification {
             return null;
         }
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(
-                criteriaBuilder.upper(root.get("Patient_.FIRST_NAME")),
+                criteriaBuilder.upper(root.get("firstName")),
                 "%" + name.toUpperCase() + "%"
         );
     }
@@ -30,7 +28,7 @@ public class PatientSpecification {
             return null;
         }
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(
-                criteriaBuilder.upper(root.get("Patient_.MIDDLE_NAME")),
+                criteriaBuilder.upper(root.get("middleName")),
                 "%" + name.toUpperCase() + "%"
         );
     }
@@ -40,7 +38,7 @@ public class PatientSpecification {
             return null;
         }
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(
-                criteriaBuilder.upper(root.get("Patient_.LAST_NAME")),
+                criteriaBuilder.upper(root.get("lastName")),
                 "%" + name.toUpperCase() + "%"
         );
     }
@@ -50,7 +48,7 @@ public class PatientSpecification {
             return null;
         }
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(
-                root.get("Patient_.GENDER"),
+                root.get("gender"),
                 gender
         );
     }
@@ -60,14 +58,14 @@ public class PatientSpecification {
             return null;
         }
 
-        return (root, query, criteriaBuilder) -> root.get("Patient_.PATIENT_STATUS").get("PatientStatus_.ID").in(statuses);
+        return (root, query, criteriaBuilder) -> root.get("patientStatus").get("id").in(statuses);
     }
 
     public static Specification<Patient> hasBirthDate(LocalDate birthDate) {
         if (birthDate == null) {
             return null;
         }
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("Patient_.BIRTH_DATE"), birthDate);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("birthDate"), birthDate);
     }
 
     public static Optional<Specification<Patient>> specificationBuilder(PatientRequest request) {

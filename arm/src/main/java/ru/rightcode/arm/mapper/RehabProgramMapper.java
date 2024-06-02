@@ -7,7 +7,9 @@ import ru.rightcode.arm.model.RehabProgram;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {
+        ProgramFormMapper.class
+})
 public interface RehabProgramMapper {
     RehabProgram toEntity(RehabProgramResponse rehabProgramResponse);
 

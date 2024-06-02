@@ -7,7 +7,9 @@ import ru.rightcode.arm.dto.response.ModuleDetailsResponse;
 import ru.rightcode.arm.model.Module;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {
-        ModuleExerciseMapper.class
+        ModuleExerciseMapper.class,
+        ModuleFormMapper.class
+
 })
 public interface ModuleDetailsMapper {
 

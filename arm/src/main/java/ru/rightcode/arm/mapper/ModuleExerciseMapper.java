@@ -22,6 +22,4 @@ public interface ModuleExerciseMapper {
 
     List<ModuleExerciseDto> toDtoList(List<ModuleExercise> moduleExerciseList);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    ModuleExercise partialUpdate(ModuleExerciseDto moduleExerciseDto, @MappingTarget ModuleExercise moduleExercise);
 }

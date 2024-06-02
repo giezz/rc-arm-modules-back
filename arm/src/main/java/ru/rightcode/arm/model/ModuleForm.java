@@ -30,7 +30,7 @@ public class ModuleForm {
     private Module module;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "form_id", nullable = false)
     private Form form;
 

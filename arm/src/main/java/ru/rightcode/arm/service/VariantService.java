@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.response.VariantResponse;
-import ru.rightcode.arm.mapper.VariantResponseMapper;
+import ru.rightcode.arm.mapper.VariantMapper;
 import ru.rightcode.arm.model.Variant;
 import ru.rightcode.arm.repository.VariantRepository;
 
@@ -16,14 +16,14 @@ import java.util.List;
 public class VariantService {
 
     private final VariantRepository variantRepository;
-    private final VariantResponseMapper variantResponseMapper;
+    private final VariantMapper variantMapper;
 
     public List<VariantResponse> getModuleFormAnsweredVariants(Long moduleFormId) {
         List<Variant> answeredVariants = variantRepository.findAnsweredVariantsByModuleFormId(moduleFormId);
 
         return answeredVariants
                 .stream()
-                .map(variantResponseMapper::map)
+                .map(variantMapper::toDto)
                 .toList();
     }
 
@@ -32,7 +32,7 @@ public class VariantService {
 
         return answeredVariants
                 .stream()
-                .map(variantResponseMapper::map)
+                .map(variantMapper::toDto)
                 .toList();
     }
 }

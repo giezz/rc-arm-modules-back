@@ -7,12 +7,10 @@ import ru.rightcode.arm.model.Form;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface FormMapper {
-    @Mapping(source = "scaleName", target = "scale.name")
+
+    @Mapping(target = "scale", ignore = true)
     Form toEntity(FormResponse formResponse);
 
-    @Mapping(source = "scale.name", target = "scaleName")
+    @Mapping(target = "scale", source = "scale.name")
     FormResponse toDto(Form form);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Form partialUpdate(FormResponse formResponse, @MappingTarget Form form);
 }

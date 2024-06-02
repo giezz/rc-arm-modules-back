@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.request.CreateMedCardRehabRecordRequest;
 import ru.rightcode.arm.dto.request.CreateProtocolRequest;
 import ru.rightcode.arm.dto.response.ProtocolResponse;
-import ru.rightcode.arm.mapper.ProtocolResponseMapper;
+import ru.rightcode.arm.mapper.ProtocolMapper;
 import ru.rightcode.arm.model.Doctor;
 import ru.rightcode.arm.model.Patient;
 import ru.rightcode.arm.model.Protocol;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ProtocolService {
 
     private final ProtocolRepository protocolRepository;
-    private final ProtocolResponseMapper protocolResponseMapper;
+    private final ProtocolMapper protocolMapper;
 
     private final MedCardRehabilitationHistoryService medCardRehabilitationHistoryService;
 
@@ -58,7 +58,7 @@ public class ProtocolService {
     public List<ProtocolResponse> getProtocolsByProgramId(Long id) {
         return protocolRepository.findByRehabProgramId(id).
                 stream()
-                .map(protocolResponseMapper::map)
+                .map(protocolMapper::toDto)
                 .toList();
     }
 
