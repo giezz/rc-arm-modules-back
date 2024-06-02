@@ -24,15 +24,15 @@ public class LoggingAspect {
     public void logControllerMethods(JoinPoint joinPoint) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request;
+        String className = joinPoint.getSignature().getDeclaringTypeName();
+        String methodName = joinPoint.getSignature().getName();
         if (attributes == null) {
-            log.info("Request attributes is null");
+            log.info("Request attributes are null, Controller: {}, Method: {}", className, methodName);
             return;
         }
         request = attributes.getRequest();
         String ipAddr = request.getRemoteAddr();
         String userLogin = request.getUserPrincipal().getName();
-        String className = joinPoint.getSignature().getDeclaringTypeName();
-        String methodName = joinPoint.getSignature().getName();
-        log.info("IPAddr: {}, User Login: {}, Controller: {}, Method: {}", ipAddr, userLogin, className, methodName);
+        log.info("IPAddr: {}, User: {}, Controller: {}, Method: {}", ipAddr, userLogin, className, methodName);
     }
 }
