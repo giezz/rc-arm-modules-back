@@ -3,6 +3,7 @@ package ru.rightcode.arm.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.rightcode.arm.annotation.Loggable;
 import ru.rightcode.arm.service.FormService;
 import ru.rightcode.arm.service.VariantService;
 
@@ -10,6 +11,7 @@ import ru.rightcode.arm.service.VariantService;
 @RequestMapping("api/v1/forms")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
+@Loggable
 public class FormController {
 
     private final FormService formService;

@@ -3,6 +3,7 @@ package ru.rightcode.arm.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.rightcode.arm.annotation.Loggable;
 import ru.rightcode.arm.dto.request.RenameModuleRequest;
 import ru.rightcode.arm.dto.request.UpdateModuleRequest;
 import ru.rightcode.arm.service.ModuleService;
@@ -13,6 +14,7 @@ import java.security.Principal;
 @RequestMapping("api/v1/modules")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
+@Loggable
 public class ModuleController {
 
     private final ModuleService moduleService;
@@ -30,9 +32,9 @@ public class ModuleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateModule(@PathVariable Long id,
-                                          @RequestBody UpdateModuleRequest request,
-                                          Principal principal) {
+    public ResponseEntity<?> update(@PathVariable Long id,
+                                    @RequestBody UpdateModuleRequest request,
+                                    Principal principal) {
         return ResponseEntity.ok(moduleService.updateModule(principal.getName(), id, request));
     }
 }

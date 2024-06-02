@@ -3,12 +3,14 @@ package ru.rightcode.arm.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.rightcode.arm.annotation.Loggable;
 import ru.rightcode.arm.service.ExerciseService;
 
 @RestController
 @RequestMapping("api/v1/exercises")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
+@Loggable
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
