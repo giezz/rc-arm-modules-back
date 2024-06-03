@@ -1,4 +1,4 @@
-package ru.rightcode.arm.utils;
+package ru.rightcode.arm.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
