@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.rightcode.arm.dto.response.ApiErrorResponse;
-import ru.rightcode.arm.exceptions.PatientNotFoundException;
+import ru.rightcode.arm.exception.PatientNotFoundException;
 
 @RestControllerAdvice
 public class EntityAdvice {

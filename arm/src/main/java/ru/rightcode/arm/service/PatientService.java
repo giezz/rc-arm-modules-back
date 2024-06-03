@@ -14,7 +14,7 @@ import ru.rightcode.arm.dto.request.PatientRequest;
 import ru.rightcode.arm.dto.response.PageableResponse;
 import ru.rightcode.arm.dto.response.PatientResponse;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
-import ru.rightcode.arm.exceptions.PatientNotFoundException;
+import ru.rightcode.arm.exception.PatientNotFoundException;
 import ru.rightcode.arm.mapper.PatientMapper;
 import ru.rightcode.arm.mapper.RehabProgramMapper;
 import ru.rightcode.arm.model.Patient;

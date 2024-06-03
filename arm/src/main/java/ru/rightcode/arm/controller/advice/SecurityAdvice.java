@@ -6,7 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.rightcode.arm.dto.response.ApiErrorResponse;
-import ru.rightcode.arm.exceptions.NoPermissionException;
+import ru.rightcode.arm.exception.NoPermissionException;
 
 @RestControllerAdvice
 public class SecurityAdvice {
