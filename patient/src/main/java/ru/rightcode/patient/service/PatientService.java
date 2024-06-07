@@ -1,6 +1,7 @@
 package ru.rightcode.patient.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,12 +56,6 @@ public class PatientService {
                 .orElseThrow(() -> new NotFoundException("Пациент не найден"));
     }
 
-//    @Transactional
-//    protected Patient getPatientFormCurrentModuleByUsername(String username, Long moduleId, Long formId) {
-//        return patientRepository.getPatientCurrentModuleFormQuestionByUserUsername(username, moduleId, formId)
-//                .orElseThrow(() -> new NotFoundException("Пациент не найден"));
-//    }
-
     // Методы для работы с пациентом
     // Пациент
     @Cacheable(value = "PatientService::getPatientByUsername", key = "#username")
@@ -77,8 +72,10 @@ public class PatientService {
         return rehabProgramService.getHistoryResponseByPatient(patientFromDB.getRehabPrograms());
     }
 
-    // ПРограмма реабилитации
-    @Cacheable(value = "PatientService::getRehabProgram", key = "#username")
+    // ПРограмма реабилитац
+    // TODO: Обновить кэш, если данные обновились
+    @Cacheable(value = "PatientService::getRehabProgram",
+            key = "#username")
     @Transactional
     public RehabProgramResponse getRehabProgram(String username) {
         Patient patientFromDB = getPatientCurrentRehabsByUsername(username);

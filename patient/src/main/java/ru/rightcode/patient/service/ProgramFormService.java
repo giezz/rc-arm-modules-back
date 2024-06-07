@@ -2,6 +2,10 @@ package ru.rightcode.patient.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.patient.dto.request.AnswerRequest;
@@ -26,10 +30,16 @@ public class ProgramFormService {
     private final ProgramFormRepository programFormRepository;
     private final ProgramFormAnswerRepository programFormAnswerRepository;
 
+    @Caching(evict = {
+            @CacheEvict("PatientService::getFormResponseByProgramIdFormId"),
+            @CacheEvict("PatientService::getFormByModuleIdFormId"),
+            @CacheEvict("PatientService::getHistory"),
+            @CacheEvict("PatientService::getRehabProgram")
+    })
     @Transactional
     public BigDecimal submitProgramFormAnswer(Long programFormId, List<AnswerRequest> request) {
         ProgramForm programForm = programFormRepository.findById(programFormId)
-                .orElseThrow(() -> new  EntityNotFoundException("Анкета программы реабилитации не найдена"));
+                .orElseThrow(() -> new EntityNotFoundException("Анкета программы реабилитации не найдена"));
         if (programForm.getFinishedAt() != null) {
             throw new BusinessException("Анкета модуля уже пройдена");
         }
@@ -44,16 +54,20 @@ public class ProgramFormService {
         List<ProgramFormAnswer> programFormAnswers = createModuleFormAnswers(programForm, variants);
         programFormAnswerRepository.saveAll(programFormAnswers);
 
-        programForm.setFinishedAt(Instant.now());
-        programForm.setScore(sum);
-        programFormRepository.save(programForm);
+        updateSumFinishedAt(programForm, sum);
         return sum;
     }
 
+    // вынесен в отдельный метод, обнволение данных
+    public void updateSumFinishedAt(ProgramForm programForm, BigDecimal sum) {
+        programForm.setFinishedAt(Instant.now());
+        programForm.setScore(sum);
+        programFormRepository.save(programForm);
+    }
 
     private void validateVariants(List<ProgramFormAnswer> programFormAnswers, List<Variant> variants) {
         for (Variant variant : variants) {
-            if (programFormAnswers.stream().anyMatch(mFA -> mFA.getVariant().getId().equals(variant.getId())))  {
+            if (programFormAnswers.stream().anyMatch(mFA -> mFA.getVariant().getId().equals(variant.getId()))) {
                 throw new BusinessException("Ответ уже отмечен как пройден");
             }
         }
