@@ -26,10 +26,10 @@ public class Question {
     @Column(name = "content", nullable = false, length = Integer.MAX_VALUE)
     private String content;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private Set<Variant> variants = new HashSet<>();
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private List<FormQuestion> formQuestions = new ArrayList<>();
 
     @NotNull
