@@ -17,6 +17,16 @@ docker compose -f docker-compose-arm.yml up
 ```
 docker compose -f docker-compose-arm-dockerfile.yml up
 ```
-## Модуль questionnaire
-Конструктор анкет. [Frontend-часть](https://github.com/Soundflog/rc-constructor-forms).
-[Пользовательский интерфейс для пациента](https://github.com/Soundflog/rc-questionnaire-desktop-frontend).
+## Модуль [Пациента](patient)
+Серверная часть клиентского приложения. Клиент-пациент.
+* Получение информации о авторизованном пациенте.
+* Получение истории реабилитации пациента.
+* Просмотр и прохождение программы реабилитации пациента.
+  
+[Пользовательский интерфейс для пациента](https://github.com/Soundflog/rc-questionnaire-desktop-frontend)
+## Модуль [Конструктора анкет](questionnaire)
+Серверная часть конструктора анкет для автоматизированного рабочего места врача.
+* Просмотр и редактирование одной или нескольких анкет.
+* Просмотр и редактирование одной или нескольких шкал оценивания анкет.
+  
+[Frontend-часть](https://github.com/Soundflog/rc-constructor-forms)
