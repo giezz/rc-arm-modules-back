@@ -12,23 +12,22 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import ru.rightcode.arm.model.Patient;
-import ru.rightcode.arm.model.Patient_;
 
 import java.util.Optional;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient>, PagingAndSortingRepository<Patient, Long> {
 
-    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS, Patient_.PASSPORT})
+    @EntityGraph(attributePaths = {"patientStatus", "passport"})
     @NonNull
     @Override
     Page<Patient> findAll(Pageable pageable);
 
-    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS, Patient_.PASSPORT})
+    @EntityGraph(attributePaths = {"patientStatus", "passport"})
     @NonNull
     @Override
     Page<Patient> findAll(@Nullable Specification<Patient> specification, Pageable pageable);
 
-    @EntityGraph(attributePaths = {Patient_.PATIENT_STATUS, Patient_.PASSPORT})
+    @EntityGraph(attributePaths = {"patientStatus", "passport"})
     Optional<Patient> findByPatientCode(@Param("patientCode") Long patientCode);
 }

@@ -7,16 +7,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import ru.rightcode.arm.model.Exercise;
-import ru.rightcode.arm.model.Exercise_;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
     @NonNull
     @Override
-    @EntityGraph(attributePaths = {Exercise_.EXERCISE_TYPE})
+    @EntityGraph(attributePaths = {"exerciseType"})
     Page<Exercise> findAll(@NonNull Pageable pageable);
 
-    @EntityGraph(attributePaths = {Exercise_.EXERCISE_TYPE})
+    @EntityGraph(attributePaths = {"exerciseType"})
     Page<Exercise> findAllByNameContainsIgnoreCase(String name, Pageable pageable);
 }

@@ -15,8 +15,8 @@ import ru.rightcode.arm.dto.response.PageableResponse;
 import ru.rightcode.arm.dto.response.PatientResponse;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.exceptions.PatientNotFoundException;
-import ru.rightcode.arm.mapper.PatientResponseMapper;
-import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
+import ru.rightcode.arm.mapper.PatientMapper;
+import ru.rightcode.arm.mapper.RehabProgramMapper;
 import ru.rightcode.arm.model.Patient;
 import ru.rightcode.arm.model.RehabProgram;
 import ru.rightcode.arm.repository.PatientRepository;
@@ -34,8 +34,8 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final RehabProgramRepository rehabProgramRepository;
 
-    private final PatientResponseMapper patientResponseMapper;
-    private final RehabProgramResponseMapper rehabProgramResponseMapper;
+    private final RehabProgramMapper rehabProgramMapper;
+    private final PatientMapper patientMapper;
 
     public PageableResponse<PatientResponse> getAll(int pageNumber, int pageSize, PatientRequest patientRequest) {
         Optional<Specification<Patient>> spec = PatientSpecification.specificationBuilder(patientRequest);
@@ -45,7 +45,7 @@ public class PatientService {
                 .orElseGet(() -> patientRepository.findAll(pageable));
 
         return new PageableResponse<>(
-                page.get().map(patientResponseMapper::mapDetails).toList(),
+                page.get().map(patientMapper::toDto).toList(),
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalElements()
@@ -53,7 +53,7 @@ public class PatientService {
     }
 
     public PatientResponse getByCode(Long code) {
-        return patientResponseMapper.mapDetails(getPatientByCode(code));
+        return patientMapper.toDto(getPatientByCode(code));
     }
 
     public RehabProgramResponse getCurrentRehabProgram(Long code) {
@@ -64,19 +64,16 @@ public class PatientService {
                 .findCurrentWithProgramForms(patient.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Нет 2"));
 
-        return rehabProgramResponseMapper.mapFull(rehabProgram);
+        return rehabProgramMapper.toDto(rehabProgram);
     }
 
     public RehabProgramResponse getRehabProgram(Long patientCode, Long programId) {
         Patient patient = getPatientByCode(patientCode);
-
-        return rehabProgramResponseMapper
-                .mapFull(getRehabProgramByPatientId(programId, patient.getId()));
+        return rehabProgramMapper.toDto(getRehabProgramByPatientId(programId, patient.getId()));
     }
 
     public List<RehabProgramInfo> getAllRehabPrograms(Long code) {
-        return rehabProgramRepository
-                .findAllByPatientId(getPatientByCode(code).getId());
+        return rehabProgramRepository.findAllByPatientId(getPatientByCode(code).getId());
     }
 
     private Patient getPatientByCode(Long code) {

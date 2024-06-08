@@ -11,8 +11,8 @@ import ru.rightcode.arm.dto.response.FormDetailsResponse;
 import ru.rightcode.arm.dto.response.FormResponse;
 import ru.rightcode.arm.dto.response.PageableResponse;
 import ru.rightcode.arm.dto.response.QuestionResponse;
-import ru.rightcode.arm.mapper.FormResponseMapper;
-import ru.rightcode.arm.mapper.QuestionResponseMapper;
+import ru.rightcode.arm.mapper.FormMapper;
+import ru.rightcode.arm.mapper.QuestionMapper;
 import ru.rightcode.arm.model.Form;
 import ru.rightcode.arm.model.Question;
 import ru.rightcode.arm.repository.FormRepository;
@@ -29,8 +29,8 @@ public class FormService {
     private final FormRepository formRepository;
     private final QuestionRepository questionRepository;
 
-    private final FormResponseMapper formResponseMapper;
-    private final QuestionResponseMapper questionResponseMapper;
+    private final FormMapper formMapper;
+    private final QuestionMapper questionMapper;
 
     private final PageableUtils pageableUtils;
 
@@ -43,7 +43,7 @@ public class FormService {
         );
 
         return new PageableResponse<>(
-                page.get().map(formResponseMapper::map).toList(),
+                page.get().map(formMapper::toDto).toList(),
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalElements()
@@ -53,9 +53,9 @@ public class FormService {
     public FormDetailsResponse getFormDetails(Long formId) {
         Form form = formRepository.findWithQuestions(formId).orElseThrow();
         List<Question> questions = questionRepository.findQuestionsByFormId(form.getId());
-        FormResponse formResponse = formResponseMapper.map(form);
+        FormResponse formResponse = formMapper.toDto(form);
         List<QuestionResponse> questionResponses = questions.stream()
-                .map(questionResponseMapper::map)
+                .map(questionMapper::toDto)
                 .toList();
 
         return new FormDetailsResponse(

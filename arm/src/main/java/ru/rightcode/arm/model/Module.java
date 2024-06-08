@@ -5,10 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
@@ -63,4 +65,31 @@ public class Module {
         programForm.setModule(null);
     }
 
+    public void setExercises(List<ModuleExercise> exercises) {
+        this.exercises.clear();
+        this.exercises.addAll(exercises);
+        exercises.forEach(exercise -> exercise.setModule(this));
+    }
+
+    public void setForms(List<ModuleForm> forms) {
+        this.forms.clear();
+        this.forms.addAll(forms);
+        forms.forEach(form -> form.setModule(this));
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Module module = (Module) o;
+        return getId() != null && Objects.equals(getId(), module.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

@@ -17,7 +17,7 @@ import ru.rightcode.arm.dto.response.ProtocolResponse;
 import ru.rightcode.arm.dto.response.RehabProgramResponse;
 import ru.rightcode.arm.exceptions.NoPermissionException;
 import ru.rightcode.arm.exceptions.PatientNotFoundException;
-import ru.rightcode.arm.mapper.RehabProgramResponseMapper;
+import ru.rightcode.arm.mapper.RehabProgramMapper;
 import ru.rightcode.arm.model.Module;
 import ru.rightcode.arm.model.*;
 import ru.rightcode.arm.repository.*;
@@ -44,19 +44,20 @@ public class RehabProgramService {
     private final ProtocolService protocolService;
     private final RestrictionsService restrictionsService;
 
-    private final RehabProgramResponseMapper rehabProgramResponseMapper;
+    private final RehabProgramMapper rehabProgramMapper;
 
     public PageableResponse<RehabProgramResponse> getProgramsByCurrentDoctor(int pageNumber,
-                                                                                   int pageSize,
-                                                                                   String doctorLogin,
-                                                                                   RehabProgramRequest request) {
-        DoctorIdInfo doctor = doctorService.getDoctorIdByLogin(doctorLogin);
+                                                                             int pageSize,
+                                                                             String doctorLogin,
+                                                                             RehabProgramRequest request) {
+        Doctor doctor = doctorService.getByLogin(doctorLogin, Doctor.class)
+                .orElseThrow(() -> new EntityNotFoundException("Врач не найден"));
         Specification<RehabProgram> specification = params(request).and(hasDoctorIdEqual(doctor.getId()));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         Page<RehabProgram> page = rehabProgramRepository.findAll(specification, pageable);
 
         return new PageableResponse<>(
-                page.get().map(rehabProgramResponseMapper::map).toList(),
+                page.get().map(rehabProgramMapper::toSimpleDto).toList(),
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalElements()
@@ -64,7 +65,7 @@ public class RehabProgramService {
     }
 
     public RehabProgramResponse getProgram(Long id) {
-        return rehabProgramResponseMapper.mapFull(getProgramById(id));
+        return rehabProgramMapper.toDto(getProgramById(id));
     }
 
     @Transactional
@@ -80,7 +81,7 @@ public class RehabProgramService {
                 .orElseThrow(EntityNotFoundException::new);
         patient.setPatientStatus(patientStatus);
 
-        return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
+        return rehabProgramMapper.toDto(rehabProgramRepository.save(rehabProgram));
     }
 
     @Transactional
@@ -107,7 +108,7 @@ public class RehabProgramService {
         Form form = formRepository.findById(request.formId()).orElseThrow(EntityExistsException::new);
         rehabProgram.addForm(new ProgramForm(form, new Type(request.formType().getCode())));
 
-        return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
+        return rehabProgramMapper.toDto(rehabProgramRepository.save(rehabProgram));
     }
 
     @Transactional
@@ -115,7 +116,7 @@ public class RehabProgramService {
         RehabProgram rehabProgram = getProgramOrThrowIfDoctorCantEdit(programId, doctorLogin);
         rehabProgram.deleteFom(programFormRepository.findById(programFormId).orElseThrow());
 
-        return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
+        return rehabProgramMapper.toDto(rehabProgramRepository.save(rehabProgram));
     }
 
     @Transactional
@@ -123,7 +124,7 @@ public class RehabProgramService {
         RehabProgram rehabProgram = getProgramOrThrowIfDoctorCantEdit(programId, doctorLogin);
         rehabProgram.addModule(new Module(request.name()));
 
-        return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
+        return rehabProgramMapper.toDto(rehabProgramRepository.save(rehabProgram));
     }
 
     @Transactional
@@ -131,7 +132,7 @@ public class RehabProgramService {
         RehabProgram rehabProgram = getProgramOrThrowIfDoctorCantEdit(programId, doctorLogin);
         rehabProgram.deleteModule(moduleRepository.findById(moduleId).orElseThrow());
 
-        return rehabProgramResponseMapper.mapFull(rehabProgramRepository.save(rehabProgram));
+        return rehabProgramMapper.toDto(rehabProgramRepository.save(rehabProgram));
     }
 
     private RehabProgram getProgramById(Long id) {

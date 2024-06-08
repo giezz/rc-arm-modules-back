@@ -5,18 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = ConfigurationTest.class)
-@TestPropertySource(properties = {
-        "spring.flyway.locations=classpath:db/testdata",
-        "spring.jpa.show-sql=true",
-        "spring.flyway.enabled=true",
-        "jwt.lifetime-days=1",
-        "jwt.secret=qwertyzxc",
-        "jwt.security-develop-mode=true",
-        "api.url.medcard.root.v1=http://localhost:8081/api/v1"
-})
+@ActiveProfiles(profiles = "test")
 @WithMockUser(username = "admin", password = "pass", authorities = {"ADMIN"})
 public abstract class IntegrationTestBase {
 
