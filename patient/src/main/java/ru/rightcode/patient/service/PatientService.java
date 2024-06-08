@@ -1,7 +1,6 @@
 package ru.rightcode.patient.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +8,7 @@ import ru.rightcode.patient.dto.response.form.FormResponse;
 import ru.rightcode.patient.dto.response.history.HistoryResponse;
 import ru.rightcode.patient.dto.response.PatientResponse;
 import ru.rightcode.patient.dto.response.moduleShort.ExerciseShortResponse;
+import ru.rightcode.patient.dto.response.moduleShort.FormShortResponse;
 import ru.rightcode.patient.dto.response.moduleShort.ModuleResponse;
 import ru.rightcode.patient.dto.response.rehab.RehabProgramResponse;
 import ru.rightcode.patient.exception.NotFoundException;
@@ -16,6 +16,7 @@ import ru.rightcode.patient.mapper.PatientResponseMapper;
 import ru.rightcode.patient.model.Patient;
 import ru.rightcode.patient.repository.PatientRepository;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -118,5 +119,13 @@ public class PatientService {
         Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
         return rehabProgramService.getFormResponseByProgramId(
                 patientFromDB.getRehabPrograms(), programFormId);
+    }
+
+    @Transactional
+    public List<FormShortResponse> getAllModuleForms(String username, Long moduleId)  {
+        Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
+        return rehabProgramService.getFormNoQuestionsResponsesByModuleId(
+                patientFromDB.getRehabPrograms(), moduleId
+        );
     }
 }
