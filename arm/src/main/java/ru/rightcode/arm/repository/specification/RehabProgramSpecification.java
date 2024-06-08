@@ -9,19 +9,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Spring Data JPA Specifications или pure Criteria API?
 public class RehabProgramSpecification {
 
-    public static Specification<RehabProgram> hasDoctorIdEqual(Long id) {
-        if (id == null) {
-            return null;
-        }
-
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(
-                root.get("doctor").get("id"), id
-        );
-    }
-
-    public static Specification<RehabProgram> params(RehabProgramRequest request) {
+    public static Specification<RehabProgram> params(RehabProgramRequest request, Long doctorId) {
         String firstName = request.patientFirstName();
         String middleName = request.patientMiddleName();
         String lastName = request.patientLastName();
@@ -59,6 +50,8 @@ public class RehabProgramSpecification {
                         cb.equal(root.get("isCurrent"), true) :
                         cb.equal(root.get("isCurrent"), false));
             }
+
+            predicates.add(cb.equal(root.get("doctor").get("id"), doctorId));
 
             return cb.and(predicates.toArray(Predicate[]::new));
         };

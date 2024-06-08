@@ -25,7 +25,6 @@ import ru.rightcode.arm.repository.*;
 import java.time.Instant;
 import java.util.List;
 
-import static ru.rightcode.arm.repository.specification.RehabProgramSpecification.hasDoctorIdEqual;
 import static ru.rightcode.arm.repository.specification.RehabProgramSpecification.params;
 
 @RequiredArgsConstructor
@@ -52,7 +51,7 @@ public class RehabProgramService {
                                                                              RehabProgramRequest request) {
         Doctor doctor = doctorService.getByLogin(doctorLogin, Doctor.class)
                 .orElseThrow(() -> new EntityNotFoundException("Врач не найден"));
-        Specification<RehabProgram> specification = params(request).and(hasDoctorIdEqual(doctor.getId()));
+        Specification<RehabProgram> specification = params(request, doctor.getId());
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         Page<RehabProgram> page = rehabProgramRepository.findAll(specification, pageable);
 
