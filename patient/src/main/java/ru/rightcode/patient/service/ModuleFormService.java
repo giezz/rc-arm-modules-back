@@ -8,7 +8,9 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.patient.dto.request.AnswerRequest;
+import ru.rightcode.patient.dto.response.form.VariantResponse;
 import ru.rightcode.patient.exception.BusinessException;
+import ru.rightcode.patient.mapper.form.VariantResponseMapper;
 import ru.rightcode.patient.model.*;
 import ru.rightcode.patient.repository.*;
 
@@ -27,6 +29,13 @@ public class ModuleFormService {
     private final ModuleFormRepository moduleFormRepository;
     private final ModuleFormAnswerRepository moduleFormAnswerRepository;
 
+    private final VariantResponseMapper variantResponseMapper;
+
+    @Transactional
+    public List<VariantResponse> getAnsweredVariants(Long moduleFormId)  {
+        List<Variant> variants = variantRepository.findAnsweredVariantsByModuleFormId(moduleFormId);
+        return variants.stream().map(variantResponseMapper::toResponse).collect(Collectors.toList());
+    }
 
     @Transactional
     @Caching(evict = {

@@ -1,6 +1,8 @@
 package ru.rightcode.patient.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.rightcode.patient.model.Variant;
 
@@ -11,5 +13,13 @@ public interface VariantRepository extends JpaRepository<Variant, Long> {
     @Override
     List<Variant> findAllById(Iterable<Long> longs);
 
-    List<Variant> findAllByQuestionId(Long questionId);
+    @Query("select v from Variant v " +
+            "join v.moduleFormAnswers mfa " +
+            "where mfa.moduleForm.id = :id")
+    List<Variant> findAnsweredVariantsByModuleFormId(@Param("id") Long moduleFormId);
+
+    @Query("select v from Variant v " +
+            "join v.programFormAnswers pfa " +
+            "where pfa.programForm.id = :id")
+    List<Variant> findAnsweredVariantsByProgramFormId(@Param("id") Long programFormId);
 }

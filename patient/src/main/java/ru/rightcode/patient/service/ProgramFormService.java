@@ -9,7 +9,9 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.patient.dto.request.AnswerRequest;
+import ru.rightcode.patient.dto.response.form.VariantResponse;
 import ru.rightcode.patient.exception.BusinessException;
+import ru.rightcode.patient.mapper.form.VariantResponseMapper;
 import ru.rightcode.patient.model.*;
 import ru.rightcode.patient.repository.ProgramFormAnswerRepository;
 import ru.rightcode.patient.repository.ProgramFormRepository;
@@ -29,6 +31,14 @@ public class ProgramFormService {
     private final VariantRepository variantRepository;
     private final ProgramFormRepository programFormRepository;
     private final ProgramFormAnswerRepository programFormAnswerRepository;
+
+    private final VariantResponseMapper variantResponseMapper;
+
+    @Transactional
+    public List<VariantResponse> getAnsweredVariants(Long programFormId)  {
+        List<Variant> variants = variantRepository.findAnsweredVariantsByProgramFormId(programFormId);
+        return variants.stream().map(variantResponseMapper::toResponse).collect(Collectors.toList());
+    }
 
     @Caching(evict = {
             @CacheEvict("PatientService::getFormResponseByProgramIdFormId"),
