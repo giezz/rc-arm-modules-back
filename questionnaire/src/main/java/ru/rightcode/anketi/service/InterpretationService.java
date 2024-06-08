@@ -37,8 +37,10 @@ public class InterpretationService {
 
     @Transactional
     public InterpretationDto create(InterpretationDto interpretationDto) {
-        if (interpretationDto.getId() != null || interpretationDto.getScale().getId() != null) {
+        if (interpretationDto.getId() == null || interpretationDto.getId() == 0) {
             interpretationDto.setId(null);
+        }
+        if (interpretationDto.getScale().getId() == null || interpretationDto.getScale().getId() == 0)  {
             interpretationDto.getScale().setId(null);
         }
         interpretationDto.setScale(scaleService.addScale(interpretationDto.getScale()));
