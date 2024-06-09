@@ -8,9 +8,8 @@ import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
@@ -35,11 +34,11 @@ public class Module {
     @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<ModuleExercise> moduleExercises = new HashSet<>();
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ModuleExercise> moduleExercises = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<ModuleForm> moduleForms = new HashSet<>();
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ModuleForm> moduleForms = new LinkedHashSet<>();
 
     public void addExercise(ModuleExercise exercise) {
         moduleExercises.add(exercise);
@@ -59,6 +58,18 @@ public class Module {
     public void deleteForm(ModuleForm programForm) {
         moduleForms.remove(programForm);
         programForm.setModule(null);
+    }
+
+    public Set<ModuleExercise> getModuleExercises() {
+        return moduleExercises.stream()
+                .sorted(Comparator.comparing(moduleExercise -> moduleExercise.getBlock().getName()))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public Set<ModuleExercise> getModuleExercisesSortedById() {
+        return moduleExercises.stream()
+                .sorted(Comparator.comparing(moduleExercise -> moduleExercise.getBlock().getId()))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override

@@ -49,12 +49,12 @@ public class PatientController {
         );
     }
 
-    @GetMapping("/modules/{moduleId}/forms/{formId}")
+    @GetMapping("/modules/{moduleId}/forms/{moduleFormId}")
     public ResponseEntity<?> getForm(Principal principal,
                                      @PathVariable String moduleId,
-                                     @PathVariable String formId) {
+                                     @PathVariable String moduleFormId) {
         return ResponseEntity.ok(patientService.getFormByModuleIdFormId(
-                principal.getName(), Long.parseLong(moduleId), Long.parseLong(formId)));
+                principal.getName(), Long.parseLong(moduleId), Long.parseLong(moduleFormId)));
     }
 
     @GetMapping("/rehab/forms/{programFormId}")
@@ -68,6 +68,13 @@ public class PatientController {
     public ResponseEntity<?> getAllFormModule(
             Principal principal,
             @PathVariable String moduleId){
-        return ResponseEntity.ok(patientService.getAllModuleForms(principal.getName(), Long.parseLong(moduleId)));
+        return ResponseEntity.ok(patientService.getAllFormModule(principal.getName(), Long.parseLong(moduleId)));
+    }
+
+    @GetMapping("/modules/{moduleId}/exercises/all")
+    public ResponseEntity<?> getAllExercisesModule(
+            Principal principal,
+            @PathVariable String moduleId){
+        return ResponseEntity.ok(patientService.getAllExercisesModule(principal.getName(), Long.parseLong(moduleId)));
     }
 }

@@ -102,11 +102,11 @@ public class PatientService {
     // Анкета модуля реабилитации по Id
     // TODO: multiply selects FormQuestions
     // необходимо сделать запрос к базе
-    @Cacheable(value = "PatientService::getFormByModuleIdFormId", key = "#formId")
+    @Cacheable(value = "PatientService::getFormByModuleIdFormId", key = "#moduleFormId")
     @Transactional
-    public FormResponse getFormByModuleIdFormId(String username, Long moduleId, Long formId) {
+    public FormResponse getFormByModuleIdFormId(String username, Long moduleId, Long moduleFormId) {
         Patient patientFromDB = getPatientCurrentModuleByUsername(username);
-        return rehabProgramService.getFormByPatientModuleId(patientFromDB.getRehabPrograms(), moduleId, formId);
+        return rehabProgramService.getFormByPatientModuleId(patientFromDB.getRehabPrograms(), moduleId, moduleFormId);
     }
 
     // Анкета модуля реабилитации по Id
@@ -122,9 +122,17 @@ public class PatientService {
     }
 
     @Transactional
-    public List<FormShortResponse> getAllModuleForms(String username, Long moduleId)  {
+    public List<FormShortResponse> getAllFormModule(String username, Long moduleId)  {
         Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
-        return rehabProgramService.getFormNoQuestionsResponsesByModuleId(
+        return rehabProgramService.getAllFormShortResponsesByModuleId(
+                patientFromDB.getRehabPrograms(), moduleId
+        );
+    }
+
+    @Transactional
+    public List<ExerciseShortResponse> getAllExercisesModule(String username, Long moduleId)  {
+        Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
+        return rehabProgramService.getAllExerciseResponsesByModuleId(
                 patientFromDB.getRehabPrograms(), moduleId
         );
     }
