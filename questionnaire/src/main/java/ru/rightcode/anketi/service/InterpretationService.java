@@ -5,8 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.anketi.dto.InterpretationDto;
-import ru.rightcode.anketi.exception.NotFoundException;
+import ru.rightcode.anketi.dto.interpretation.ScaleInterpretationsResponse;
+import ru.rightcode.anketi.mapper.mapstruct.InterpretationMapper;
+import ru.rightcode.anketi.mapper.mapstruct.ScaleMapper;
 import ru.rightcode.anketi.model.Interpretation;
+import ru.rightcode.anketi.model.Scale;
 import ru.rightcode.anketi.repository.InterpretationRepository;
 
 import java.util.List;
@@ -16,69 +19,43 @@ import java.util.List;
 @Slf4j(topic = "interpretation")
 @Transactional
 public class InterpretationService {
-    private final InterpretationRepository interpretationRepository;
+//    private final ScaleMapper scaleMapper;
+//    private final InterpretationRepository interpretationRepository;
     private final ScaleService scaleService;
 
-    public InterpretationDto getById(Long id) {
-        Interpretation interpretation = interpretationRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Interpretation not found with id: " + id));
-        return toDto(interpretation);
+    private final InterpretationMapper interpretationMapper;
+
+    @Transactional
+    public ScaleInterpretationsResponse getById(Long id) {
+        return interpretationMapper.toResponse(scaleService.findById(id));
     }
 
-    public List<InterpretationDto> search(String description) {
-        List<Interpretation> interpretations = interpretationRepository.findAllByScaleName(description);
-        return interpretations.stream().map(this::toDto).toList();
+    public List<ScaleInterpretationsResponse> search(String description) {
+        return scaleService.getAllByName(description).stream().map(interpretationMapper::toResponse).toList();
     }
 
-    public List<InterpretationDto> getAll() {
-        List<Interpretation> interpretations = interpretationRepository.findAll();
-        return interpretations.stream().map(this::toDto).toList();
+    public List<ScaleInterpretationsResponse> getAll() {
+        return scaleService.getAll().stream().map(interpretationMapper::toResponse).toList();
     }
 
     @Transactional
-    public InterpretationDto create(InterpretationDto interpretationDto) {
-        if (interpretationDto.getId() == null || interpretationDto.getId() == 0) {
-            interpretationDto.setId(null);
-        }
-        if (interpretationDto.getScale().getId() == null || interpretationDto.getScale().getId() == 0)  {
-            interpretationDto.getScale().setId(null);
-        }
-        interpretationDto.setScale(scaleService.addScale(interpretationDto.getScale()));
-        return toDto(interpretationRepository.save(toEntity(interpretationDto)));
+    public ScaleInterpretationsResponse create(ScaleInterpretationsResponse scaleInterpretationsResponse) {
+        Scale scale = interpretationMapper.toEntity(scaleInterpretationsResponse);
+        Scale savedScale = scaleService.save(scale);
+        return interpretationMapper.toResponse(savedScale);
     }
 
     @Transactional
-    public InterpretationDto update(Long id, InterpretationDto newInterpretationDto) {
-        InterpretationDto oldInterpretationDto = getById(id);
-        oldInterpretationDto.setDescription(newInterpretationDto.getDescription());
-        oldInterpretationDto.setScale(scaleService.addScale(newInterpretationDto.getScale()));
-        oldInterpretationDto.setMinValue(newInterpretationDto.getMinValue());
-        oldInterpretationDto.setMaxValue(newInterpretationDto.getMaxValue());
-        return toDto(interpretationRepository.save(toEntity(newInterpretationDto)));
+    public ScaleInterpretationsResponse update(Long id, ScaleInterpretationsResponse newScaleInterpretationsResponse) {
+        Scale scale  = scaleService.findById(id);
+        scale.setDescription(newScaleInterpretationsResponse.description());
+        scale.setName(newScaleInterpretationsResponse.name());
+        scale.setInterpretations(List.of(newScaleInterpretationsResponse.interpretations()));
+        return interpretationMapper.toResponse(scaleService.save(scale));
     }
 
     @Transactional
     public void delete(Long id) {
-        interpretationRepository.deleteById(id);
-    }
-
-    public Interpretation toEntity(InterpretationDto interpretationDto) {
-        return Interpretation.builder()
-                .id(interpretationDto.getId())
-                .scale(scaleService.toEntity(interpretationDto.getScale()))
-                .description(interpretationDto.getDescription())
-                .minValue(interpretationDto.getMinValue())
-                .maxValue(interpretationDto.getMaxValue())
-                .build();
-    }
-
-    public InterpretationDto toDto(Interpretation interpretation) {
-        return InterpretationDto.builder()
-                .id(interpretation.getId())
-                .scale(scaleService.toDto(interpretation.getScale()))
-                .description(interpretation.getDescription())
-                .minValue(interpretation.getMinValue())
-                .maxValue(interpretation.getMaxValue())
-                .build();
+        scaleService.delete(id);
     }
 }
