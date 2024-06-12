@@ -1,5 +1,6 @@
 package ru.rightcode.anketi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -34,7 +35,8 @@ public class Interpretation {
     private String description;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "scale_id", nullable = false)
     private Scale scale;

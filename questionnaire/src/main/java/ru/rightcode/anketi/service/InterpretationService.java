@@ -20,29 +20,39 @@ import java.util.List;
 @Transactional
 public class InterpretationService {
 //    private final ScaleMapper scaleMapper;
-//    private final InterpretationRepository interpretationRepository;
+    private final InterpretationRepository interpretationRepository;
     private final ScaleService scaleService;
 
     private final InterpretationMapper interpretationMapper;
 
     @Transactional
     public ScaleInterpretationsResponse getById(Long id) {
-        return interpretationMapper.toResponse(scaleService.findById(id));
+        List<Interpretation> interpretations  = interpretationRepository.findAllByScaleId(id);
+        return interpretationMapper.toResponse(scaleService.findById(id), interpretations);
     }
 
-    public List<ScaleInterpretationsResponse> search(String description) {
-        return scaleService.getAllByName(description).stream().map(interpretationMapper::toResponse).toList();
+    @Transactional
+    public List<ScaleInterpretationsResponse> search(String name) {
+        List<Interpretation> interpretations  = interpretationRepository.findAllByScaleName(name);
+        return scaleService.getAllByName(name).stream().map(
+                (Scale scale) -> interpretationMapper.toResponse(scale, interpretations))
+                .toList();
     }
 
+    @Transactional
     public List<ScaleInterpretationsResponse> getAll() {
-        return scaleService.getAll().stream().map(interpretationMapper::toResponse).toList();
+        return scaleService.getAll().stream().map(
+                (Scale scale) -> interpretationMapper.toResponse(
+                        scale, null))
+                .toList();
     }
 
     @Transactional
     public ScaleInterpretationsResponse create(ScaleInterpretationsResponse scaleInterpretationsResponse) {
         Scale scale = interpretationMapper.toEntity(scaleInterpretationsResponse);
         Scale savedScale = scaleService.save(scale);
-        return interpretationMapper.toResponse(savedScale);
+        List<Interpretation> interpretations = interpretationRepository.saveAll(savedScale.getInterpretations());
+        return interpretationMapper.toResponse(savedScale, interpretations);
     }
 
     @Transactional
@@ -51,7 +61,9 @@ public class InterpretationService {
         scale.setDescription(newScaleInterpretationsResponse.description());
         scale.setName(newScaleInterpretationsResponse.name());
         scale.setInterpretations(List.of(newScaleInterpretationsResponse.interpretations()));
-        return interpretationMapper.toResponse(scaleService.save(scale));
+        Scale savedScale = scaleService.save(scale);
+        List<Interpretation> interpretations = interpretationRepository.saveAll(savedScale.getInterpretations());
+        return interpretationMapper.toResponse(savedScale, interpretations);
     }
 
     @Transactional

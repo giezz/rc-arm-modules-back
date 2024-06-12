@@ -27,4 +27,7 @@ public interface InterpretationRepository extends JpaRepository<Interpretation, 
     @EntityGraph(attributePaths = {"scale"})
     @NonNull
     List<Interpretation> findAll();
+
+    @EntityGraph(attributePaths  = {"scale"})
+    List<Interpretation> findAllByScaleId(@NonNull Long id);
 }
