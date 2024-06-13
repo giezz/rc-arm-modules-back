@@ -2,6 +2,7 @@ package ru.rightcode.anketi.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -33,7 +34,6 @@ public class FormService {
     private final FormQuestionService formQuestionService;
     private final ScaleService scaleService;
 
-
     /**
      * Получить анкету (Form) по id
      * @param id Long
@@ -50,6 +50,7 @@ public class FormService {
      * @return List<FormDto>
      */
     @Transactional
+    @CachePut("FormService::getFormDtoById")
     public List<FormDto> getAllFormDto() {
         List<Form> forms = formRepository.findAll();
         return forms.stream().map((Form form) -> formMapper.toDto(
@@ -62,6 +63,7 @@ public class FormService {
      * @param name String
      * @return List<FormDto>
      */
+    @Transactional
     public List<FormDto> getListFormDtoByName(String name) {
         List<Form> forms = formRepository.findAllByName(name);
         return forms.stream().map((Form form) -> formMapper.toDto(
@@ -75,7 +77,7 @@ public class FormService {
      * @return FormDto
      */
     @Transactional
-//    @Cacheable(value = "FormService::getFormDtoById", key = "#id")
+    @Cacheable(value = "FormService::getFormDtoById", key = "#id")
     public FormDto getFormDtoById(Long id) {
         Form form = getFormById(id);
         List<FormQuestion> formQuestionList = form.getFormQuestions();
@@ -93,6 +95,7 @@ public class FormService {
      * @param id Long
      */
     @Transactional
+    @CacheEvict(value = "FormService::getFormDtoById", key = "#id")
     public void deleteForm(Long id) {
         formQuestionService.deleteByFormId(id);
         formRepository.deleteById(id);
@@ -105,9 +108,9 @@ public class FormService {
      */
     // Возможность удалять вопросы и варианты
     @Transactional
-//    @Caching(cacheable = {
-//            @Cacheable(value = "FormService::createForm", key = "#formDTO.id")
-//    })
+    @Caching(put = {
+            @CachePut(value = "FormService::getFormDtoById", key = "#result.id")
+    })
     public FormDto createForm(FormDto formDTO) {
         // Создаем новую форму
         Form form = formMapper.toEntity(formDTO);
@@ -124,10 +127,12 @@ public class FormService {
      * @return FormDto
      */
     @Transactional
-//    @Caching(put = {
-//            @CachePut(value = "FormService::updateForm", key = "#formDTO.id")
-//    })
-    public FormDto updateForm( Long id, FormDto formDTO) {
+    @Caching(evict = {
+            @CacheEvict(value = "FormService::getFormDtoById", key =  "#id"),
+    },put = {
+            @CachePut(value = "FormService::getFormDtoById", key = "#result.id")
+    })
+    public FormDto updateForm(Long id, FormDto formDTO) {
         Form existingForm = getFormById(id);
         // Обновляем поля существующей формы
         existingForm.setName(formDTO.getName());
