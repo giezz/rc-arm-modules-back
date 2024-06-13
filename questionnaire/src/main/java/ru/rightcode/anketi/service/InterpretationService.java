@@ -106,6 +106,9 @@ public class InterpretationService {
 
     @Transactional
     public void delete(Long id) {
+        // Map interpreters by their ID for quick lookup
+        List<Interpretation> interpretationList = interpretationRepository.findAllByScaleId(id);
+        interpretationRepository.deleteAll(interpretationList);
         scaleService.delete(id);
     }
 }
