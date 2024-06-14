@@ -4,7 +4,7 @@ services:
     ports:
       - ${arm_port}:8080
     environment:
-О      arm_profile: ${arm_profile}
+      arm_profile: ${arm_profile}
       db_arm_connection: ${db_arm_connection}
       db_arm_login: ${db_arm_login}
       db_arm_pass: ${db_arm_pass}
