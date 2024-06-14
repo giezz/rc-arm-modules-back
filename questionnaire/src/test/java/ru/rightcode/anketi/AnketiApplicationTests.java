@@ -1,20 +1,12 @@
 package ru.rightcode.anketi;
 
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.*;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
+@ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AnketiApplicationTests {
-
-    @Test
-    void contextLoads() {
-
-    }
-
-    @Test
-    void formQuestion() {
-
-    }
 
 }

@@ -12,6 +12,9 @@ import ru.rightcode.anketi.model.Scale;
                 FormQuestionMapper.class})
 public interface ScaleMapper {
 
+    @Mapping(target  =  "id", source  =  "id")
+    @Mapping(target  = "name", source = "name")
+    @Mapping(target  = "description", source  =  "description")
     ScaleDto toDto(Scale scale);
 
     @Mapping(target = "interpretations", ignore = true)

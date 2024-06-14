@@ -6,6 +6,7 @@ import org.mapstruct.MappingConstants;
 import ru.rightcode.patient.dto.response.form.FormResponse;
 import ru.rightcode.patient.mapper.form.QuestionResponseMapper;
 import ru.rightcode.patient.mapper.form.ScaleResponseMapper;
+import ru.rightcode.patient.model.Form;
 import ru.rightcode.patient.model.ProgramForm;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
@@ -14,8 +15,9 @@ import ru.rightcode.patient.model.ProgramForm;
         })
 public interface FormProgramResponseMapper {
     @Mapping(target = "name", source = "form.name")
+    @Mapping(target = "isAnswered", source = "isAnswered")
     @Mapping(target = "description", source = "form.description")
     @Mapping(target = "scale", source = "form.scale")
     @Mapping(target = "questions", source = "form.formQuestions")
-    FormResponse toResponse(ProgramForm programForm);
+    FormResponse toResponse(Form form, Boolean isAnswered);
 }

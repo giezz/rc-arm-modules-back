@@ -32,11 +32,9 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             "rehabPrograms.forms.type"})
     Optional<Patient> getPatientCurrentRehabProgramByUserUsername(@Param("login") String login);
 
-    @EntityGraph(attributePaths = {
-            "rehabPrograms.modules.moduleExercises.exercise.exerciseType",
-            "rehabPrograms.modules.moduleExercises.block",
-            "rehabPrograms.modules.moduleForms.form"})
-    Optional<Patient> getPatientCurrentModuleByUserUsername(@Param("login") String login);
+    @EntityGraph(attributePaths = {"rehabPrograms.modules.moduleExercises.exercise.exerciseType", "rehabPrograms.modules.moduleExercises.block", "rehabPrograms.modules.moduleForms.form", "rehabPrograms.forms"})
+    Optional<Patient> getPatientCurrentModuleByUserUsername(
+            @Param("login") String login);
 
     @EntityGraph(attributePaths = {"rehabPrograms.forms.form", "rehabPrograms.forms.type"})
     Optional<Patient> getPatientCurrentRehabProgramProgramFormByUserUsername(

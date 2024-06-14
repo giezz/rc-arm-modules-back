@@ -8,6 +8,7 @@ import ru.rightcode.patient.dto.response.form.FormResponse;
 import ru.rightcode.patient.dto.response.history.HistoryResponse;
 import ru.rightcode.patient.dto.response.PatientResponse;
 import ru.rightcode.patient.dto.response.moduleShort.ExerciseShortResponse;
+import ru.rightcode.patient.dto.response.moduleShort.FormShortResponse;
 import ru.rightcode.patient.dto.response.moduleShort.ModuleResponse;
 import ru.rightcode.patient.dto.response.rehab.RehabProgramResponse;
 import ru.rightcode.patient.exception.NotFoundException;
@@ -15,6 +16,7 @@ import ru.rightcode.patient.mapper.PatientResponseMapper;
 import ru.rightcode.patient.model.Patient;
 import ru.rightcode.patient.repository.PatientRepository;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -55,12 +57,6 @@ public class PatientService {
                 .orElseThrow(() -> new NotFoundException("Пациент не найден"));
     }
 
-//    @Transactional
-//    protected Patient getPatientFormCurrentModuleByUsername(String username, Long moduleId, Long formId) {
-//        return patientRepository.getPatientCurrentModuleFormQuestionByUserUsername(username, moduleId, formId)
-//                .orElseThrow(() -> new NotFoundException("Пациент не найден"));
-//    }
-
     // Методы для работы с пациентом
     // Пациент
     @Cacheable(value = "PatientService::getPatientByUsername", key = "#username")
@@ -77,8 +73,10 @@ public class PatientService {
         return rehabProgramService.getHistoryResponseByPatient(patientFromDB.getRehabPrograms());
     }
 
-    // ПРограмма реабилитации
-    @Cacheable(value = "PatientService::getRehabProgram", key = "#username")
+    // ПРограмма реабилитац
+    // TODO: Обновить кэш, если данные обновились
+    @Cacheable(value = "PatientService::getRehabProgram",
+            key = "#username")
     @Transactional
     public RehabProgramResponse getRehabProgram(String username) {
         Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
@@ -104,11 +102,11 @@ public class PatientService {
     // Анкета модуля реабилитации по Id
     // TODO: multiply selects FormQuestions
     // необходимо сделать запрос к базе
-    @Cacheable(value = "PatientService::getFormByModuleIdFormId", key = "#formId")
+    @Cacheable(value = "PatientService::getFormByModuleIdFormId", key = "#moduleFormId")
     @Transactional
-    public FormResponse getFormByModuleIdFormId(String username, Long moduleId, Long formId) {
+    public FormResponse getFormByModuleIdFormId(String username, Long moduleId, Long moduleFormId) {
         Patient patientFromDB = getPatientCurrentModuleByUsername(username);
-        return rehabProgramService.getFormByPatientModuleId(patientFromDB.getRehabPrograms(), moduleId, formId);
+        return rehabProgramService.getFormByPatientModuleId(patientFromDB.getRehabPrograms(), moduleId, moduleFormId);
     }
 
     // Анкета модуля реабилитации по Id
@@ -121,5 +119,21 @@ public class PatientService {
         Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
         return rehabProgramService.getFormResponseByProgramId(
                 patientFromDB.getRehabPrograms(), programFormId);
+    }
+
+    @Transactional
+    public List<FormShortResponse> getAllFormModule(String username, Long moduleId)  {
+        Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
+        return rehabProgramService.getAllFormShortResponsesByModuleId(
+                patientFromDB.getRehabPrograms(), moduleId
+        );
+    }
+
+    @Transactional
+    public List<ExerciseShortResponse> getAllExercisesModule(String username, Long moduleId)  {
+        Patient patientFromDB = getPatientCurrentRehabsByUsername(username);
+        return rehabProgramService.getAllExerciseResponsesByModuleId(
+                patientFromDB.getRehabPrograms(), moduleId
+        );
     }
 }

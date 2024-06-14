@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.anketi.dto.ScaleDto;
+import ru.rightcode.anketi.exception.NotFoundException;
 import ru.rightcode.anketi.mapper.mapstruct.ScaleMapper;
 import ru.rightcode.anketi.model.Scale;
 import ru.rightcode.anketi.repository.ScaleRepository;
@@ -20,8 +21,34 @@ public class ScaleService {
     private final ScaleRepository scaleRepository;
     private final ScaleMapper scaleMapper;
 
+    @Transactional
+    public Scale findById(Long id)  {
+        return scaleRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Scale not found"));
+    }
+
+    @Transactional
+    public List<Scale> getAllByName(String name)  {
+        return scaleRepository.findAllByName(name);
+    }
+
+    @Transactional
+    public List<Scale> getAll()  {
+        return scaleRepository.findAll();
+    }
+
+    @Transactional
+    public Scale save(Scale scale)  {
+        return scaleRepository.save(scale);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        scaleRepository.deleteById(id);
+    }
+
     public List<ScaleDto> getScales() {
-        return scaleRepository.findAll().stream().map(scaleMapper::toDto).toList();
+        return getAll().stream().map(scaleMapper::toDto).toList();
     }
 
     // Добавление новой шкалы

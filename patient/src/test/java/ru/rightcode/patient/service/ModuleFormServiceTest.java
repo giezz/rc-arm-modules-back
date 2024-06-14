@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import ru.rightcode.patient.dto.request.AnswerRequest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @SpringBootTest
@@ -18,9 +19,9 @@ public class ModuleFormServiceTest {
     @Test
     void completeForm() {
         List<AnswerRequest> request = List.of(
-                new AnswerRequest(2L),
-                new AnswerRequest(5L)
+                new AnswerRequest(2L, null),
+                new AnswerRequest(5L, BigDecimal.valueOf(2.0))
         );
-        moduleFormService.submitModuleFormAnswer(1L, request, "patient");
+        moduleFormService.submitModuleFormAnswer(1L, request);
     }
 }

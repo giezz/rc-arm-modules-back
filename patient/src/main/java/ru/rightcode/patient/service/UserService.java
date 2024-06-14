@@ -21,13 +21,13 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Transactional
-    @Cacheable(value = "UserService::findByUsername", key = "#username")
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow();
     }
 
     @Override
     @Transactional
+    @Cacheable(value = "UserService::findByUsername", key = "#username")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
 

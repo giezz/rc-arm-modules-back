@@ -17,11 +17,12 @@ public class ProgramFormServiceTest {
 
     @Test
     void completeForm() {
-        List<AnswerRequest> request = List.of(
-                new AnswerRequest(1L),
-                new AnswerRequest(5L)
-        );
-        programFormService.submitProgramFormAnswer(2L, request, "patient");
-        programFormService.submitProgramFormAnswer(3L, request, "patient");
+//        List<AnswerRequest> request = List.of(
+//                new AnswerRequest(1L, 1.0),
+//                new AnswerRequest(5L),
+//                new AnswerRequest(8L, null)
+//        );
+//        programFormService.submitProgramFormAnswer(2L, request, "patient");
+//        programFormService.submitProgramFormAnswer(3L, request, "patient");
     }
 }

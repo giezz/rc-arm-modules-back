@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rightcode.anketi.dto.InterpretationDto;
+import ru.rightcode.anketi.dto.interpretation.ScaleInterpretationsResponse;
 import ru.rightcode.anketi.service.InterpretationService;
 
 @RestController
@@ -29,12 +30,12 @@ public class InterpretationController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody InterpretationDto interpretation) {
+    public ResponseEntity<?> create(@RequestBody ScaleInterpretationsResponse interpretation) {
         return ResponseEntity.ok(interpretationService.create(interpretation));
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody InterpretationDto interpretation) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ScaleInterpretationsResponse interpretation) {
         return ResponseEntity.ok(interpretationService.update(id, interpretation));
     }
 

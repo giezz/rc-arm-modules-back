@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.patient.dto.response.form.FormResponse;
 import ru.rightcode.patient.dto.response.history.HistoryResponse;
 import ru.rightcode.patient.dto.response.moduleShort.ExerciseShortResponse;
+import ru.rightcode.patient.dto.response.moduleShort.FormShortResponse;
 import ru.rightcode.patient.dto.response.moduleShort.ModuleResponse;
 import ru.rightcode.patient.dto.response.rehab.RehabProgramResponse;
 import ru.rightcode.patient.exception.BusinessException;
@@ -13,11 +14,13 @@ import ru.rightcode.patient.exception.NotFoundException;
 import ru.rightcode.patient.mapper.FormProgramResponseMapper;
 import ru.rightcode.patient.mapper.HistoryResponseMapper;
 import ru.rightcode.patient.mapper.module.ExerciseShortResponseMapper;
+import ru.rightcode.patient.mapper.module.FormShortResponseMapper;
 import ru.rightcode.patient.mapper.module.ModuleResponseMapper;
 import ru.rightcode.patient.mapper.rehab.RehabProgramMapper;
 import ru.rightcode.patient.model.*;
 import ru.rightcode.patient.model.Module;
 
+import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -26,50 +29,16 @@ import java.util.Set;
 public class RehabProgramService {
 
     //    private final RehabProgramRepository rehabProgramRepository;
-    private final ModuleService moduleService;
+//    private final ModuleService moduleService;
+    private final CheckAnswersFormService checkAnswersFormService;
+    private final FormQuestionService formQuestionService;
 
     private final RehabProgramMapper rehabProgramMapper;
     private final HistoryResponseMapper historyResponseMapper;
     private final ModuleResponseMapper moduleResponseMapper;
     private final ExerciseShortResponseMapper exerciseShortResponseMapper;
     private final FormProgramResponseMapper formProgramResponseMapper;
-
-    // Получение программы реабилитации по пациенту без доктора и пациента
-//    @Transactional
-//    protected RehabProgram getRehabProgramByPatient(Patient patient) {
-//        return rehabProgramRepository.findByPatientId(patient.getId())
-//                .orElseThrow(() -> new BusinessException("Не найдено программы реабилитации"));
-//    }
-//
-//    // Проверка актуальности программы реабилитации
-//    private RehabProgram checkRehabProgramIsCurrent(RehabProgram rehabProgram) {
-//        if (!rehabProgram.getIsCurrent()) {
-//            throw new BusinessException("Программа реабилитации неактуальна");
-//        }
-//        return rehabProgram;
-//    }
-    private RehabProgram getActualRehabProgramByRehabProgramId(Set<RehabProgram> rehabPrograms, Long moduleId) {
-        return rehabPrograms.stream()
-                .filter(rp -> rp.getModules().stream()
-                        .anyMatch(module -> module.getId().equals(moduleId)))
-                .findFirst()
-                .orElseThrow(() -> new BusinessException("Модуль не относится к программе реабилитации"));
-    }
-
-    private Module getActualModuleByModuleId(Set<RehabProgram> rehabPrograms, Long moduleId) {
-        // Проверка модуль относится к программе реабилитации пациента
-        RehabProgram rehabProgram = getActualRehabProgramByRehabProgramId(rehabPrograms, moduleId);
-        return rehabProgram.getModules().stream()
-                .filter(module -> module.getId().equals(moduleId))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException("Модуль не найден"));
-    }
-
-    private Set<RehabProgram> checkAllRehabProgramIsNotCurrent(Set<RehabProgram> rehabProgram) {
-        // Проверка актуальности программы реабилитации, если программа актуальна, то удаляем ее из списка
-        rehabProgram.removeIf(RehabProgram::getIsCurrent);
-        return rehabProgram;
-    }
+    private final FormShortResponseMapper formShortResponseMapper;
 
     // Получение программы реабилитации по пациенту
     public RehabProgramResponse getRehabProgramResponseByPatient(Set<RehabProgram> rehabPrograms) {
@@ -104,21 +73,30 @@ public class RehabProgramService {
                 .filter(ex -> ex.getId().equals(exerciseId)
                 ).findFirst()
                 .orElseThrow(() -> new NotFoundException("Упражнение не найдено"));
+
         return exerciseShortResponseMapper.toExerciseShortResponse(exercise);
     }
 
-    public FormResponse getFormByPatientModuleId(Set<RehabProgram> rehabProgramsSet, Long moduleId, Long formId) {
+    // TODO: multiply selects
+    // Получение анкеты из модуля программы реабилитации по пациенту и id модуля и id анкеты
+    public FormResponse getFormByPatientModuleId(Set<RehabProgram> rehabProgramsSet, Long moduleId, Long moduleFormId) {
         // Проверка актуальности программы реабилитации, если программа неактуальна, то удаляем ее из списка
         rehabProgramsSet.removeIf(RehabProgram::getIsNotCurrent);
         Module module = getActualModuleByModuleId(rehabProgramsSet, moduleId);
         ModuleForm moduleForm = module.getModuleForms()
                 .stream()
-                .filter(ex -> ex.getId().equals(formId)
-                ).findFirst()
+                .filter(ex -> ex.getId().equals(moduleFormId))
+                .findFirst().filter(pf -> pf.getFinishedAt() == null)
                 .orElseThrow(() -> new NotFoundException("Анкета не найдена"));
-        return moduleService.getModuleResponseById(moduleId, formId);
+        Form form1 = formQuestionService.getForm(moduleForm.getForm().getId());
+        if (checkAnswersFormService.checkModule(moduleForm.getId())) {
+            return formProgramResponseMapper.toResponse(form1, true);
+        }
+        return formProgramResponseMapper.toResponse(form1, false);
     }
 
+    // TODO: multiply selects
+    // Получение анкеты из программы реабилитации по пациенту и id программАнкеты
     public FormResponse getFormResponseByProgramId(Set<RehabProgram> rehabProgramsSet, Long programFormId) {
         // Проверка актуальности программы реабилитации, если программа неактуальна, то удаляем ее из списка
         rehabProgramsSet.removeIf(RehabProgram::getIsNotCurrent);
@@ -127,10 +105,68 @@ public class RehabProgramService {
                         .anyMatch(pf -> pf.getId().equals(programFormId)))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException("Анкеты не актуальны для программы реабилитации"));
-        // TODO: проверка дату окончания программы реабилитации
         ProgramForm programForm = rehabProgram.getForms().stream()
-                .filter(pf -> pf.getId().equals(programFormId)).findFirst()
+                .filter(pf -> pf.getId().equals(programFormId))
+                .findFirst()
+                .filter(pr -> pr.getFinishedAt() == null)
                 .orElseThrow(() -> new NotFoundException("Анкета не найдена"));
-        return formProgramResponseMapper.toResponse(programForm);
+//        Form formFromProgramForm = programForm.getForm();
+        Form form1 = formQuestionService.getForm(programForm.getForm().getId());
+        boolean isAnswered = checkAnswersFormService.checkProgram(programForm.getId(), form1);
+        if (isAnswered) {
+            return formProgramResponseMapper.toResponse(form1, true);
+        }
+        return formProgramResponseMapper.toResponse(form1, false);
+    }
+
+    public List<FormShortResponse> getAllFormShortResponsesByModuleId(Set<RehabProgram> rehabProgramsSet, Long moduleId)  {
+        // dublicate code
+        rehabProgramsSet.removeIf(RehabProgram::getIsNotCurrent);
+        Module module = getActualModuleByModuleId(rehabProgramsSet, moduleId);
+        return module.getModuleForms()
+                .stream()
+                .filter((ModuleForm form) -> checkAnswersFormService.checkModule(form.getId()))
+                .map(formShortResponseMapper::toFormShortResponse)
+                .toList();
+    }
+
+    public List<ExerciseShortResponse> getAllExerciseResponsesByModuleId(Set<RehabProgram> rehabProgramsSet, Long moduleId)  {
+        // dublicate code
+        rehabProgramsSet.removeIf(RehabProgram::getIsNotCurrent);
+        Module module = getActualModuleByModuleId(rehabProgramsSet, moduleId);
+        return module.getModuleExercises()
+                .stream()
+                .map(exerciseShortResponseMapper::toExerciseShortResponse)
+                .toList();
+    }
+
+    // получение программы реабилитации по id модуля
+    private RehabProgram getActualRehabProgramByRehabProgramId(Set<RehabProgram> rehabPrograms, Long moduleId) {
+        return rehabPrograms.stream()
+                .filter(rp -> rp.getModules().stream()
+                        .anyMatch(module -> module.getId().equals(moduleId)))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException("Модуль не относится к программе реабилитации"));
+    }
+
+    // Получение модуля из программы реабилитации по пациенту
+    private Module getActualModuleByModuleId(Set<RehabProgram> rehabPrograms, Long moduleId) {
+        // Проверка модуль относится к программе реабилитации пациента
+        RehabProgram rehabProgram = getActualRehabProgramByRehabProgramId(rehabPrograms, moduleId);
+        Module module = rehabProgram.getModules().stream()
+                .filter(m -> m.getId().equals(moduleId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Модуль не найден"));
+
+        // Сортировка по имени блока
+        module.setModuleExercises(module.getModuleExercises());
+        return module;
+    }
+
+    // Проверка актуальности программы реабилитации, если программа актуальна, то удаляем ее из списка
+    private Set<RehabProgram> checkAllRehabProgramIsNotCurrent(Set<RehabProgram> rehabProgram) {
+        // Проверка актуальности программы реабилитации, если программа актуальна, то удаляем ее из списка
+        rehabProgram.removeIf(RehabProgram::getIsCurrent);
+        return rehabProgram;
     }
 }

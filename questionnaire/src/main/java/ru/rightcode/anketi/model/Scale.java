@@ -1,7 +1,10 @@
 package ru.rightcode.anketi.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.ArrayList;
@@ -27,12 +30,12 @@ public class Scale {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "scale")
-    @ToString.Exclude
-    @Builder.Default
+    @OneToMany(mappedBy = "scale", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonManagedReference
     private List<Interpretation> interpretations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "scale")
+    @OneToMany(mappedBy = "scale", fetch = FetchType.LAZY)
     @ToString.Exclude
     @Builder.Default
     private List<Form> forms = new ArrayList<>();
