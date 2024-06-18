@@ -1,4 +1,4 @@
-package ru.rightcode.arm.exceptions;
+package ru.rightcode.arm.exception;
 
 public class PatientNotFoundException extends RuntimeException {
 

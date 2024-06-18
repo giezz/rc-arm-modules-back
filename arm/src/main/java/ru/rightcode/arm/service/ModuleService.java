@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rightcode.arm.dto.request.RenameModuleRequest;
 import ru.rightcode.arm.dto.request.UpdateModuleRequest;
 import ru.rightcode.arm.dto.response.ModuleDetailsResponse;
-import ru.rightcode.arm.exceptions.NoPermissionException;
+import ru.rightcode.arm.exception.NoPermissionException;
 import ru.rightcode.arm.mapper.ModuleDetailsMapper;
 import ru.rightcode.arm.mapper.ModuleExerciseMapper;
 import ru.rightcode.arm.mapper.ModuleFormMapper;

@@ -11,7 +11,7 @@ import ru.rightcode.arm.dto.projection.DoctorInfo;
 import ru.rightcode.arm.dto.request.JwtRequest;
 import ru.rightcode.arm.dto.response.JwtResponse;
 import ru.rightcode.arm.repository.DoctorRepository;
-import ru.rightcode.arm.utils.JwtUtils;
+import ru.rightcode.arm.util.JwtUtils;
 
 import java.util.stream.Collectors;
 

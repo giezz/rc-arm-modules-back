@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.rightcode.arm.service.UserService;
-import ru.rightcode.arm.utils.JwtUtils;
+import ru.rightcode.arm.util.JwtUtils;
 
 import java.io.IOException;
 

@@ -12,7 +12,7 @@ import ru.rightcode.arm.dto.response.PageableResponse;
 import ru.rightcode.arm.mapper.ExerciseMapper;
 import ru.rightcode.arm.model.Exercise;
 import ru.rightcode.arm.repository.ExerciseRepository;
-import ru.rightcode.arm.utils.PageableUtils;
+import ru.rightcode.arm.util.PageableUtils;
 
 @RequiredArgsConstructor
 @Service

@@ -7,7 +7,6 @@ RUN --mount=type=cache,target=/root/.m2 mvn clean package -Dmaven.test.skip
 FROM eclipse-temurin:17.0.10_7-jre
 RUN addgroup spring-boot-group && adduser --ingroup spring-boot-group spring-boot
 USER spring-boot:spring-boot-group
-VOLUME /tmp
 ARG JAR_FILE=arm-0.0.1.jar
 WORKDIR /application
 COPY --from=build /build/target/${JAR_FILE} application.jar

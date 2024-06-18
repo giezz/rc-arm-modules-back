@@ -17,7 +17,7 @@ import ru.rightcode.arm.model.Form;
 import ru.rightcode.arm.model.Question;
 import ru.rightcode.arm.repository.FormRepository;
 import ru.rightcode.arm.repository.QuestionRepository;
-import ru.rightcode.arm.utils.PageableUtils;
+import ru.rightcode.arm.util.PageableUtils;
 
 import java.util.List;
 
